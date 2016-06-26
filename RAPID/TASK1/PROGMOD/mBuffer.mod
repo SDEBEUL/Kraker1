@@ -52,18 +52,14 @@ MODULE mBuffer
 
  PROC BUFFER_UIT(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
      !
-     !omdat sensoren nog niet in orde zijn
-     UitvoerBuffer{nBuffernum}.Veilig := false;
-     !
-     IF NOT UitvoerBuffer{nBuffernum}.Veilig THEN
+     IF NOT InvoerBuffer{nBuffernum}.Veilig THEN
        Buffer_UIT_WithsafeCheck nBuffernum, WobjBufferx ,Pbuffer;
      ELSE
        Buffer_UIT_PickPart nBuffernum, WobjBufferx ,Pbuffer;
      ENDIF
      !
  ENDPROC
- 
-    
+  
  PROC Buffer_UIT_WithsafeCheck(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
  !calc position
    VAR num xPos := 0;
@@ -325,6 +321,107 @@ ENDPROC
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+  PROC BUFFER_IN(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer \switch SafeCheck)
+     !
+     IF present(Safecheck) THEN
+       Buffer_In_safeCheck nBuffernum, WobjBufferx ,Pbuffer;
+     ELSE
+       Buffer_IN_PutPart nBuffernum, WobjBufferx ,Pbuffer;
+     ENDIF
+     !
+ ENDPROC
+ 
+  PROC Buffer_IN_safeCheck(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
+ !calc position
+   VAR num xPos := 0;
+   VAR num yPos := 0;
+   VAR num zPos := 0;
+   VAR num nLaag;
+   VAR num nStuk;
+   VAR btnres nAnswer; 
+  !eerst naar een postie om te kijken of het rek er staat. 
+   yPos := nYposPart(1);
+   ZPos := nZposPart(5);
+   wobj_Active:=WobjBufferx;
+   wobj_Active.oframe.trans:=[xPos,ypos,zpos];
+   rGripper_Open;
+  lbl_retry:
+   MoveL Offs(Pbuffer,0,-200,0),v1000,z50,tGripper\WObj:=wobj_Active;
+   !postie waar de sensoren het rek zien.
+   MoveL Offs(Pbuffer,0,-150,-150), v100, fine, tGripper\WObj:=wobj_Active;   
+    IF NOT fCheckGripperPart() THEN
+       !NO RACK
+        LoggProc "mBuffer",30,"Actieve uitvoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
+        nAnswer := UIMessageBox(\Header:="REK NIET GEVONDEN!"\MsgArray:=["","Hier zou een rek moeten staan?","Druk OK om opnieuw te controlleren","Druk Cancel als dit rek is verwijderd"]
+        ,\BtnArray:=["Cancel","","","","OK"]); 
+       TEST nAnswer
+         CASE 1:
+          UitvoerBuffer{nBuffernum}.vol := TRUE;
+          MoveL Offs(Pbuffer,0,-150,0),v1000,z50,tGripper\WObj:=wobj_Active;
+          MoveL Pbuffer,v1000,z50,tGripper\WObj:=wobj_Active;
+          !ja en nu ... ? volgende buffer kiezen ? 
+          Stop;
+          RETURN;
+         CASE 2:
+          GOTO lbl_retry;
+       ENDTEST
+       RETURN;
+    ENDIF
+    MoveL Offs(Pbuffer,0,-200,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    !100 mm van stuk1 onderste rij
+    MoveL Offs(Pbuffer,0,-80,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    !beweeg richting bovenste laag tot check range dan 1 laag omhoog
+    FOR laag FROM 5 TO 1 STEP -1 DO
+      MoveL Offs(Pbuffer,0,-80,nZposPart(laag)),v100,z0,tGripper\WObj:=wobj_Active;
+      IF fCheckGripperNotInrange()  OR (laag = 1)THEN
+          nLaag := laag;
+        GOTO Lbl_laagGevonden;
+      ENDIF
+    ENDFOR
+    
+  Lbl_laagGevonden:
+
+     FOR stuk FROM 1 TO 8 STEP 1 DO
+       MoveL Offs(Pbuffer,0,-80+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
+       IF (fCheckGripperNotInrange() = FALSE) OR (stuk = 8) THEN
+           nStuk := stuk;
+          GOTO Lbl_stukgevonden;
+       ENDIF
+     ENDFOR
+     
+   Lbl_stukgevonden:
+       UitvoerBuffer{nBuffernum}.ActiefStuk := nStuk;
+       UitvoerBuffer{nBuffernum}.Actievelaag := nLaag;
+!zoek nu tot je de balk effectief ziet liggen
+lbl_nextpart:
+   yPos := nYposPart(UitvoerBuffer{nBuffernum}.ActiefStuk);
+   ZPos := nZposPart(UitvoerBuffer{nBuffernum}.Actievelaag);
+   !
+        MoveL Offs(Pbuffer,0,-75,0),v1000,z50,tGripper\WObj:=wobj_Active;
+        MoveL Pbuffer, v100, fine, tGripper\WObj:=wobj_Active;
+        IF fCheckGripperPart() THEN
+          !beweeg weg van het stuk
+          MoveL Offs(Pbuffer,0,-75,0),v1000,z50,tGripper\WObj:=wobj_Active;
+          MoveL Offs(Pbuffer,0,-100,5),v1000,z50,tGripper\WObj:=wobj_Active;
+        ELSE !part not in expected pos 
+         !beweeg 1cm verder en kijk of het stuk er dan is 
+          MoveL Offs(Pbuffer,0,10,0),v50,z10,tGripper\WObj:=wobj_Active;
+          WaitTime \InPos, 2;
+          !
+          IF fCheckGripperPart() THEN
+             !beweeg weg van het stuk
+             MoveL Offs(Pbuffer,0,-75,0),v1000,z50,tGripper\WObj:=wobj_Active;
+             MoveL Offs(Pbuffer,0,-100,5),v1000,z50,tGripper\WObj:=wobj_Active;
+          ELSE !stuk nog steeds niet aanwezig = volgende stuk 
+              rDecrUitvoerbuffer(nBuffernum);
+              goto lbl_nextPart; 
+          ENDIF
+        ENDIF 
+        ! set safe
+        UitvoerBuffer{nBuffernum}.Veilig := TRUE;
+        !
+ ENDPROC
+ 
  PROC Buffer_IN_PutPart(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
    !calc position
    VAR num xPos := 0;
@@ -348,7 +445,7 @@ ENDPROC
    !
  ENDPROC
     
-PROC Buffer_1_In()
+PROC Buffer_1_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer
     Shift_x:=0;
     Shift_y:=0;
@@ -362,7 +459,7 @@ PROC Buffer_1_In()
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer1;
     MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer1;
     !
-    Buffer_IN_PutPart 1 , Wobj_Buffer_Boven_1 , pBuffer_Boven_1;
+    BUFFER_IN 1 , Wobj_Buffer_Boven_1 , pBuffer_Boven_1 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Buffer1;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Buffer1;
@@ -370,7 +467,7 @@ PROC Buffer_1_In()
     !
 ENDPROC
 
-PROC Buffer_2_In()
+PROC Buffer_2_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer
     Shift_x:=0;
     Shift_y:=0;
@@ -384,7 +481,7 @@ PROC Buffer_2_In()
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer2;
     MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer2;
     !
-    Buffer_IN_PutPart 2 , Wobj_Buffer_Boven_2 , pBuffer_Boven_2;
+    BUFFER_IN 2 , Wobj_Buffer_Boven_2 , pBuffer_Boven_2 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Buffer2;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Buffer2;
@@ -392,7 +489,7 @@ PROC Buffer_2_In()
     !
 ENDPROC
 
-PROC Buffer_3_In()
+PROC Buffer_3_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer
     Shift_x:=0;
     Shift_y:=0;
@@ -406,7 +503,7 @@ PROC Buffer_3_In()
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer3;
     MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer3;
     !
-    Buffer_IN_PutPart 3 , Wobj_Buffer_Boven_3 , pBuffer_Boven_3;
+    BUFFER_IN 3 , Wobj_Buffer_Boven_3 , pBuffer_Boven_3 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Buffer3;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Buffer3;
@@ -414,7 +511,7 @@ PROC Buffer_3_In()
     !     
 ENDPROC
 
-PROC Buffer_4_In()
+PROC Buffer_4_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer
     Shift_x:=0;
     Shift_y:=0;
@@ -428,7 +525,7 @@ PROC Buffer_4_In()
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer4;
     MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer4;
     !
-    Buffer_IN_PutPart 4 , Wobj_Buffer_Boven_4 , pBuffer_Boven_4;
+    BUFFER_IN 4 , Wobj_Buffer_Boven_4 , pBuffer_Boven_4 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Buffer4;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Buffer4;
@@ -436,7 +533,7 @@ PROC Buffer_4_In()
     !
 ENDPROC
 
-PROC Buffer_5_In()
+PROC Buffer_5_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer
     Shift_x:=0;
     Shift_y:=0;
@@ -450,7 +547,7 @@ PROC Buffer_5_In()
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer5;
     MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer5;
     !
-    Buffer_IN_PutPart 5 , Wobj_Buffer_Boven_5 , pBuffer_Boven_5;
+    Buffer_IN 5 , Wobj_Buffer_Boven_5 , pBuffer_Boven_5 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Buffer5;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Buffer5;
@@ -458,7 +555,7 @@ PROC Buffer_5_In()
     !
 ENDPROC
 
-PROC Buffer_6_In()
+PROC Buffer_6_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste bufferShift_x:=0;
     Shift_y:=0;
     Shift_z:=0;
@@ -471,7 +568,7 @@ PROC Buffer_6_In()
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer6;
     MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z0, tGripper\WObj:=Wobj_Buffer6;
     !
-    Buffer_IN_PutPart 6 , Wobj_Buffer_Boven_6 , pBuffer_Boven_6;
+    BUFFER_IN 6 , Wobj_Buffer_Boven_6 , pBuffer_Boven_6 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Buffer6;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Buffer1;

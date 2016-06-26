@@ -292,7 +292,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         ELSE
          SetAO aoPLC_Spindle_Speed,nDefaultSpeed{fGet_activeTool()};
         ENDIF
-        WaitTime 1;
+        rCheckSpindelRunning \nPulses:=5;
         !rSpindelSprVsn TRUE \init ;
         !
     ENDPROC
@@ -315,8 +315,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Connected in eventroutine and trap
     !***************************************	
        IF  DOutput(so_Boren_aan) = 1 THEN
-           !TPWrite "Spindle: wachten op toerental (3s) ";
-           WaitTime 1.5;
+           rCheckSpindelRunning \nPulses:=3;
        ENDIF
     ENDPROC
     
@@ -357,4 +356,34 @@ MODULE mSettings_Spindle(SYSMODULE)
    StartMove;
    rWait_Spindel;
   ENDTRAP
+  
+      
+  PROC rCheckSpindelRunning(\Num nPulses)
+    !***************************************	    
+    ! Trap: rCheckSpindelRunning
+    ! Description: kijk of spindel draait aan de hand van pulsen   
+    !***************************************	    
+   VAR btnres nAnswer;
+   VAR num nPulscount;
+   VAR bool bTimeout;
+   VAR dionum nFlipstate;
+   lblreset:
+       nFlipstate := DInput(diSpindle_No_Rotation);
+       IF NOT Present(nPulses) THEN
+           nPulses := 3;
+       ENDIF
+       FOR i FROM 1 TO nPulses DO
+           WaitDI diSpindle_No_Rotation, nFlipstate \MaxTime:=3000 \Timeflag := bTimeout;
+           IF bTimeout THEN
+             nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);  
+             GOTO lblreset;
+           ENDIF
+           !
+           IF nFlipstate = 1 THEN
+              nFlipstate:= 0; 
+           ELSE
+              nFlipstate :=1;
+           ENDIF
+       ENDFOR
+  ENDPROC
 ENDMODULE

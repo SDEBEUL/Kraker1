@@ -50,8 +50,11 @@ PROC rSetStationStatus(num stationnum)
          "Lading="+sPartTypetoString(Station{stationnum}.Lading),
          "Bewerkingsstap="+NumToStr(Station{stationnum}.Bewerkingsstap,0),
          "Opdracht="+sPartTypetoString(Station{stationnum}.Opdracht),
-         "xOffset="+NumToStr(Station{stationnum}.xOffset,0)]
-        \BtnArray:=["Indienst","Uitdienst","Lading0","Klemmen","Terug"]);
+         "xOffset="+NumToStr(Station{stationnum}.xOffset,0),
+         "Indienst/Uitdienst om DIT station in of uit te schakelen",
+         "Via Lading kan je selecteren wat er nu in het station ligt. (order word gewist)",
+         "Via klemmen kan je de klemmen van het station bedienen"]
+        \BtnArray:=["Indienst","Uitdienst","Lading","Klemmen","Terug"]);
         !moet andere statussen nog verder aanvullen 
         TEST nAnswer
         CASE 1:
@@ -61,8 +64,8 @@ PROC rSetStationStatus(num stationnum)
           station{stationnum}.inDienst := FALSE;
           GOTO lbl_begin;
         CASE 3:
-          station{stationnum}.lading := part.Geen;
           station{stationnum}.opdracht := part.Geen;
+          rSetStationLoad(stationnum);
           GOTO lbl_begin;
         CASE 4:
           rSetStationClamps(stationnum);
@@ -71,6 +74,17 @@ PROC rSetStationStatus(num stationnum)
            GOTO lblExit;
         ENDTEST  
        lblExit:
+ENDPROC
+
+
+PROC rSetStationLoad(Num stationum)
+VAR listitem PartTypeList{10};
+VAR num list_item;
+FOR i FROM 1 TO 10 STEP 1 DO 
+  PartTypeList{i} := ["",sPartTypetoString(i)];  
+ENDFOR
+list_item := UIListView( \Header:="Selecteer the parttype dat in het station aanwezig is",PartTypeList \Icon:=iconInfo);
+Station{stationum}.Lading := list_item;
 ENDPROC
 
 PROC rSetStationClamps(num stationnum)

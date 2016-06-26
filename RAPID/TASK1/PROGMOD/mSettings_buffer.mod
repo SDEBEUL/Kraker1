@@ -122,6 +122,13 @@ PROC PUTnextpart(Num nPartType)
          nAnswer := UIMessageBox(\Header:="Kan de balk nergens plaatsen"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
        ENDWHILE
     ENDIF
+    !controleer nog eens of buffer wel veilig is. (is normaal al goed vanin unload station
+     IF NOT UitvoerBuffer{nbuffernummer}.veilig THEN
+        LoggProc "mBuffer",14,"buffer niet veilig";
+        WHILE TRUE DO 
+         nAnswer := UIMessageBox(\Header:="Buffer niet veilig"\MsgArray:=["ga manueel en lost het op","Buffer is niet veilig.","Dit zo niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
+       ENDWHILE
+    ENDIF
     !steek het stuk in de buffer
     putpart(nbuffernummer);
     !update het buffer status
@@ -224,6 +231,30 @@ PROC rIncrUitvoerbuffer(num nBuffer)
     !
 ENDPROC
 
+PROC rDecrUitvoerbuffer(num nBuffer)
+    !***************************************	    
+    ! Func: rDecrUitvoerbuffer
+    ! Description: tellers updaten 1 stuk uit buffer
+    !***************************************  
+    !tel 1 stuk bij de rij 
+    Incr UitvoerBuffer{nBuffer}.ActiefStuk;
+    !als rij meer dan 8 is volgende 
+    IF UitvoerBuffer{nBuffer}.ActiefStuk > 8 THEN
+        UitvoerBuffer{nBuffer}.ActiefStuk := 1;
+        Incr UitvoerBuffer{nBuffer}.Actievelaag;
+    ENDIF
+    !veiligeid voor slechte tellers veilige situatie is LEEG
+    IF (UitvoerBuffer{nBuffer}.ActiefStuk > 8) OR (UitvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
+      UitvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",17,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
+    ENDIF
+    IF (UitvoerBuffer{nBuffer}.Actievelaag > 5) OR (UitvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
+      UitvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",18,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
+    ENDIF
+    !
+ENDPROC
+
  PROC Getpart(Num nBuffernummer)
       Set_Gripper(GrijperTool);
       TEST nBuffernummer
@@ -243,20 +274,20 @@ ENDPROC
       !
   ENDPROC
     
-  PROC Putpart(Num nBuffernummer)
+  PROC Putpart(Num nBuffernummer \switch Safecheck)
       TEST nBuffernummer
        CASE 1:
-        Buffer_1_In;
+        Buffer_1_In \Safecheck?Safecheck;
        CASE 2:
-        Buffer_2_In;
+        Buffer_2_In \Safecheck?Safecheck;
        CASE 3:
-        Buffer_3_In;
+        Buffer_3_In \Safecheck?Safecheck;
        CASE 4:
-        Buffer_4_In;
+        Buffer_4_In \Safecheck?Safecheck;
        CASE 5:
-        Buffer_5_In;
+        Buffer_5_In \Safecheck?Safecheck;
        CASE 6:
-        Buffer_6_In;
+        Buffer_6_In \Safecheck?Safecheck;
       ENDTESt 
       !
     ENDPROC

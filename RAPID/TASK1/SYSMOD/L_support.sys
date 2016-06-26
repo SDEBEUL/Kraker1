@@ -77,7 +77,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=5000;
-  LOCAL PERS num logCounterErrDisp:=26;
+  LOCAL PERS num logCounterErrDisp:=28;
   LOCAL VAR iodev file;
    
   PROC SyncPos()

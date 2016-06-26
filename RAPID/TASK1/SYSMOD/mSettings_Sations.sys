@@ -86,21 +86,30 @@ PROC rUnloadStations()
     !***************************************	
     VAR btnres nAnswer; 
     VAR num nPartypeIngripper;
+    VAR num nUitvoerbuffer;
      FOR i FROM 5 TO 1 STEP -1 DO
         !niet uit dienst niet leeg en geen nieuwe balk
        IF Station{i}.inDienst AND (Station{i}.lading <> part.Geen) AND (Station{i}.lading <> part.OnbewerkteBalk) THEN
        !verwerk afgewerkte stukken
            IF (Station{i}.lading = part.Balk330) OR (Station{i}.lading = part.Balk331) OR (Station{i}.lading = part.Balk332)  THEN
               !kijk of er een buffer is die het stuk wil 
-              IF nGetUitvoerbuffer(Station{i}.lading) <> 0 THEN
-                !haal stuk uit station
-                rUnloadStation(i);
-                !overdracht van stuk 
-                nPartypeIngripper := Station{i}.lading;
-                Station{i}.lading := part.Geen; 
-                Station{i}.Opdracht := part.Geen;
-                !Plaats stuk in buffer
-                PUTnextpart(nPartypeIngripper);
+              nUitvoerbuffer := nGetUitvoerbuffer(Station{i}.lading);
+              IF nUitvoerbuffer <> 0 THEN
+                !als het station niet veilig is dan eerst safecheck
+                IF NOT UitvoerBuffer{nUitvoerbuffer}.veilig THEN
+                   Putpart nUitvoerbuffer \Safecheck;
+                ENDIF
+                !moest de buffer nog niet veilig zijn na check dan next station
+                IF UitvoerBuffer{nUitvoerbuffer}.veilig THEN
+                    !haal stuk uit station
+                    rUnloadStation(i);
+                    !overdracht van stuk 
+                    nPartypeIngripper := Station{i}.lading;
+                    Station{i}.lading := part.Geen; 
+                    Station{i}.Opdracht := part.Geen;
+                    !Plaats stuk in buffer
+                    PUTnextpart(nPartypeIngripper);
+                ENDIF
               ENDIF 
            ELSE
                !moet beter uitwerken wat te doen .... repair procs ? process step counter is voorzien 
