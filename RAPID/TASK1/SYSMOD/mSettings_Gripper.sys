@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=2;
+    PERS num nActive_Gripper:=3;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;
@@ -339,6 +339,58 @@ MODULE mSettings_Gripper(SYSMODULE)
     GOTO lbl_retry;
     !
     ENDFUNC
-    
+
+   PROC rGripper_CheckPart(bool bState \switch Supervision)
+    !***************************************	    
+    ! Proc: rGripper_CheckPart
+    ! Description: check if part is present or not and part supervision
+    !***************************************
+    IF bState THEN
+        IF fCheckGripperPart() THEN
+            !part aanwezig oke
+            IF Present(Supervision) THEN 
+              IDelete Int2SprvPart;  
+              CONNECT Int2SprvPart WITH tPartSprVsn;
+              ISignalDI di_Sensor1_Q1_In,1,Int2SprvPart;
+              ISignalDI di_Sensor2_Q1_In,1,Int2SprvPart;
+              IWatch Int2SprvPart;
+            ENDIF
+        ENDIF
+    ELSE
+        IF NOT fCheckGripperPart() THEN
+            !part niet aanwezig oke
+        ENDIF
+    ENDIF
+    !
+  ENDPROC 
+  
+  PROC rGripper_PartSupervisionOff()
+    !***************************************	    
+    ! Proc: rGripper_PartSupervisionOff
+    ! Description: turns off part supervision
+    !***************************************
+    ISleep Int2SprvPart;
+    !
+  ENDPROC 
+  
+  TRAP tPartSprVsn
+    !***************************************	    
+    ! Trap: tPartSprVsn
+    ! Description: Supervision trap that   
+    ! stops robot with alarm message 
+    ! Connected in rGripper_CheckPart
+    !***************************************	    
+   VAR btnres nAnswer;
+   ISleep Int1SprvSpindel;
+   StopMove;
+   StorePath;
+   nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);
+   RestoPath;
+   IWatch Int1SprvSpindel;
+   StartMove;
+   rWait_Spindel;
+  ENDTRAP
+  
+  
 
 ENDMODULE

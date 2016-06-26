@@ -8,7 +8,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
-    local PERS bool  bActiveTool{6} := [TRUE,FALSE,FALSE,FALSE,FALSE,FALSE];
+    local PERS bool  bActiveTool{6} := [FALSE,TRUE,FALSE,FALSE,FALSE,FALSE];
     local CONST num nDefaultSpeed{6} := [2000,6000,0,0,0,0];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-113.098,-15.104,3.1224,84.2322,-67.5896,-85.4401],[500.018,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -28,11 +28,13 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Speedata
     CONST speeddata vBoren_11_190:=[0.9,500,5000,1000];
-    CONST speeddata vBoren_8_250:=[0.8,500,5000,1000];
     CONST speeddata vBoren:=[2,500,5000,1000];
-    CONST speeddata v3:=[10,500,3,1000];
-    CONST speeddata speed1:=[0.1,500,5000,1000];
     CONST speeddata vFrezen:=[1.5,500,5000,1000];
+    !getest op 20000 toeren 
+    !CONST speeddata vFrezen:=[20,500,5000,1000];
+     
+    CONST speeddata vBorenMetFrees:=[1,500,5000,1000];
+    CONST speeddata vFrees_aanzet:=[25,500,5000,1000];
     CONST speeddata vBoren_aanzet:=[25,500,5000,1000];
     
     LOCAL PROC rteach_mag_Pos()
@@ -116,7 +118,6 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Description: manueel tool wisselen
     !***************************************
      Set_Tool(fSelect_tool());
-     Stop;
      !
     ENDPROC
     
@@ -133,6 +134,7 @@ MODULE mSettings_Spindle(SYSMODULE)
           nAnswer := UIMessageBox(\Header:="Magazijn fout"\MsgArray:=["fout tool actief !","ga manueel om tool"],\BtnArray:=["","","","","OK"]); 
          ENDWHILE
         ENDIF
+    !
     ENDPROC
 
     PROC Set_Tool(num nTool)
@@ -185,10 +187,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     RETURN nActiveTool;
     ENDFUNC
 
-    LOCAL FUNC robtarget fToolMagpos
-      (
-      num nTool
-      )
+    LOCAL FUNC robtarget fToolMagpos(num nTool)
     !***************************************	    
     ! FUNC: fToolMagpos
     ! Description: gets tool mag pos by idx
@@ -211,9 +210,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         ENDTEST
     ENDFUNC
     
-   LOCAL PROC rDetach_tool(    
-        num Toolnum
-        )
+   LOCAL PROC rDetach_tool(num Toolnum)
     !***************************************	    
     ! Proc: rDetach_tool
     ! Description: drop tool in mag pos
@@ -232,9 +229,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         !     
     ENDPROC 
     
-   LOCAL PROC rAttach__tool(    
-        num Toolnum
-        )
+   LOCAL PROC rAttach__tool( num Toolnum)
     !***************************************	    
     ! Proc: rAttach__tool
     ! Description: get tool in mag pos
@@ -283,10 +278,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         !
     ENDPROC
 
-    PROC rStart_Spindle
-        (
-        \num nSpeed
-        )
+    PROC rStart_Spindle(\num nSpeed)
     !***************************************	    
     ! Proc: rStart_Spindle
     ! Description: start spindel
@@ -328,9 +320,7 @@ MODULE mSettings_Spindle(SYSMODULE)
        ENDIF
     ENDPROC
     
-    local PROC rSpindelSprVsn(
-     bool bEnable
-     \switch init)
+    local PROC rSpindelSprVsn(bool bEnable \switch init)
     !***************************************	    
     ! Trap: tSpindelSprVsn
     ! Description: supervision for spindle  

@@ -18,12 +18,14 @@ MODULE mDwarsbalk
     CONST robtarget pGat11_331:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGat11_332:=[[0,0,0],[0.064009,-7.21238E-06,1.02838E-05,0.99795],[-1,-1,-1,0],[12590.8,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand:=[[0.02,44.29,273.70],[6.89394E-05,-1,1.95355E-05,-1.6353E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pFrees_Ziel:=[[0.01,51.77,256],[6.13094E-05,-1,2.02582E-05,-1.54504E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pFrees_Flens:=[[0.01,51.77,256],[6.13094E-05,-1,2.02582E-05,-1.54504E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pGatCenter_330:=[[0,0,0],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pFrees_332:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[12300,9E+09,9E+09,9E+09,9E+09,9E+09]];
+                                  !Y is midden van de balk Z de hoogte 
+    CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !jointagerts
     CONST jointtarget pHomeJoint_StationXboor11:=[[-171.694,-8.62571,38.3752,13.4122,-43.8158,68.7807],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_StationXFrees11:=[[-45.5974,-8.45157,22.3078,92.4167,-96.0155,-67.1399],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_Station5boor11:=[[-6.50445,-9.81998,33.3839,-11.7819,-34.0027,-58.9608],[12590.8,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Station5Frees11:=[[-45.5974,-8.45157,22.3078,92.4167,-96.0155,-67.1399],[12300,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
   !===============================================================================================================
   !boren bewerking
@@ -181,26 +183,33 @@ MODULE mDwarsbalk
         num nShift_y,
         num nShift_z,
         num Shift_Track)
-
+        !
         PDispOff;
         Shift_Track:=nShift_x;
         !
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
+        MoveJ RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        !MoveL pGatCenter_330,v50,fine,tFrees_10\WObj:=wobj_Active;
+        !
         rStart_Spindle;
         !
-        MoveJ RelTool(pGatCenter_330,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,0,17.5,10),v10,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,0,17.5,-3),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveC Offs(pGatCenter_330,17.5,0,-3),Offs(pGatCenter_330,0,-17.5,-3),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveC Offs(pGatCenter_330,-17.5,0,-3),Offs(pGatCenter_330,0,17.5,-3),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,-17.5,0,-25),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGatCenter_330,0,0,-30),v100,z5,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGatCenter_330,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,18.65,10,0),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,18.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
+        !in stuk (stuk doorboren)
+        MoveL Offs(pGatCenter_330,18.65,-10,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
+        !gat frezen
+        MoveC Offs(pGatCenter_330,0,-10,18.65),Offs(pGatCenter_330,-18.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveC Offs(pGatCenter_330,0,-10,-18.65),Offs(pGatCenter_330,18.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,18.65,10,0),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
+        !weg van stuk 
+        MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_10\WObj:=wobj_Active;
         !		
         rStop_Spindle;
         !
+        MoveL RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        !		   
     ENDPROC
 
     PROC rFrezen_Gat_35mm_Dwarsbalk_330(
@@ -208,55 +217,35 @@ MODULE mDwarsbalk
         num nShift_y,
         num nShift_z,
         num Shift_Track)
-
+        !
         PDispOff;
         Shift_Track:=nShift_x;
         !
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        rStart_Spindle;
-        !
-        MoveJ RelTool(pGatCenter_330,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,0,12.5,10),v10,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,0,12.5,-3),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveC Offs(pGatCenter_330,12.5,0,-3),Offs(pGatCenter_330,0,-12.5,-3),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveC Offs(pGatCenter_330,-12.5,0,-3),Offs(pGatCenter_330,0,12.5,-3),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,-12.5,0,-25),vFrezen,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGatCenter_330,0,0,-30),v100,z5,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGatCenter_330,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
-        !		
-        rStop_Spindle;
-        !
-    ENDPROC
-
-    PROC rFrezen_10mm_Uitparing_635x45(
-        num nShift_x,
-        num nShift_y,
-        num nShift_z,
-        num Shift_Track)
-
-        PDispOff;
-        Shift_Track:=nShift_x;
-        !
-        EOffsSet [Shift_Track,0,0,0,0,0];
-        wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
+        MoveJ RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        !MoveL pGatCenter_330,v50,fine,tFrees_10\WObj:=wobj_Active;
         !
         rStart_Spindle;
         !
-        MoveJ Offs(pFrees_Onderrand,0,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,0,0,5),v200,z0,tFrees_10\WObj:=wobj_Active;
-        MoveL pFrees_Onderrand,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,0,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,40,-40,-3),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,580,-40,-3),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,625,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,625,0,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand,625,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,13.65,10,0),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,13.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
+        !in stuk (stuk doorboren)
+        MoveL Offs(pGatCenter_330,13.65,-10,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
+        !gat frezen
+        MoveC Offs(pGatCenter_330,0,-10,13.65),Offs(pGatCenter_330,-13.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveC Offs(pGatCenter_330,0,-10,-13.65),Offs(pGatCenter_330,13.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,13.65,10,0),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
+        !weg van stuk 
+        MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_10\WObj:=wobj_Active;
         !		
         rStop_Spindle;
         !
+        MoveL RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        !	
     ENDPROC
+
     
     PROC rFrezen_10mm_Flens_515x60(
         num nShift_x,
@@ -270,30 +259,32 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        rStart_Spindle;
+        rStart_Spindle; 
         !
-        !Frezen flens rechts 
-        MoveJ Offs(pFrees_Flens,710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Flens,710,0,50),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Flens,710,0,50),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Flens,710,0,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,-90,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,-90,25),v10,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,-90,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !		
         !Frezen flens links 
-        MoveJ Offs(pFrees_Flens,710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Flens,-710,0,50),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Flens,-710,0,50),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Flens,-710,0,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,-90,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,-90,25),v10,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,-90,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !		
+        MoveJ Offs(pFrees_332,-1230,200,-2),v200,fine,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,-1230,5,-2),v150,fine,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,-1230,-10,-2),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
+        !in stuk
+        Movel Offs(pFrees_332,-765,-10,-2),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,-705,-10,41.5),vFrezen,z10,tFrees_10\WObj:=wobj_Active;
+        !tool omhoog
+        Movel Offs(pFrees_332,-705,60,41.5),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,-705,200,41.5),v150,fine,tFrees_10\WObj:=wobj_Active;
+	    !
+        EOffsSet [Shift_Track+2000,0,0,0,0,0];
+        !Frezen flens rechts 
+        Movel Offs(pFrees_332,705,200,41.5),v200,fine,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,705,60,41.5), v150, fine, tFrees_10\WObj:=wobj_Active;
+        !in stuk
+        Movel Offs(pFrees_332,705, 50,41.5), vFrees_aanzet, z10, tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,705,-10,41.5),vFrezen,z10,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,765,-10,-2),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        Movel Offs(pFrees_332,1230,-10,-2),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        !uit stuk
+        Movel Offs(pFrees_332,1230,5,-2),v150,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ Offs(pFrees_332,1230,200,-2),v200,fine,tFrees_10\WObj:=wobj_Active;
+        !		 
         rStop_Spindle;
         !
     ENDPROC
@@ -313,24 +304,24 @@ MODULE mDwarsbalk
         rStart_Spindle;
         !
         !Frezen uitsparing rechts 
-        MoveJ Offs(pFrees_Ziel,710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,0,5),v200,z0,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,0,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,710,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,765,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,1190,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,1190,-55,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,1190,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ Offs(pFrees_332,710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,710,0,5),v200,z0,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,710,0,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,710,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,765,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,1190,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,1190,-55,30),v200,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,1190,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
         !		
         !Frezen uitsparing links 
-        MoveJ Offs(pFrees_Ziel,-710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,0,5),v200,z0,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,0,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-710,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-765,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-1190,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-1190,-55,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Ziel,-1190,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ Offs(pFrees_332,-710,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-710,0,5),v200,z0,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-710,0,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-710,0,-3),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-765,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-1190,-55,-3),vFrezen,z40,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-1190,-55,30),v200,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_332,-1190,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
         !		
         rStop_Spindle;
         !
@@ -496,70 +487,50 @@ MODULE mDwarsbalk
         MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
         !
     ENDPROC
-
-  PROC rDwarsbalk_Frezen_5020332(
-                num nShift_Xx)
+    
+  PROC rDwarsbalk_Frezen_5020332()
+        var num trackshift;
         !
-        wobj_Active:=wobj_Dwarsbalk332_Frees;
+        Set_Tool Frees;
         !
-
-      !  MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+        wobj_Active:=wobj_BalkStation5;
+        EOffsSet [0,0,0,0,0,0];
+        MoveAbsJ fArm_only(pHomeJoint_Station5Frees11),v1000,z50,tool0; 
+        MoveAbsJ pHomeJoint_Station5Frees11,v1000,z50,tool0; 
         !
         rFrezen_10mm_Flens_515x60 0,0,0,0;
         !
-        rFrezen_10mm_Flens_515x60 0,0,-3,0;
+        !rFrezen_10mm_Uitsparing_515x60 0,0,0,0;
         !
-        rFrezen_10mm_Flens_515x60 0,0,-6,0;
-        !
-        rFrezen_10mm_Uitsparing_515x60 0,0,0,0;
-        !
-        rFrezen_10mm_Uitsparing_515x60 0,0,0,-3;
-        !
-        rFrezen_10mm_Uitsparing_515x60 0,0,0,-6;
-        !
-     !   MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
-
+        MoveAbsJ pHomeJoint_Station5Frees11,v1000,z50,tool0; 
+       !
     ENDPROC
-
-  PROC rDwarsbalk_Frezen_5020330(
-                num nShift_Xx)
-
+    
+  PROC rDwarsbalk_Frezen_5020330(wobjdata WobjActiveStation) 
+        var num trackshift;
         !
-        wobj_Active:=wobj_Dwarsbalk330_Frees;
+        Set_Tool Frees;
         !
-     !   MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+        wobj_Active:=WobjActiveStation;
+        trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
+        !
+        EOffsSet [trackshift,0,0,0,0,0];
+        MoveAbsJ fArm_only(pHomeJoint_StationXFrees11),v1000,z50,tool0; 
+        MoveAbsJ pHomeJoint_StationXFrees11,v1000,z50,tool0; 
         !
         rFrezen_Gat_45mm_Dwarsbalk_330 -665,0,0,0;
         !
-        rFrezen_Gat_45mm_Dwarsbalk_330 -665,0,-3,0;
-        !
-        rFrezen_Gat_45mm_Dwarsbalk_330 -665,0,-6,0;
-        !
         rFrezen_Gat_35mm_Dwarsbalk_330 -224,0,0,0;
-        !
-        rFrezen_Gat_35mm_Dwarsbalk_330 -224,0,-3,0;
-        !
-        rFrezen_Gat_35mm_Dwarsbalk_330 -224,0,-6,0;
         !
         rFrezen_Gat_45mm_Dwarsbalk_330 0,0,0,0;
         !
-        rFrezen_Gat_45mm_Dwarsbalk_330 0,0,-3,0;
-        !
-        rFrezen_Gat_45mm_Dwarsbalk_330 0,0,-6,0;
-        !
         rFrezen_Gat_35mm_Dwarsbalk_330 224,0,0,0;
-        !
-        rFrezen_Gat_35mm_Dwarsbalk_330 224,0,-3,0;
-        !
-        rFrezen_Gat_35mm_Dwarsbalk_330 224,0,-6,0;
         !
         rFrezen_Gat_45mm_Dwarsbalk_330 665,0,0,0;
         !
-        rFrezen_Gat_45mm_Dwarsbalk_330 665,0,-3,0;
+        EOffsSet [trackshift+1300,0,0,0,0,0];
+        MoveAbsJ pHomeJoint_StationXFrees11,v1000,z50,tool0; 
         !
-        rFrezen_Gat_45mm_Dwarsbalk_330 665,0,-6,0;
-        !
-     !   MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
     ENDPROC
     
   !===============================================================================================================

@@ -177,7 +177,7 @@ MODULE mOnderRanden
         !
         wobj_Active:=wobj_Onderrand_Frees_L;
         !
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         Set_Tool Frees;
         !
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
@@ -189,7 +189,7 @@ MODULE mOnderRanden
         rFrezen_10mm_Uitsp_635x45_L 5065-2.5,0,0,0;
         !
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         !
     ENDPROC
 
@@ -197,7 +197,7 @@ MODULE mOnderRanden
         !
         wobj_Active:=wobj_Onderrand_Frees_R;
         !
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         Set_Tool Frees;
         !
         MoveAbsJ [[-90,0,10,0,-10,0],[14000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
@@ -209,7 +209,7 @@ MODULE mOnderRanden
         rFrezen_10mm_Uitsp_635x45_R 5065-2,0,0,0;
         !
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         !
     ENDPROC
         
@@ -217,7 +217,7 @@ MODULE mOnderRanden
         !
         wobj_Active:=wobj_Onderrand_L;
         !
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         Set_Tool Boor_11m;
         !
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
@@ -432,7 +432,7 @@ MODULE mOnderRanden
         rBoren_11mm_Onderrand_Dubbel_L 13215-6+6.3,1.4,0,0;
         !
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         !
     ENDPROC
 
@@ -440,7 +440,7 @@ MODULE mOnderRanden
         !
         wobj_Active:=wobj_Onderrand_R;
         !
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         Set_Tool Boor_11m;
         !
         MoveAbsJ [[-90,0,0,-90,90,90],[14400,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
@@ -657,7 +657,7 @@ MODULE mOnderRanden
         rBoren_11mm_Onderrand_Dubbel_R 13215-6+6.3,0,0,0;
         !
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
-        go_home \Armfirst := true;
+        go_home \Armfirst;
         !
     ENDPROC
 ENDMODULE

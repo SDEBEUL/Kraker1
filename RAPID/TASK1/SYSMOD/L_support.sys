@@ -1,13 +1,80 @@
 MODULE L_support(SYSMODULE)
+ 
+ !Data types declaratie.
+ 
+ !omschrijft de verschillende mogelijk stukken in het systeem.
+ !deze waarden zijn vast en een soort ID voor een bepaalde stuk. 
+  RECORD PartType
+     num Geen;
+     num OnbewerkteBalk;
+     num OnbewerkteOnderrand;
+     num OnbewerkteBovenrrand;
+     num Balk330;
+     num Balk331;
+     num Balk332;
+     num OnderrandLinks;
+     num OnderrandRechts;
+     num BovenrandLinks;
+     num BovenrandRechts;
+     num Inbewerking;
+  Endrecord
+  
+  RECORD StationType
+   bool InDienst; !station in dienst 
+   num  Lading; !wat voor een stuk er monteel in het station ligt. (parttype)
+   num  Bewerkingsstap; !nog niet gebruikt ... voor auto repair toepassing
+   num  Opdracht; !wat voor een stuk er in het station gemaakt moet worden (parttype)
+   num  xOffset; !nog niet gebruikt ... voor offset functie zoeken met grijper. 
+  ENDRECORD
+  
+  RECORD UitvoerBufferType 
+    bool InDienst;
+    bool InGebruik;
+    bool Vol;
+    bool Leeg;
+    bool Veilig;
+    num ActieveLaag;
+    num ActiefStuk;
+    PartType AantalPartsAanwezig;
+    PartType AantalPartsGewenst;
+  ENDRECORD 
+  
+  RECORD InvoerBufferType 
+    bool InDienst;
+    bool InGebruik;
+    bool Vol;
+    bool Leeg;
+    bool Veilig;
+    num ActieveLaag;
+    num ActiefStuk;
+  ENDRECORD 
+  
+  RECORD ProcuctionType
+      bool Dwarsbalken;
+      bool Onderanden;
+      bool Bovenranden;
+  ENDRECORD 
+    
+ !gedeelde record over de verschillende taken.
+ !pas hier nooit iets handmatig aan maar gebruik altijd de interface! 
+  CONST PartType part := [0,1,2,3,4,5,6,7,8,9,10,11];
+  PERS StationType Station{6}; !station 1-5 zijn de automatische station 6 is het manuele station gebruikt voor onderranden en bovenranden
+  PERS UitvoerBufferType UitvoerBuffer{6};
+  PERS InvoerBufferType InvoerBuffer{6};
+  PERS ProcuctionType Production;
+  
+  
+  !******************************************************************************
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[14550,-1400,300],[0,0,0,1]],[[1304.7,0,0],[1,0,0,0]]];
-  !loadata
-   PERS loaddata Spindel:=[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0];
-   PERS loaddata Grijper:=[104.4,[-101.6,29.8,446.9],[1,0,0,0],22.193,21.253,2.04];
-   PERS loaddata GrijperPart:=[104.4,[-101.6,29.8,446.9],[1,0,0,0],22.193,21.253,2.04];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[965,1096,1400],[1,0,0,0]],[[0,529,0],[1,0,0,0]]];
   !interupts
   VAR intnum Int1SprvSpindel := 1;
+  VAR intnum Int2SprvPart := 2;
+  
+  PROC dingens()
+  ENDPROC 
+  
   
   PROC SyncPos()
     !***************************************	    
@@ -62,8 +129,8 @@ MODULE L_support(SYSMODULE)
  
  PROC go_home
      (
-     \bool Armonly ,
-     \bool Armfirst 
+     \switch Armonly ,
+     \switch Armfirst 
      )
     !***************************************	    
     ! Proc: go_home

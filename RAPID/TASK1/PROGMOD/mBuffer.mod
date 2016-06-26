@@ -1,9 +1,4 @@
 MODULE mBuffer
-!Module voor inleggen en uithalen van dwarsliggers
-!9-5-2016
-!G.Peters
-
- 
   !Wobjdata
   !deze worden gebruikt voor zowel de boven en beneden buffer. (posities naar de buffer)
 	TASK PERS wobjdata Wobj_Buffer1:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
@@ -70,19 +65,19 @@ MODULE mBuffer
         MoveL Pbuffer, v100, fine, tGripper\WObj:=wobj_Active;
         IF fCheckGripperPart() THEN
           rGripper_Close;
-          rDercInbuff nBuffernum;
+          rDecrInvoerbuffer nBuffernum;
         ELSE !part not in expected pos 
          !beweeg 1cm verder en kijk of het stuk er dan is 
           MoveL Offs(Pbuffer,0,10,0),v50,z10,tGripper\WObj:=wobj_Active;
           WaitTime \InPos, 2;
           IF fCheckGripperPart() THEN
            rGripper_Close;
-           rDercInbuff nBuffernum;
+           rDecrInvoerbuffer nBuffernum;
           ELSE !stuk nog steeds niet aanwezig = volgende stuk 
             IF yPos = 615 THEN !als dit laatste stuk in de rij was eerst naar achter
                 MoveL Offs(Pbuffer,0,-750,0),v1000,z50,tGripper\WObj:=wobj_Active;
             ENDIF
-          rDercInbuff nBuffernum;
+          rDecrInvoerbuffer nBuffernum;
           goto lbl_nextPart; 
           ENDIF
         ENDIF 
@@ -260,7 +255,7 @@ ENDPROC
     rGripper_Open;
     MoveL offs(pBuffer_Boven_1,0,-75,0), v50, fine, tGripper\WObj:=wobj_Active;
    ! check part off  ? 
-   rInrcOutbuff nBuffernum;
+   rIncrUitvoerbuffer nBuffernum;
    !
  ENDPROC
     
