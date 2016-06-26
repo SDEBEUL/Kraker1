@@ -48,7 +48,7 @@ MODULE mBoren_Fresen_5010737
     VAR robtarget pGatCenter_330:=[[0,0,0],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
     !Speedata
-    CONST speeddata vBoren_11_190:=[1,500,5000,1000];
+    CONST speeddata vBoren_11_190:=[0.9,500,5000,1000];
     CONST speeddata vBoren_8_250:=[0.8,500,5000,1000];
     CONST speeddata vBoren:=[2,500,5000,1000];
     CONST speeddata v3:=[10,500,3,1000];
@@ -108,7 +108,7 @@ MODULE mBoren_Fresen_5010737
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        nSpindleSpeed:=1800;
+        nSpindleSpeed:=2000;
         SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
         !
         MoveJ RelTool(pGat11_L,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -150,7 +150,7 @@ MODULE mBoren_Fresen_5010737
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        nSpindleSpeed:=1800;
+        nSpindleSpeed:=2000;
         !
         rStop_Spindle;
         !
@@ -177,7 +177,7 @@ MODULE mBoren_Fresen_5010737
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        nSpindleSpeed:=1800;
+        nSpindleSpeed:=2000;
         SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
         !
         MoveJ RelTool(pGat11_R,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -474,7 +474,7 @@ MODULE mBoren_Fresen_5010737
         !
         rBoren_11mm_Onderrand_Dubbel_L 5680-2.5,1.9,0,0;
         !40
-        rBoren_11mm_Onderrand_Dubbel_L 5735-2,5.9,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 5735-2.5,1.9,0,0;
         
         !
         rBoren_11mm_Onderrand_Dubbel_L 5945-2.5,1.9,0,0;
