@@ -1,37 +1,51 @@
 MODULE MainModule
 
-    PROC Main()
+PROC Main()
         VelSet 100, 800;
         AccSet 50,50;
-     !init 
-     rMainui;
+     LoggProc "Main",18,"PP to main";
+     !in manueel onderhouds beschikbaar stellen  
+     IF OpMode() <> OP_AUTO THEN
+       rMainui;
+     ENDIF
+     !check part in gripper
+     Stop;
      !check home 
+     check_home;
+     !
      WHILE TRUE do
      IF bDwarbalkenGewenst() = TRUE THEN
-        IF NOT bDwarbalkenBeschikbaar() THEN
-           TPWrite "Geen nieuwe balken beschikbaar";
-           WaitTime 10;  
-        ENDIF
-        !roep eerst unload stations als er dan nog bewerkte stukken liggen zijn die eerst weg
-        rUnloadStations;
-        !laad nu de active stations met lege balken
-        rloadStations;
-        !kijk wat waar moet gemaakt worden
-        rSetOrders;
-        !bewerk de stukken in de stations
-        rWorkStations;
-        !ontlaad de afgewerkte stukken
-        rUnloadStations;
+            !unload stations als er dan nog bewerkte stukken zouden liggen zijn die eerst weg
+            rUnloadStations;
+            !laad nu de actieve stations met lege balken
+            rloadStations;
+            !kijk wat waar moet gemaakt worden (word enkel gekeken naar de eerste actieve uitvoer buffer)
+            rSetOrders;
+            !bewerk de stukken in de stations die een opdracht hebben
+            rWorkStations;
+            !ontlaad de afgewerkte stukken
+            rUnloadStations;
+            IF NOT bDwarbalkenBeschikbaar() THEN
+                TPWrite "Geen nieuwe balken beschikbaar";
+                TPErase;
+                WaitTime 5;  
+            ENDIF
         ELSE
-         !laad nu de active stations met lege balken
-         rloadStations;
-         TPWrite "Geen rekken voor uitvoer of geen opdrachten";
-         WaitTime 10;   
+             TPWrite "Geen uitvoer of geen opdrachten";
+             TPErase;
+             WaitTime 5;  
+             !controleert of er in station 6 een manuele opdracht is geplaats 
+             !(in het geval dat dwarsbalk productie stil ligt).
+             rWorkStations;
+             !actieve lege stations kunnen toch nog geladen worden.
+             !ook al zijn er geen uitvoer rekken
+             rloadStations;
         ENDIF
      ENDWHILE
+     !
  ENDPROC
 
-   PROC rMainui()
+ PROC rMainui()
         VAR btnres nAnswer;
         lbl_begin:
         nAnswer:=UIMessageBox(\Header:="T_rob"

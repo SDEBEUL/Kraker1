@@ -21,6 +21,12 @@ MODULE mDwarsbalk
     CONST robtarget pFrees_332:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[12300,9E+09,9E+09,9E+09,9E+09,9E+09]];
                                   !Y is midden van de balk Z de hoogte 
     CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    
+    PERS robtarget pMeasurePos1Start:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pMeasurePos1End:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos2Start:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pMeasurePos2End:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    
     !jointagerts
     CONST jointtarget pHomeJoint_StationXboor11:=[[-171.694,-8.62571,38.3752,13.4122,-43.8158,68.7807],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_StationXFrees11:=[[-45.5974,-8.45157,22.3078,92.4167,-96.0155,-67.1399],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -607,6 +613,45 @@ MODULE mDwarsbalk
         !
     ENDPROC
     
+    PROC rTESTmeetSTation()
+        rMeasureStationOffset 1, wobj_BalkStation1;
+        !
+    ENDPROC
+    
+    PROC rMeasureStationOffset(num nStation, Wobjdata WobjActiveStation )
+    !***************************************	    
+    ! Proc: rMeasureStationOffset
+    ! Description: x afwijking van station opmeten
+    !**********************
+      VAR num trackshift; 
+      VAR robtarget Pos1;
+      VAR robtarget Pos2;
+      VAR num Xoffset;
+      !
+      wobj_Active:=WobjActiveStation;
+      trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,wobj_Active);
+      !
+      EOffsSet [trackshift,0,0,0,0,0];
+      !
+      MoveL RelTool(pMeasurePos1Start,0,0,200), v1000, fine, tGripper\WObj:=wobj_Active;
+      MoveL pMeasurePos1Start, v1000, fine, tGripper\WObj:=wobj_Active;
+      !meet links
+      SearchL\Stop, di_Sensor1_Q1_In, pMeasurePos1Start, pMeasurePos1End, v100, tGripper\WObj:=wobj_Active;
+      Pos1 := CRobT();
+      !
+      MoveL RelTool(pMeasurePos1Start,0,0,200), v1000, fine, tGripper\WObj:=wobj_Active;
+      MoveL RelTool(pMeasurePos2Start,0,0,200), v1000, fine, tGripper\WObj:=wobj_Active;
+      MoveL pMeasurePos2Start, v1000, fine, tGripper\WObj:=wobj_Active;
+      !meet rechts
+      SearchL\Stop, di_Sensor2_Q1_In, pMeasurePos2Start, pMeasurePos2End, v100, tGripper\WObj:=wobj_Active;
+      Pos2:= CRobT();
+      !
+      MoveL RelTool(pMeasurePos2Start,0,0,200), v1000, fine, tGripper\WObj:=wobj_Active;
+      !
+      Station{nStation}.xOffset := Pos1.trans.x - Pos2.trans.x;
+      LoggProc "Offset",31,"offset voor sation:"+NumToStr(nStation,0)+ " x=" + numtostr(Station{nStation}.xOffset,2) + " Pos1=" + numtostr(Pos1.trans.x,2) + " Pos2=" + numtostr(Pos2.trans.x,2);
+      !
+ENDPROC 
     PROC rUitlijnen_Stationx(
         num nShift_x,
         num nShift_y,

@@ -62,20 +62,24 @@ MODULE L_support(SYSMODULE)
   PERS UitvoerBufferType UitvoerBuffer{6};
   PERS InvoerBufferType InvoerBuffer{6};
   PERS ProcuctionType Production;
-  
+   
   
   !******************************************************************************
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[965,1096,1400],[1,0,0,0]],[[0,529,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[965,1086,310],[1,0,0,0]],[[0,0,300],[1,0,0,0]]];
+  PERS tooldata TempTool:=[TRUE,[[502,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
+  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
   !interupts
   VAR intnum Int1SprvSpindel := 1;
   VAR intnum Int2SprvPart := 2;
-  
-  PROC dingens()
-  ENDPROC 
-  
-  
+  !loffile
+  PERS string file1LoggErrW:="Logg.log";
+  PERS string file2LoggErrW:="Logg_old.log";
+  LOCAL PERS num maxLogCounErrDisp:=5000;
+  LOCAL PERS num logCounterErrDisp:=7;
+  LOCAL VAR iodev file;
+   
   PROC SyncPos()
     !***************************************	    
     ! Proc: SyncPos
@@ -84,7 +88,7 @@ MODULE L_support(SYSMODULE)
     MoveAbsJ Sync_Position, v1000, z50, tool0\WObj:=wobj0;
   ENDPROC
   
-  PROC HomePosCheck()
+  PROC ManHomePosCheck()
     !***************************************	    
     ! Proc: HomePosCheck
     ! Description: ter controle verschillende homeposities
@@ -109,10 +113,7 @@ MODULE L_support(SYSMODULE)
     Stop;
   ENDPROC
   
-  Func jointtarget fArm_only
-         (
-         jointtarget target
-         )
+  Func jointtarget fArm_only(jointtarget target)
     !***************************************	    
     ! Func: fArm_only
     ! Description: move to home jointtarget
@@ -127,11 +128,7 @@ MODULE L_support(SYSMODULE)
     !
  ENDFUNC
  
- PROC go_home
-     (
-     \switch Armonly ,
-     \switch Armfirst 
-     )
+ PROC go_home(\switch Armonly ,\switch Armfirst )
     !***************************************	    
     ! Proc: go_home
     ! Description: go home with active tool
@@ -161,6 +158,24 @@ MODULE L_support(SYSMODULE)
     !
     ENDPROC
     
+    PROC check_home( \switch Armonly)
+    !***************************************	    
+    ! Proc: check_home
+    ! Description: check if robot is home
+    ! Armonly sets the home pos without track
+    !***************************************
+    VAR jointtarget tempJnt;
+    IF nActive_Gripper = GrijperTool THEN
+      Check_gripper(GrijperTool);
+      tempJnt := pHomeJoint_Grijper;
+    ELSE
+      tempJnt := pHomeJoint_spindel;
+    ENDIF
+    !
+    CheckE6Ax tempJnt\Armonly?ArmOnly; 
+    !
+    ENDPROC
+    
    FUNC num nXdistanceBetweenWobj(wobjdata Wobj1, wobjdata Wobj2)
     !***************************************	    
     ! FUNC: nXdistanceBetweenWobj
@@ -171,5 +186,274 @@ MODULE L_support(SYSMODULE)
        Xdistance :=  Wobj2.uframe.trans.x - Wobj1.uframe.trans.x ;
        Return Xdistance;
    ENDFUNC
+    
+  PROC CheckInput(
+    VAR signaldi signal,
+    dionum value
+    \switch Skip
+    \num CheckTimeOut
+    \num AlarmTimeOut
+    \num AlarmNumber,
+    string text_msg)
+    VAR num key_in;
+    VAR num maxWaitTime:=0.1;
+    VAR bool repeat:=TRUE;
+    VAR clock wait_clock;    
+    VAR bool timeout;
+    VAR errnum errvar;
+    VAR bool ResetAlarm;
+    VAR bool exequtedOnce:=TRUE;
+    !***************************************
+    ! Routine: CheckInput(
+    ! VAR signaldi signal,
+    ! dionum value
+    ! \switch Skip
+    ! \num CheckTimeOut,
+    ! string text_msg)
+    ! Description: Check specified input FOR
+    ! specified status
+    !***************************************
+    ResetAlarm:=FALSE;
+    exequtedOnce:=TRUE;
+    WaitDI signal,value\MaxTime:=1\TimeFlag:=timeout;
+    WHILE signal<>value DO
+      TPErase;
+      TPWrite text_msg;
+      WaitTime 0.1;
+      IF Present(CheckTimeOut) THEN
+      	clkreset wait_clock;
+        repeat:=TRUE;
+        IF signal<>value THEN	
+          WHILE signal<>value AND repeat DO
+            clkstart wait_clock;	
+            IF ClkRead(wait_clock)>CheckTimeOut repeat:=FALSE;
+            WaitTime 0.01;
+          ENDWHILE
+          clkStop wait_clock;
+          clkreset wait_clock;
+        ENDIF  
+        IF Present(Skip) THEN
+          TPErase;
+          IF signal<>value THEN
+            TPReadFK key_in,text_msg,"","","","SKIP","RETRY"\BreakFlag:=errvar;
+          ENDIF
+          TPErase;
+          TEST key_in
+          CASE 4:
+            RETURN;
+          CASE 5:   
+            ResetAlarm:=TRUE;
+          ENDTEST
+        ELSE
+          TPErase;
+          IF signal<>value THEN
+            IF Present(AlarmNumber) ErrWrite\W,"CheckInput:",text_msg;
+            TPReadFK key_in,text_msg,"","","","","RETRY"\BreakFlag:=errvar;
+            ResetAlarm:=TRUE;
+          ENDIF  
+        ENDIF
+      ENDIF
+      IF (OpMode()<>OP_AUTO OR (Present(Skip) AND (NOT Present(CheckTimeOut)))) AND signal<>value THEN
+        TPErase;
+        IF Present(AlarmNumber) ErrWrite\W,"CheckInput:",text_msg;
+        TPErase;
+        TPReadFK key_in,text_msg,"","","","SKIP","RETRY"\BreakFlag:=errvar;
+        TPErase;
+        TEST key_in
+          CASE 4:
+            RETURN;
+          CASE 5:   
+            ResetAlarm:=TRUE;
+        ENDTEST
+      ENDIF
+      IF (NOT Present(CheckTimeOut)) THEN
+        IF Present(AlarmTimeOut) THEN
+          repeat:=TRUE;
+          IF signal<>value THEN
+            clkreset wait_clock;
+            WHILE signal<>value AND repeat DO
+              clkstart wait_clock;	
+              IF ClkRead(wait_clock)>AlarmTimeOut repeat:=FALSE;
+              WaitTime 0.01;
+            ENDWHILE
+            clkStop wait_clock;
+            clkreset wait_clock;
+          ENDIF  
+        ELSE
+          repeat:=TRUE;
+          IF signal<>value THEN
+            clkreset wait_clock;	
+            WHILE signal<>value AND repeat DO
+              clkstart wait_clock;	
+              IF ClkRead(wait_clock)>maxWaitTime repeat:=FALSE;
+              WaitTime 0.01;
+            ENDWHILE
+            clkStop wait_clock;
+            clkreset wait_clock;
+          ENDIF          	
+        ENDIF
+        IF (NOT repeat) AND Present(AlarmNumber) THEN
+          ErrWrite\W,"CheckInput:",text_msg;
+          ResetAlarm:=TRUE;
+          exequtedOnce:=FALSE;
+        ENDIF
+      ENDIF
+    ENDWHILE
+    TPErase;
+  ERROR
+    IF ERRNO=ERR_REFUNKPRC THEN
+      TRYNEXT;
+    ENDIF
+  ENDPROC
+  
+ 
+ PROC CheckE6Ax(
+    jointtarget ExpectJoint
+    \switch ArmOnly)
+    !***************************************
+    ! Routine: CheckE6Ax(
+    ! jointtarget ExpectJoint)
+    ! Description: Check if the 6 axes is
+    ! in expected angle
+    !***************************************
+    CONST num MaxJointDiff:=2;
+    VAR jointtarget CurrentJoint;
+    VAR num nNum;
+    VAR bool NoMoreLoop;
+    WHILE NoMoreLoop=FALSE DO
+      CurrentJoint:=CJointT();
+      IF AxisDiff(CurrentJoint,ExpectJoint\ArmOnly?ArmOnly)<MaxJointDiff NoMoreLoop:=TRUE;
+      IF AxisDiff(CurrentJoint,ExpectJoint\ArmOnly?ArmOnly)>MaxJointDiff THEN
+        TPErase;
+        ! The Robot is NOT in
+        TPWrite "Robot is not in position";
+        ! STARTPOS for this program
+        TPWrite "Start";
+        ! Continue to start pos?
+        TPReadFK nNum,"Start beweging?","","","","YES","NO";
+        TPErase;
+        TEST nNum
+        CASE 4:
+          TPErase;
+          ! The Robot will start to move now
+          TPWrite "Robot gaat bewegen!";
+          WaitTime 1;
+          TempTool:=CTool();
+          TempWobj:=CWObj();
+          MoveAbsJ ExpectJoint,v50,fine,TempTool\WObj:=TempWobj;
+          TPErase;
+        CASE 5:
+          TPErase;
+          ! Dangerous motion. Get maintenance
+          TPReadFK nNum,"Robot zal niet van thuis starten! Dit is gevaarlijk!","","","","","PROCEED";
+          Stop;
+          NoMoreLoop:=FALSE;
+        DEFAULT:
+          ! You have to choose  'Yes' or 'No'
+          TPWrite "Kies ja of nee";
+          WaitTime 1;
+          NoMoreLoop:=FALSE;
+        ENDTEST
+      ENDIF
+    ENDWHILE
+  ENDPROC
 
+  LOCAL FUNC num AxisDiff(
+    jointtarget robj1,
+    jointtarget robj2
+    \switch ArmOnly)
+
+    !***************************************
+    ! Function: num AxisDiff(
+    ! jointtarget robj1,
+    ! jointtarget robj2)
+    ! Description: Calculate and return the
+    ! difference between current and
+    ! expected axes angels
+    !***************************************
+    VAR num maxdiff;
+    VAR num temp;
+
+    maxdiff:=Abs(robj1.robax.rax_1-robj2.robax.rax_1);
+    temp:=Abs(robj1.robax.rax_2-robj2.robax.rax_2);
+    IF temp>maxdiff THEN
+      maxdiff:=temp;
+    ENDIF
+    temp:=Abs(robj1.robax.rax_2-robj2.robax.rax_2);
+    IF temp>maxdiff THEN
+      maxdiff:=temp;
+    ENDIF
+    temp:=Abs(robj1.robax.rax_3-robj2.robax.rax_3);
+    IF temp>maxdiff THEN
+      maxdiff:=temp;
+    ENDIF
+    temp:=Abs(robj1.robax.rax_4-robj2.robax.rax_4);
+    IF temp>maxdiff THEN
+      maxdiff:=temp;
+    ENDIF
+    temp:=Abs(robj1.robax.rax_5-robj2.robax.rax_5);
+    IF temp>maxdiff THEN
+      maxdiff:=temp;
+    ENDIF
+    temp:=Abs(robj1.robax.rax_6-robj2.robax.rax_6);
+    IF temp>maxdiff THEN
+      maxdiff:=temp;
+    ENDIF
+    IF NOT Present(ArmOnly) THEN
+        temp:=Abs(robj1.extax.eax_a-robj2.extax.eax_a);
+        IF temp>maxdiff THEN
+          maxdiff:=temp;
+        ENDIF
+        temp:=Abs(robj1.extax.eax_b-robj2.extax.eax_b);
+        IF temp>maxdiff THEN
+          maxdiff:=temp;
+        ENDIF
+        temp:=Abs(robj1.extax.eax_c-robj2.extax.eax_c);
+        IF temp>maxdiff THEN
+          maxdiff:=temp;
+        ENDIF
+        temp:=Abs(robj1.extax.eax_d-robj2.extax.eax_d);
+        IF temp>maxdiff THEN
+          maxdiff:=temp;
+        ENDIF
+        temp:=Abs(robj1.extax.eax_e-robj2.extax.eax_e);
+        IF temp>maxdiff THEN
+          maxdiff:=temp;
+        ENDIF
+        temp:=Abs(robj1.extax.eax_f-robj2.extax.eax_f);
+        IF temp>maxdiff THEN
+          maxdiff:=temp;
+        ENDIF
+    ENDIF
+    RETURN maxdiff;
+  ENDFUNC
+
+  !*********** LoggProcedure *************
+    
+  PROC LoggProc(string text,num ErrCode,string keytext)
+    VAR num key_in:=0;
+    VAR bool tempBool;
+    VAR bool disable:=TRUE;
+
+    logCounterErrDisp:=logCounterErrDisp+1;
+    IF logCounterErrDisp>maxLogCounErrDisp THEN
+      IF Isfile(file2LoggErrW) RemoveFile "Home:/"+file2LoggErrW;
+      IF Isfile(file1LoggErrW) RenameFile "Home:/"+file1LoggErrW, "Home:/"+file2LoggErrW;
+      logCounterErrDisp:=1;
+    ENDIF
+    Open "HOME:"\File:=file1LoggErrW,file\Append;
+    Write file," ";
+    Write file,CDate()\NoNewLine;
+    Write file,", "+CTime()\NoNewLine;
+    Write file,", "+text\NoNewLine;
+    Write file," ,Code , "\Num:=ErrCode\NoNewLine;
+    Write file," ,Info , "+keytext\NoNewLine;
+    Close file;
+  ERROR
+    IF ERRNO=ERR_FILEOPEN THEN
+      ! Fix the RAM disk problem please
+    ENDIF
+    IF ERRNO=ERR_FILEACC TRYNEXT;
+  ENDPROC 
+  
 ENDMODULE

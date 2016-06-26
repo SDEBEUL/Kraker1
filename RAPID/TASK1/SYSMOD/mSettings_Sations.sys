@@ -85,8 +85,8 @@ PROC rUnloadStations()
     ! Description: ontladen van alle active stations
     !***************************************	
     VAR btnres nAnswer; 
-    VAR num nPArtypeIngripper;
-     FOR i FROM 1 TO 5 STEP 1 DO
+    VAR num nPartypeIngripper;
+     FOR i FROM 5 TO 1 STEP -1 DO
         !niet uit dienst niet leeg en geen nieuwe balk
        IF Station{i}.inDienst AND (Station{i}.lading <> part.Geen) AND (Station{i}.lading <> part.OnbewerkteBalk) THEN
        !verwerk afgewerkte stukken
@@ -95,16 +95,17 @@ PROC rUnloadStations()
               IF nGetUitvoerbuffer(Station{i}.lading) <> 0 THEN
                 !haal stuk uit station
                 rUnloadStation(i);
-                !moet eigenlijk de overdracht van het part naar de grijper vroeger doen 
-                nPArtypeIngripper := Station{i}.lading;
+                !overdracht van stuk 
+                nPartypeIngripper := Station{i}.lading;
                 Station{i}.lading := part.Geen; 
                 Station{i}.Opdracht := part.Geen;
                 !Plaats stuk in buffer
-                PUTnextpart(nPArtypeIngripper);
+                PUTnextpart(nPartypeIngripper);
               ENDIF 
            ELSE
                !moet beter uitwerken wat te doen .... repair procs ? process step counter is voorzien 
                !vraag gebruiker wat te doen;
+               LoggProc "mSations",1,"Onafgewerkt stuk in station:"+NumToStr(i,0);
                WHILE TRUE DO 
                 nAnswer := UIMessageBox(\Header:="Onafgewerkt stuk in station!"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
                ENDWHILE
@@ -191,8 +192,12 @@ PROC rWorkStations()
     !***************************************
    IF Production.Onderanden THEN
       IF (Station{6}.InDienst AND Station{6}.Lading = part.OnbewerkteOnderrand) AND (Station{6}.Opdracht = part.OnderrandLinks OR Station{6}.Opdracht = part.OnderrandRechts) THEN
+           LoggProc "mStations",10,"Sation:"+NumToStr(6,0)+" StartBoren Type:"+NumToStr(Station{6}.Opdracht,0);
            rWorkStationBoren(6);
+           LoggProc "mStations",11,"Sation:"+NumToStr(6,0)+" EindBoren Type:"+NumToStr(Station{6}.Opdracht,0);
+           LoggProc "mStations",12,"Sation:"+NumToStr(6,0)+" StartFrezen Type:"+NumToStr(Station{6}.Opdracht,0);
            rWorkStationFrezen(6);
+           LoggProc "mStations",13,"Sation:"+NumToStr(6,0)+" EindeFrezen Type:"+NumToStr(Station{6}.Opdracht,0);
       ENDIF 
    ENDIF
     
@@ -201,14 +206,18 @@ PROC rWorkStations()
      FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg en nieuwe balk
        IF Station{i}.InDienst AND Station{i}.Lading = part.OnbewerkteBalk THEN
+         LoggProc "mStations",14,"Sation:"+NumToStr(i,0)+" StartBoren Type:"+NumToStr(Station{i}.Opdracht,0);
          rWorkStationBoren(i);
+         LoggProc "mStations",15,"Sation:"+NumToStr(i,0)+" EindeBoren Type:"+NumToStr(Station{i}.Opdracht,0);
        ENDIF
      ENDFOR
      !ga nu op al de stations die in dienst staan gaan boren
       FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg zou hier eigenlijk een beter check voor moeten maken 
        IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen THEN
+           LoggProc "mStations",16,"Sation:"+NumToStr(i,0)+" StartFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
            rWorkStationFrezen(i);
+           LoggProc "mStations",17,"Sation:"+NumToStr(i,0)+" EindeFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
        ENDIF
      ENDFOR
     ENDIF
@@ -294,13 +303,9 @@ TEST nStation
          CASE part.OnderrandLinks:
            Station{nStation}.lading := part.Inbewerking;
             rOnderrand_B_215537_602_Links;
-            rOnderrand_Frezen_215537_602_L;
-           Station{nStation}.lading := part.OnderrandLinks;
          CASE part.OnderrandRechts:
            Station{nStation}.lading := part.Inbewerking;
            rOnderrand_B_215537_603_Rechts;
-           rOnderrand_Frezen_215537_603_R;
-           Station{nStation}.lading := part.OnderrandRechts;
     ENDTEST
     
 ENDTEST
@@ -377,27 +382,48 @@ TEST nStation
          !mag niet in dit station
          Stop;
      CASE part.Balk332:
-       Station{nStation}.lading := part.Inbewerking;
-       rDwarsbalk_Frezen_5020332;
-       Station{nStation}.lading := part.balk332;
+      !SAFETY CHECK!!!! station 6 mag niet geladen zijn ! CRASH GEVAAR!
+      !onderranden zitten in de weg bij het doorfrezen
+      IF Station{6}.Lading = part.geen THEN
+           Station{nStation}.lading := part.Inbewerking;
+           rDwarsbalk_Frezen_5020332;
+           Station{nStation}.lading := part.balk332;
+      ELSE
+        LoggProc "mSations", 0 ,"frezen overgeslaan wegens lading in station 6!";
+      ENDIF
+    ENDTEST
+    
+ CASE 6: !station 6 (enkel voor onder en bovenranden)
+    TEST Station{nStation}.Opdracht
+         CASE part.OnderrandLinks:
+           Station{nStation}.lading := part.Inbewerking;
+            rOnderrand_Frezen_215537_602_L;
+           Station{nStation}.lading := part.OnderrandLinks;
+         CASE part.OnderrandRechts:
+           Station{nStation}.lading := part.Inbewerking;
+           rOnderrand_Frezen_215537_603_R;
+           Station{nStation}.lading := part.OnderrandRechts;
     ENDTEST
     
 ENDTEST
 !
 ENDPROC
 
-PROC rSetSationClamps(num nStation,bool bClose, \num nWaittime)
+PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime)
     !***************************************	    
     ! Proc: rSetSationClamps
     ! Description: open of sluit klemmen 
     !***************************************
     VAR num nState;
-    IF bClose THEN
+    IF Present(close) THEN
         nState := 0;
-    ELSE
+    endif
+    IF Present(open) THEN
         nState := 1;
     ENDIF
-    
+    IF Present(close) AND Present(open) THEN
+        RETURN;
+    ENDIF
     TEST nStation
           CASE 1:
               SetDO doKP_1_Ventiel,nState;
@@ -409,8 +435,7 @@ PROC rSetSationClamps(num nStation,bool bClose, \num nWaittime)
               SetDO doKP_4_Ventiel,nState;
           CASE 5:
               SetDO doKP_5_Ventiel,nState;   
-    ENDTEST
-    
+    ENDTEST   
     IF Present(nWaittime) THEN
       WaitTime nWaittime;
     ELSE

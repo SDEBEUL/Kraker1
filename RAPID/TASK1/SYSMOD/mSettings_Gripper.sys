@@ -323,7 +323,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Handel sensor fault or ligial pos
     !***************************************
     VAR btnres nAnswer;
-    lbl_retry:
+    lbl_retry: 
     WaitTime \inpos, 0.5;
     IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
       RETURN TRUE;  
@@ -339,15 +339,24 @@ MODULE mSettings_Gripper(SYSMODULE)
     GOTO lbl_retry;
     !
     ENDFUNC
+    
+   FUNC bool fCheckGripperPartInrange()
+    !***************************************	    
+    ! FUNC: fCheckGripperPartInrange
+    ! Description: check if part is in range of sensors
+    !***************************************
+     WaitRob \InPos;
+      RETURN FALSE;
+    ENDFUNC
 
    PROC rGripper_CheckPart(bool bState \switch Supervision)
     !***************************************	    
     ! Proc: rGripper_CheckPart
     ! Description: check if part is present or not and part supervision
     !***************************************
-    IF bState THEN
-        IF fCheckGripperPart() THEN
-            !part aanwezig oke
+    IF bState THEN  
+        CheckInput di_Sensor1_Q1_In,1, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q1_In";
+        CheckInput di_Sensor2_Q1_In,1, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q2_In";
             IF Present(Supervision) THEN 
               IDelete Int2SprvPart;  
               CONNECT Int2SprvPart WITH tPartSprVsn;
@@ -355,11 +364,9 @@ MODULE mSettings_Gripper(SYSMODULE)
               ISignalDI di_Sensor2_Q1_In,1,Int2SprvPart;
               IWatch Int2SprvPart;
             ENDIF
-        ENDIF
     ELSE
-        IF NOT fCheckGripperPart() THEN
-            !part niet aanwezig oke
-        ENDIF
+        CheckInput di_Sensor1_Q1_In,0, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q1_In";
+        CheckInput di_Sensor2_Q1_In,0, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q2_In";
     ENDIF
     !
   ENDPROC 

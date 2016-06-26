@@ -40,6 +40,7 @@ PROC Getnextpart()
     nbuffernummer := nGetInvoerbuffer();
     !robot kan nergens met het stuk naartoe
     IF nbuffernummer = 0 THEN
+       LoggProc "mBuffer",2,"Niet mogelijk om balk te halen";
        WHILE TRUE DO 
          nAnswer := UIMessageBox(\Header:="Kan negens een balk halen"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
        ENDWHILE
@@ -94,6 +95,7 @@ FUNC num nGetUitvoerbuffer(Num nPartType)
        ENDIF   
      ENDFOR
     ELSE
+      LoggProc "mBuffer",3,"stuktype niet geldig voor buffer";
       WHILE TRUE DO 
          nAnswer := UIMessageBox(\Header:="stuktype niet geldig voor buffer"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
       ENDWHILE
@@ -114,7 +116,8 @@ PROC PUTnextpart(Num nPartType)
     nbuffernummer := nGetUitvoerbuffer(nPartType);
     !robot kan nergens met het stuk naartoe
     IF nbuffernummer = 0 THEN
-       WHILE TRUE DO 
+        LoggProc "mBuffer",4,"Kan de balk nergens plaatsen";
+        WHILE TRUE DO 
          nAnswer := UIMessageBox(\Header:="Kan de balk nergens plaatsen"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
        ENDWHILE
     ENDIF
@@ -160,10 +163,12 @@ LOCAL PROC rUpdateUitvoerbuffer(num nBuffer, num nPartType)
     AND AantalPartsAanwezig.Balk331 = AantalPartsGewenst.Balk331
     AND AantalPartsAanwezig.Balk332 = AantalPartsGewenst.Balk332 THEN
      UitvoerBuffer{nBuffer}.Vol := TRUE;
+     LoggProc "mBuffer",5,"Buffer:"+NumToStr(nBuffer,0)+" Vol (target)";
     ENDIF
     !kijk of het maximaal aantal stukken is berijkt
     IF (AantalPartsAanwezig.Balk330 + AantalPartsAanwezig.Balk331 + AantalPartsAanwezig.Balk332) >= 40 THEN
         UitvoerBuffer{nBuffer}.Vol := TRUE;
+        LoggProc "mBuffer",6,"Buffer:"+NumToStr(nBuffer,0)+" Vol (Max)";
     ENDIF
     !
 ENDPROC
@@ -184,9 +189,11 @@ PROC rDecrInvoerbuffer(num nBuffer)
     !veiligeid voor slechte tellers veilige situatie is LEEG
     IF (InvoerBuffer{nBuffer}.ActiefStuk > 8) OR (InvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
       InvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",7,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     IF (InvoerBuffer{nBuffer}.Actievelaag > 5) OR (InvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
       InvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",8,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     !
 ENDPROC
@@ -207,9 +214,11 @@ PROC rIncrUitvoerbuffer(num nBuffer)
     !veiligeid voor slechte tellers veilige situatie is VOl 
     IF UitvoerBuffer{nBuffer}.ActiefStuk > 8 THEN 
      UitvoerBuffer{nBuffer}.vol := true;
+     LoggProc "mBuffer",9,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
     ENDIF
     IF UitvoerBuffer{nBuffer}.Actievelaag < 1 THEN
      UitvoerBuffer{nBuffer}.vol := true;
+     LoggProc "mBuffer",10,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
     ENDIF
     !
 ENDPROC
@@ -252,18 +261,11 @@ ENDPROC
     ENDPROC
     
     
- FUNC num nYposPart(num nBuffer, \bool Outbuff, \bool Inbuff)
+ FUNC num nYposPart(num nActiefStukf)
  !stuk in de laag.   
  VAR num nYpos;
- VAR num bufferpos;
-IF present(outbuff) THEN
-  bufferpos := uitvoerbuffer{nBuffer}.Actiefstuk;
-ENDIF
-IF present(inbuff) THEN
-  bufferpos := Invoerbuffer{nBuffer}.Actiefstuk;
-ENDIF
     !   
-    TEST bufferpos 
+    TEST nActiefStukf 
         CASE 1:
             nYpos:=0;
         CASE 2:
@@ -285,18 +287,10 @@ RETURN nYpos;
 !
 ENDFUNC
 
-FUNC num nZposPart(num nBuffer, \bool Outbuff, \bool Inbuff)
+FUNC num nZposPart(num nActievelaag)
  !laagnummer.   
  VAR num nZpos;
- VAR num bufferpos;
-IF present(outbuff) THEN
-  bufferpos := uitvoerbuffer{nBuffer}.actievelaag;
-ENDIF
-IF present(inbuff) THEN
-  bufferpos := invoerbuffer{nBuffer}.actievelaag;
-ENDIF
-    !   
-    TEST bufferpos
+    TEST nActievelaag
         CASE 5:
             nZpos:=0;
         CASE 4:

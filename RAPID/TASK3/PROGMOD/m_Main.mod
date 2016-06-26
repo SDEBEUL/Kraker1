@@ -8,7 +8,7 @@ ENDPROC
         nAnswer:=UIMessageBox(\Header:="Karker Trailers **K-FORCE**"
         \MsgArray:=["InterfaceHome",
             "OnderRanden => Instelling productie onderranden  Productie="+ sBooltoString(Production.Onderanden),
-            "DwarsBalken => Instelling productie dwarsbalken  Prodcutie="+ sBooltoString(Production.Dwarsbalken),
+            "DwarsBalken => Instelling productie dwarsbalken  Productie="+ sBooltoString(Production.Dwarsbalken),
             "Stations    => Instellingen van stations"],
         \BtnArray:=["OnderRanden","DwarsBalken","Stations","",""]);
         TEST nAnswer
@@ -21,7 +21,7 @@ ENDPROC
         CASE 4:
           !leeg
         CASE 5:
-          !rMaint;
+          !leeg
         ENDTEST  
     ENDPROC
     
@@ -70,33 +70,6 @@ ENDPROC
             ENDTEST
          CASE 5:
            !exit
-        
         ENDTEST  
     ENDPROC 
-    
-   PROC rDwarsBalken()
-        VAR btnres nAnswer;
-        lblBegin:
-        nAnswer:=UIMessageBox(\Header:="Dwarsbalken"
-        \MsgArray:=["CONTROLLER WELKE BUFFERS ACTIEF ZIJN!","BufferIn  => " + "" + "  actief (nieuwe balken) ","BufferUit => " + "" +" actief (afgewerkte balken)","Start => begin met procutie"],
-        \BtnArray:=["Start","Stop","SetBufferIn","SetBufferUit","Terug"]);
-        TEST nAnswer
-        CASE 1:
-           Production.Dwarsbalken := TRUE;
-           GOTO lblBegin;
-        CASE 2:
-           Production.Dwarsbalken := FALSE;
-          GOTO lblBegin;
-        CASE 3:
-          rSetBufferIn;
-          GOTO lblBegin;
-        CASE 4:
-          rSetBufferOut;
-          GOTO lblBegin;
-        CASE 5:
-          GOTO lblExit;
-        ENDTEST  
-       lblExit:
-    ENDPROC 
-      
 ENDMODULE
