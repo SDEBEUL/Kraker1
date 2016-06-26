@@ -25,7 +25,7 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Wobjdata
     TASK PERS wobjdata wobj_Magazijn:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[204,-1400,300],[1,0,0,0]],[[1680,0,0],[1,0,0,-3.70344E-05]]];
+    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[70,0,0],[1,0,0,0]]];
 
     !Boolians
     PERS bool Frees_13_Attached:=FALSE;
@@ -237,6 +237,15 @@ MODULE mSettings_Spindle(SYSMODULE)
         SetAO aoPLC_Spindle_Speed,0;
         Reset so_Boren_aan;
         !
+    ENDPROC
+    
+    !word opgeroepen als eventroutine voor event START
+    PROC rWait_Spindel()
+       IF  DOutput(so_Boren_aan) = 1 THEN
+           TPWrite "Spindle: wachten op toerental (3 seconden) ";
+           WaitTime 3;
+           TPWrite "Spindle: wachten op toerental (3 seconden) OK ";
+       ENDIF
     ENDPROC
 
 ENDMODULE

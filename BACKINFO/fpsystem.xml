@@ -62,7 +62,7 @@
     </DATA>
     <DATA id="IO View">
       <PROP name="Configurations file" value="/hd0a/Kraker_Freesrobot/INTERNAL/FPConfigurations.xml" />
-      <PROP name="Signal view layout" value="Default" />
+      <PROP name="Signal view layout" value="ValueLabelType" />
     </DATA>
     <DATA id="Programmable Key_4">
       <PROP name="type" value="None" />
