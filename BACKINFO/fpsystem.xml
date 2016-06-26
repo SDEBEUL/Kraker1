@@ -37,7 +37,7 @@
       <PROP name="target" value="" />
     </DATA>
     <DATA id="Program Editor">
-      <PROP name="HideDeclarations" value="False" />
+      <PROP name="HideDeclarations" value="True" />
       <PROP name="ShowOnlyServiceRoutines" value="False" />
       <PROP name="ModulePath" value="ctrl:/hd0a/Modules/" />
     </DATA>
@@ -78,6 +78,9 @@
       <PROP name="text" value="PARAM_TXT_VIEWINMANFULL" />
       <PROP name="dll" value="" />
       <PROP name="type" value="" />
+    </DATA>
+    <DATA id="QuickSet">
+      <PROP name="IncrementToggle" value="Small" />
     </DATA>
     <DATA id="IO Filter">
       <PROP name="IO Virtual filter" value="All" />

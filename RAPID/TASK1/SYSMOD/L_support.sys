@@ -1,8 +1,108 @@
 MODULE L_support(SYSMODULE)
+  
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[13939,-1043.5,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+  !loadata
+   PERS loaddata Spindel:=[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0];
+   PERS loaddata Grijper:=[104.4,[-101.6,29.8,446.9],[1,0,0,0],22.193,21.253,2.04];
+   PERS loaddata GrijperPart:=[104.4,[-101.6,29.8,446.9],[1,0,0,0],22.193,21.253,2.04];
+  !interupts
+  VAR intnum Int1SprvSpindel := 1;
   
   PROC SyncPos()
+    !***************************************	    
+    ! Proc: SyncPos
+    ! Description: move to syncpos
+    !***************************************
     MoveAbsJ Sync_Position, v1000, z50, tool0\WObj:=wobj0;
   ENDPROC
+  
+  PROC HomePosCheck()
+    !***************************************	    
+    ! Proc: HomePosCheck
+    ! Description: ter controle verschillende homeposities
+    !***************************************
+    !with track 
+    MoveAbsJ pHomeJoint_Grijper\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    MoveAbsJ pHomeJoint_spindel\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    MoveAbsJ pHomeJoint_StationXboor11\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    !armonly
+    MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    MoveAbsJ fArm_only(pHomeJoint_spindel)\NoEOffs,v1000,z50,tool0; 
+    Stop;
+    MoveAbsJ fArm_only(pHomeJoint_StationXboor11)\NoEOffs,v1000,z50,tool0; 
+    Stop;
+  ENDPROC
+  
+  Func jointtarget fArm_only
+         (
+         jointtarget target
+         )
+    !***************************************	    
+    ! Func: fArm_only
+    ! Description: move to home jointtarget
+    ! arm only
+    !***************************************
+    VAR jointtarget ArmHome; 
+    VAR robtarget pAct;
+    ArmHome := target;
+    pAct := CRobT();
+    ArmHome.extax.eax_a := pAct.extax.eax_a;
+    RETURN ArmHome;
+    !
+ ENDFUNC
+ 
+ PROC go_home
+     (
+     \bool Armonly ,
+     \bool Armfirst 
+     )
+    !***************************************	    
+    ! Proc: go_home
+    ! Description: go home with active tool
+    ! Armonly sets the home pos without track
+    ! Armfirst moves the arm home before the track
+    !***************************************
+    VAR jointtarget tempJnt;
+    IF nActive_Gripper = GrijperTool THEN
+      Check_gripper(GrijperTool);
+      tempJnt := pHomeJoint_Grijper;
+    ELSE
+      tempJnt := pHomeJoint_spindel;
+    ENDIF
+      
+    IF Present(Armonly) THEN
+      MoveAbsJ fArm_only(tempJnt)\NoEOffs,v1000,z50,tool0;   
+      RETURN;
+    ENDIF
+    
+    IF Present(Armfirst) THEN
+      MoveAbsJ fArm_only(tempJnt)\NoEOffs,v1000,z50,tool0;  
+      MoveAbsJ tempJnt\NoEOffs,v1000,z50,tool0;  
+      RETURN;
+    ENDIF
+    
+    MoveAbsJ tempJnt\NoEOffs,v1000,z50,tool0; 
+    !
+    ENDPROC
+    
+   FUNC num nXdistanceBetweenWobj(wobjdata Wobj1, wobjdata Wobj2)
+    !***************************************	    
+    ! FUNC: nXdistanceBetweenWobj
+    ! Description: x afstand tussen 2 wobj
+    ! gebruikt voor trackshift tussen de dwarsbalk stations
+    !***************************************
+       VAR num Xdistance;
+       Xdistance :=  Wobj2.uframe.trans.x - Wobj1.uframe.trans.x ;
+       Return Xdistance;
+   ENDFUNC
 
 ENDMODULE
