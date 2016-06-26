@@ -1,0 +1,8 @@
+MODULE L_support(SYSMODULE)
+  CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
+  
+  PROC SyncPos()
+    MoveAbsJ Sync_Position, v1000, z50, tool0\WObj:=wobj0;
+  ENDPROC
+
+ENDMODULE

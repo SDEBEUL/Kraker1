@@ -36,8 +36,10 @@ MODULE mBoren_Fresen_5010737
     CONST robtarget pGat11_330:=[[554.09,17.5,317],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGat11_331:=[[554.09,17.5,317],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGat11_332:=[[554.09,17.5,317],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pGat11_R:=[[-516.11,-17.45,316.33],[0.000727202,-0.000750648,-0.999992,0.00404229],[-1,-1,1,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pGat11_L:=[[580.87,15.57,316.48],[1.8551E-05,-1,-2.14424E-06,-1.09513E-06],[-1,1,-1,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    !CONST robtarget pGat11_R:=[[-516.11,-17.45,316.33],[0.000727202,-0.000750648,-0.999992,0.00404229],[-1,-1,1,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGat11_R:=[[-516.11,-17.45,316.33],[0.00190133,0.999998,1.19987E-06,0.000690857],[-1,-1,1,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    CONST robtarget pGat11_L:=[[581.03,16.13,316.94],[0.000587781,-1,-7.75122E-06,-0.000583754],[-1,1,-1,0],[1000.01,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand:=[[0.02,44.29,273.70],[6.89394E-05,-1,1.95355E-05,-1.6353E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand_R:=[[0.02,44.29,273.70],[6.89394E-05,-1,1.95355E-05,-1.6353E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand_L:=[[0.02,44.29,273.70],[6.89394E-05,-1,1.95355E-05,-1.6353E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -46,13 +48,15 @@ MODULE mBoren_Fresen_5010737
     VAR robtarget pGatCenter_330:=[[0,0,0],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
     !Speedata
-    CONST speeddata vBoren_11_190:=[0.5,500,5000,1000];
+    CONST speeddata vBoren_11_190:=[0.35,500,5000,1000];
     CONST speeddata vBoren_8_250:=[0.8,500,5000,1000];
     CONST speeddata vBoren:=[2,500,5000,1000];
     CONST speeddata v3:=[10,500,3,1000];
     CONST speeddata speed1:=[0.1,500,5000,1000];
     CONST speeddata vFrezen:=[1.5,500,5000,1000];
-
+!snelheid om tijdens het boren snel door het stuk te bewegen
+    CONST speeddata vBoren_aanzet:=[25,500,5000,1000];
+    
     !Posedata
 
     !Numdata
@@ -134,6 +138,8 @@ MODULE mBoren_Fresen_5010737
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
         nSpindleSpeed:=3472;
+        
+        nSpindleSpeed:=3000;
         !
         rStart_Spindle;
         SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
@@ -141,10 +147,16 @@ MODULE mBoren_Fresen_5010737
         MoveJ RelTool(pGat11_L,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_L,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_L,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_L,0,0,50),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_L,0,0,108),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_L,0,0,15),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        SetAO aoPLC_Spindle_Speed,1200;
+        MoveL RelTool(pGat11_L,0,0,108),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_L,0,0,112),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_L,0,0,111.8),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
+        WaitTime \InPos, 3;
         MoveL RelTool(pGat11_L,0,0,123),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL pGat11_L,v100,fine,boor_11mm_L190\WObj:=wobj_Active;
+        SetAO aoPLC_Spindle_Speed,1200;
+        MoveL pGat11_L,vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_L,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_L,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         !		
@@ -479,13 +491,38 @@ MODULE mBoren_Fresen_5010737
         !
     ENDPROC
 
+    PROC TESTT()
+        !
+        wobj_Active:=wobj_Onderrand_L;
+        MoveAbsJ pHomeJoint_Boren_L\NoEOffs,v1000,z50,tGripper\WObj:=Wobj0;
+        Set_Tool 2;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
+       !rBoren_11mm_Onderrand_Dubbel_L -6,0,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 1600,0,0,0;
+        Stop;
+        rBoren_11mm_Onderrand_Dubbel_L 1600 + 40 ,0,0,0;
+                Stop;
+        rBoren_11mm_Onderrand_Dubbel_L 1600 + 80 ,0,0,0;
+                Stop;
+        rBoren_11mm_Onderrand_Dubbel_L 1600 + 120 ,0,0,0;
+                        Stop;
+        rBoren_11mm_Onderrand_Dubbel_L 1600 + 140 ,0,0,0;
+                        Stop;
+        rBoren_11mm_Onderrand_Dubbel_L 1600 + 180 ,0,0,0;
+    endproc
+    
     PROC rOnderrand_B_215537_602_Links()
         !
         wobj_Active:=wobj_Onderrand_L;
         MoveAbsJ pHomeJoint_Boren_L\NoEOffs,v1000,z50,tGripper\WObj:=Wobj0;
         Set_Tool 2;
         MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
-
+!begin test
+       rBoren_11mm_Onderrand_Dubbel_L 15,0,0,0;
+        
+        !end test
+        
+ Stop;
         rBoren_11mm_Onderrand_Enkel_L 15,0,0,0;
         !
         rBoren_11mm_Onderrand_Enkel_L 70,0,0,0;
