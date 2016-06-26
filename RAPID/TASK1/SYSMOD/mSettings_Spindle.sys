@@ -9,7 +9,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty5 := 5;
     CONST num empty6 := 6;
     local PERS bool  bActiveTool{6} := [FALSE,TRUE,FALSE,FALSE,FALSE,FALSE];
-    local CONST num nDefaultSpeed{6} := [2000,6000,0,0,0,0];
+    local CONST num nDefaultSpeed{6} := [2000,15000,0,0,0,0];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-113.098,-15.104,3.1224,84.2322,-67.5896,-85.4401],[500.018,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
@@ -29,9 +29,9 @@ MODULE mSettings_Spindle(SYSMODULE)
     !Speedata
     CONST speeddata vBoren_11_190:=[0.9,500,5000,1000];
     CONST speeddata vBoren:=[2,500,5000,1000];
-    CONST speeddata vFrezen:=[1.5,500,5000,1000];
+    !CONST speeddata vFrezen:=[1.5,500,5000,1000];
     !getest op 20000 toeren 
-    !CONST speeddata vFrezen:=[20,500,5000,1000];
+    CONST speeddata vFrezen:=[4,500,5000,1000];
      
     CONST speeddata vBorenMetFrees:=[1,500,5000,1000];
     CONST speeddata vFrees_aanzet:=[25,500,5000,1000];

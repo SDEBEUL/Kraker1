@@ -70,6 +70,7 @@ MODULE mBuffer
    VAR num yPos := 0;
    VAR num zPos := 0;
    VAR num nLaag;
+   VAR num nStuk;
    VAR btnres nAnswer; 
   !eerst naar een postie om te kijken of het rek er staat. 
    yPos := nYposPart(1);
@@ -99,33 +100,33 @@ MODULE mBuffer
        ENDTEST
        RETURN;
     ENDIF
-    MoveL Offs(Pbuffer,0,-150,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL Offs(Pbuffer,0,-200,0),v1000,z50,tGripper\WObj:=wobj_Active;
     !100 mm van stuk1 onderste rij
-    MoveL Offs(Pbuffer,0,-150,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL Offs(Pbuffer,0,-80,0),v1000,z50,tGripper\WObj:=wobj_Active;
     !beweeg richting bovenste laag tot check range dan 1 laag omhoog
     FOR laag FROM 5 TO 1 STEP -1 DO
-      MoveL Offs(Pbuffer,0,-150,nZposPart(laag)),v100,z0,tGripper\WObj:=wobj_Active;
-      IF fCheckGripperPartInrange() OR (laag = 1)THEN
+      MoveL Offs(Pbuffer,0,-80,nZposPart(laag)),v100,z0,tGripper\WObj:=wobj_Active;
+      IF fCheckGripperNotInrange()  OR (laag = 1)THEN
           nLaag := laag;
         GOTO Lbl_laagGevonden;
       ENDIF
     ENDFOR
     
   Lbl_laagGevonden:
-     IF nLaag <> 1 THEN
-       ! doorzoek altijd 1 laag hoger dan gevonden laag 
-       Incr nLaag;
-     ENDIF
 
      FOR stuk FROM 1 TO 8 STEP 1 DO
-       MoveL Offs(Pbuffer,0,-150+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
-       IF fCheckGripperPartInrange() OR (stuk = 8) THEN
+       MoveL Offs(Pbuffer,0,-80+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
+       IF (fCheckGripperNotInrange() = FALSE) OR (stuk = 8) THEN
+           nStuk := stuk;
           GOTO Lbl_stukgevonden;
        ENDIF
      ENDFOR
      
    Lbl_stukgevonden:
         !laat nu de normale stuk uit routine ovenemen
+       InvoerBuffer{nBuffernum}.ActiefStuk := nStuk;
+       InvoerBuffer{nBuffernum}.Actievelaag := nLaag;
+        !
         Buffer_UIT_PickPart nBuffernum, WobjBufferx ,Pbuffer;
         ! set safe
         InvoerBuffer{nBuffernum}.Veilig := TRUE;

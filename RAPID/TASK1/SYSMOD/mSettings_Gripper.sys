@@ -216,8 +216,8 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
         MoveL pDummy,v10,fine,tool0;
         rToolchanger_Open;
-        MoveL reltool(pDummy,0,0,-5),v100,fine,tool0;
-        WaitTime \InPos,0.1;
+        MoveL reltool(pDummy,0,0,-10),v100,fine,tool0;
+        WaitRob \InPos;
         Check_Notool;
         MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
         rReset_Grijper_WZ;
@@ -340,12 +340,16 @@ MODULE mSettings_Gripper(SYSMODULE)
     !
     ENDFUNC
     
-   FUNC bool fCheckGripperPartInrange()
+   FUNC bool fCheckGripperNotInrange()
     !***************************************	    
-    ! FUNC: fCheckGripperPartInrange
-    ! Description: check if part is in range of sensors
+    ! FUNC: fCheckGripperNotInrange
+    ! Description: check if part is not  in range of sensors
     !***************************************
      WaitRob \InPos;
+     WaitTime 2;
+     IF ai_Sensor2_Q2_in > 17000 THEN
+        RETURN TRUE; 
+     ENDIF
       RETURN FALSE;
     ENDFUNC
 
@@ -360,8 +364,7 @@ MODULE mSettings_Gripper(SYSMODULE)
             IF Present(Supervision) THEN 
               IDelete Int2SprvPart;  
               CONNECT Int2SprvPart WITH tPartSprVsn;
-              ISignalDI di_Sensor1_Q1_In,1,Int2SprvPart;
-              ISignalDI di_Sensor2_Q1_In,1,Int2SprvPart;
+              ISignalDI si_Balk_Gevonden,1,Int2SprvPart;
               IWatch Int2SprvPart;
             ENDIF
     ELSE

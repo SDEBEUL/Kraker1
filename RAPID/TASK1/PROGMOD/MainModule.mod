@@ -9,9 +9,9 @@ PROC Main()
        rMainui;
      ENDIF
      !check part in gripper
-     Stop;
+     
      !check home 
-     check_home;
+     check_home \Armonly ;
      !
      WHILE TRUE do
      IF bDwarbalkenGewenst() = TRUE THEN

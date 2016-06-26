@@ -70,7 +70,8 @@ FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType)
     IF (AantalPartsAanwezig.Balk332 < AantalPartsGewenst.Balk332) AND nPartType = part.Balk332 THEN
       RETURN TRUE;
     ENDIF     
-   !  
+   RETURN FALSE;
+    !  
 ENDFUNC
 
 FUNC num nGetUitvoerbuffer(Num nPartType)

@@ -51,7 +51,7 @@ PROC rSetStationStatus(num stationnum)
          "Bewerkingsstap="+NumToStr(Station{stationnum}.Bewerkingsstap,0),
          "Opdracht="+sPartTypetoString(Station{stationnum}.Opdracht),
          "xOffset="+NumToStr(Station{stationnum}.xOffset,0)]
-        \BtnArray:=["Indienst","Uitdienst","Lading","Klemmen","Terug"]);
+        \BtnArray:=["Indienst","Uitdienst","Lading0","Klemmen","Terug"]);
         !moet andere statussen nog verder aanvullen 
         TEST nAnswer
         CASE 1:
@@ -61,7 +61,8 @@ PROC rSetStationStatus(num stationnum)
           station{stationnum}.inDienst := FALSE;
           GOTO lbl_begin;
         CASE 3:
-          !StationStatus{stationnum} := DwarsbalkScrap;
+          station{stationnum}.lading := part.Geen;
+          station{stationnum}.opdracht := part.Geen;
           GOTO lbl_begin;
         CASE 4:
           rSetStationClamps(stationnum);

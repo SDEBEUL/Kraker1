@@ -67,9 +67,9 @@ MODULE L_support(SYSMODULE)
   !******************************************************************************
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[965,1086,310],[1,0,0,0]],[[0,0,300],[1,0,0,0]]];
-  PERS tooldata TempTool:=[TRUE,[[502,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
-  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[965,1086,310],[1,0,0,0]],[[0,615,200],[1,0,0,0]]];
+  PERS tooldata TempTool:=[TRUE,[[0,220.75,942],[0.5,0.5,-0.5,0.5]],[50,[0,175,400],[1,0,0,0],0,0,0]];
+  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[11992.5,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
   !interupts
   VAR intnum Int1SprvSpindel := 1;
   VAR intnum Int2SprvPart := 2;
@@ -77,7 +77,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=5000;
-  LOCAL PERS num logCounterErrDisp:=7;
+  LOCAL PERS num logCounterErrDisp:=26;
   LOCAL VAR iodev file;
    
   PROC SyncPos()
@@ -340,7 +340,12 @@ MODULE L_support(SYSMODULE)
           WaitTime 1;
           TempTool:=CTool();
           TempWobj:=CWObj();
-          MoveAbsJ ExpectJoint,v50,fine,TempTool\WObj:=TempWobj;
+          IF Present(ArmOnly) THEN
+            MoveAbsJ fArm_only(ExpectJoint),v200,fine,TempTool\WObj:=TempWobj;
+          ELSE
+            MoveAbsJ ExpectJoint,v200,fine,TempTool\WObj:=TempWobj; 
+          ENDIF
+
           TPErase;
         CASE 5:
           TPErase;
