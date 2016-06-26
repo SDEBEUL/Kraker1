@@ -5,10 +5,10 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Stringdata
     CONST string strTool{6}:=["Boor 11mm","Frees","Boor 8mm","","",""];
-    PERS string strActieve_Tool:="Boor 11mm";
+    PERS string strActieve_Tool:="Frees";
 
     !Numdata
-    PERS num ToolNr:=1;
+    PERS num ToolNr:=2;
     PERS num nSpindleSpeed;
 
     !Variabelen
@@ -25,11 +25,11 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Wobjdata
     TASK PERS wobjdata wobj_Magazijn:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[70,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[0,0,-6],[1,0,0,0]]];
 
     !Boolians
-    PERS bool Frees_13_Attached:=FALSE;
-    PERS bool Boor_11_190_Attached:=TRUE;
+    PERS bool Frees_13_Attached:=TRUE;
+    PERS bool Boor_11_190_Attached:=FALSE;
     PERS bool Boor_8_250_Attached:=FALSE;
 
     LOCAL PROC magazijn_Posities()
