@@ -1,0 +1,242 @@
+MODULE mSettings_Spindle(SYSMODULE)
+
+    !Listdata
+    CONST listitem listTools{7}:=[["","geen tool (Leeg)"],["","11mm Boor"],["","Frees"],["","8mm Boor"],["",""],["",""],["",""]];
+
+    !Stringdata
+    CONST string strTool{6}:=["Boor 11mm","Frees","Boor 8mm","","",""];
+    PERS string strActieve_Tool:="Boor 11mm";
+
+    !Numdata
+    PERS num ToolNr:=0;
+    PERS num nSpindleSpeed;
+
+    !Variabelen
+    VAR btnres button_answer;
+
+    !Tooldata
+    TASK PERS tooldata Frees_16mm_L50:=[TRUE,[[595.388,-1.59111,104.986],[0.707569,0.000359545,0.706644,-0.000359101]],[20,[300,0,150],[1,0,0,0],0,0,0]];
+    TASK PERS tooldata tSpindle:=[TRUE,[[314,-0.75,111],[0.707107,0,0.707107,0]],[20,[300,0,150],[1,0,0,0],0,0,0]];
+
+    !Robtargets  
+    CONST robtarget Frees_Magazijn_Pos2:=[[-310.37,-1002.67,239.95],[0.00363142,-0.999993,0.00022822,-0.000658208],[-2,0,-1,0],[500.001,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Boor_Magazijn_Pos1:=[[-460.63,-1000.68,235.99],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Boor_Magazijn_Pos3:=[[-160.10,-1003.45,242.36],[0.00363494,-0.999994,0.000227547,-0.000607041],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    !Wobjdata
+    TASK PERS wobjdata wobj_Magazijn:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[204,-1400,300],[1,0,0,0]],[[4700,0,0],[1,0,0,-3.70344E-05]]];
+
+    !Boolians
+    PERS bool Frees_13_Attached:=FALSE;
+    PERS bool Boor_11_190_Attached:=FALSE;
+    PERS bool Boor_8_250_Attached:=FALSE;
+
+    LOCAL PROC magazijn_Posities()
+        MoveL Boor_Magazijn_Pos1,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+        MoveL Frees_Magazijn_Pos2,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+    ENDPROC
+
+    PROC Set_Tool_Manual()
+        MoveAbsJ [[-90,-30,0,0,0,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tool0;
+!        Set so_Handmatig_Wisselen;
+!        UIMsgBox\Header:="Toolchange","Druk de knop op de spindle in om de boor te wisselen"\DIBreak:=diSpindle_Button;
+!        UIMsgBox\Header:="Toolchange","Druk op 'OK' als de nieuwe tool geplaatst is"\Buttons:=btnOK;
+        ToolNr:=UIListView(\Result:=button_answer\Header:="Welke boor/frees wil je plaatsen?",listTools\Buttons:=btnOKCancel\Icon:=iconInfo\DefaultIndex:=1);
+        Reset so_Handmatig_Wisselen;
+        IF button_answer=resCancel THEN
+            EXIT;
+        ENDIF
+        Set_Tool Toolnr;
+    ENDPROC
+
+
+    PROC Set_Tool(num nTool)
+        PDispOff;
+        EOffsOff;
+        TEST nTool
+        CASE 1:
+            IF Boor_11_190_Attached=TRUE rDetach_Boor_11_190;
+            IF Frees_13_Attached=TRUE rDetach_Frees_13;
+            IF Boor_8_250_Attached=TRUE rDetach_Boor_8_250;
+        
+        CASE 2:
+            IF Frees_13_Attached=TRUE rDetach_Frees_13;
+            IF Boor_8_250_Attached=TRUE rDetach_Boor_8_250;
+            rAttach_Boor_11_190;
+        CASE 3:
+            IF Boor_11_190_Attached=TRUE rDetach_Boor_11_190;
+            IF Boor_8_250_Attached=TRUE rDetach_Boor_8_250;
+            rAttach_Frees_13;
+        CASE 4:
+            IF Frees_13_Attached=TRUE rDetach_Frees_13;
+            IF Boor_11_190_Attached=TRUE rDetach_Boor_11_190;
+            rAttach_Boor_8_250;
+        DEFAULT:
+            UIMsgBox\Header:="Tool Selection","Wrong toolnr selected"\MsgLine2:="Check the program and restart"\Buttons:=btnOK;
+            EXIT;
+        ENDTEST
+        strActieve_Tool:=strTool{Toolnr};
+    ENDPROC
+
+    LOCAL PROC Check_Tool()
+        TEST ToolNr
+
+        CASE 0:
+            !Geen tool aanwezig
+        CASE 1:
+            !Boor 11_280 in spindle
+        CASE 2:
+            !Frees in spindle
+        ENDTEST
+    ENDPROC
+
+
+
+    LOCAL PROC rDetach_Frees_13()
+        !
+        IF Frees_13_Attached=TRUE THEN
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            MoveJ Offs(Frees_Magazijn_Pos2,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Frees_Magazijn_Pos2,0,0,20),v20,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Frees_Magazijn_Pos2,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Unlock;
+            MoveL Offs(Frees_Magazijn_Pos2,0,0,100),v20,fine,tSpindle\WObj:=wobj_Magazijn;
+            Reset doSpindle_Air_On;
+            Frees_13_Attached:=FALSE;
+            ToolNr:=0;
+            MoveL Offs(Frees_Magazijn_Pos2,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+        ENDIF
+        !     
+    ENDPROC
+
+    LOCAL PROC rAttach_Frees_13()
+        !
+        IF Frees_13_Attached=FALSE THEN
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            MoveJ Offs(Frees_Magazijn_Pos2,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Unlock;
+            MoveL Offs(Frees_Magazijn_Pos2,0,0,100),v200,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Frees_Magazijn_Pos2,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Lock;
+            MoveL Offs(Frees_Magazijn_Pos2,0,0,100),v20,fine,tSpindle\WObj:=wobj_Magazijn;
+            Frees_13_Attached:=TRUE;
+            ToolNr:=2;
+            MoveL Offs(Frees_Magazijn_Pos2,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+        ENDIF
+        !     
+    ENDPROC
+
+    LOCAL PROC rDetach_Boor_11_190()
+        !
+        IF Boor_11_190_Attached=TRUE THEN
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            MoveJ Offs(Boor_Magazijn_Pos1,0,0,500),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Boor_Magazijn_Pos1,0,0,200),v200,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Boor_Magazijn_Pos1,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Unlock;
+            Boor_11_190_Attached:=FALSE;
+            ToolNr:=0;
+            MoveL Offs(Boor_Magazijn_Pos1,0,0,100),v20,fine,tSpindle\WObj:=wobj_Magazijn;
+            Reset doSpindle_Air_On;
+            MoveL Offs(Boor_Magazijn_Pos1,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            !
+        ENDIF
+        !     
+    ENDPROC
+
+    LOCAL PROC rAttach_Boor_11_190()
+        !
+        IF Boor_11_190_Attached=FALSE THEN
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            MoveJ Offs(Boor_Magazijn_Pos1,0,0,500),v200,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Boor_Magazijn_Pos1,0,0,100),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Unlock;
+            MoveL Boor_Magazijn_Pos1,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Lock;
+            Boor_11_190_Attached:=TRUE;
+            ToolNr:=1;
+            MoveL Offs(Boor_Magazijn_Pos1,0,0,400),v20,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Boor_Magazijn_Pos1,0,0,500),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+        ENDIF
+        !     
+    ENDPROC
+
+    LOCAL PROC rDetach_Boor_8_250()
+        !
+        IF Boor_8_250_Attached=TRUE THEN
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            MoveJ Offs(Boor_Magazijn_Pos3,0,0,500),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Boor_Magazijn_Pos3,0,0,50), v100, z0, tSpindle\WObj:=wobj_Magazijn;
+            MoveL Boor_Magazijn_Pos3,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Unlock;
+            Boor_8_250_Attached:=FALSE;
+            ToolNr:=0;
+            MoveL Offs(Boor_Magazijn_Pos3,0,0,100),v20,fine,tSpindle\WObj:=wobj_Magazijn;
+            Reset doSpindle_Air_On;
+            MoveL Offs(Boor_Magazijn_Pos3,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+        ENDIF
+        !     
+    ENDPROC
+
+    LOCAL PROC rAttach_Boor_8_250()
+        !
+        IF Boor_8_250_Attached=FALSE THEN
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+            MoveJ Offs(Boor_Magazijn_Pos3,0,0,500),v200,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Boor_Magazijn_Pos3,0,0,100),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Unlock;
+            MoveL Boor_Magazijn_Pos3,v10,fine,tSpindle\WObj:=wobj_Magazijn;
+            Spindle_Lock;
+            Boor_8_250_Attached:=TRUE;
+            ToolNr:=3;
+            MoveL Offs(Boor_Magazijn_Pos3,0,0,400),v20,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Boor_Magazijn_Pos3,0,0,500),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveAbsJ [[-90,0,0,90,-90,-90],[500,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tSpindle\WObj:=wobj0;
+        ENDIF
+        !     
+    ENDPROC
+
+    LOCAL PROC Spindle_Unlock()
+        !
+        SetDO doSpindle_Air_On,1;
+        Reset doSpindle_Lock;
+        SetDO doSpindle_Release,1;
+        WaitDI diSpindle_S2,1;
+        WaitDI diSpindle_S3,0;
+        WaitDI diSpindle_S4,0;
+        ! 
+    ENDPROC
+
+    LOCAL PROC Spindle_Lock()
+        SetDO doSpindle_Air_On,1;
+        Reset doSpindle_Release;
+        SetDO doSpindle_Lock,1;
+        WaitDI diSpindle_S2,0;
+        WaitDI diSpindle_S3,1;
+        WaitDI diSpindle_S4,1;
+        Reset doSpindle_Air_On;
+    ENDPROC
+
+    PROC rStart_Spindle()
+        !
+        Reset so_Boren_aan;
+        WaitTime 0.1;
+        Set so_Boren_aan;
+        SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
+        !
+    ENDPROC
+
+    PROC rStop_Spindle()
+        !
+        SetAO aoPLC_Spindle_Speed,0;
+        Reset so_Boren_aan;
+        !
+    ENDPROC
+
+ENDMODULE

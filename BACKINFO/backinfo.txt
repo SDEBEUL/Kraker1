@@ -1,0 +1,78 @@
+#
+# Generated backup file, do not edit.
+#
+# Originally at: /hd0a/temp/691e9240
+# 16-06-07  11:45:55
+#
+>>SYSTEM_ID:
+66-60711
+
+>>PRODUCTS_ID:
+RobotWare Version: 5.15.9100.10
+
+  RW Control module key
+  RobotWare OS and English
+  644-1 French
+  645-7 Dutch
+  709-x DeviceNet
+  709-1 Master/Slave Single
+  840-2 Profibus Fieldbus Adapter
+  602-1 Advanced Shape Tuning
+  603-1 Absolute Accuracy
+  605-1 Multiple Axis Positioner
+  608-1 World Zones
+  609-1 Fixed Position Events
+  611-1 Path Recovery
+  614-1 FTP-client
+  615-1 NFS-client
+  616-1 PC Interface
+  617-1 FlexPendant Interface
+  618-1 Fieldbus Command Interface
+  620-1 File and Serial Channel Handling
+  672-1 Socket Messaging
+  621-1 Logical Cross Connections
+  622-1 Analog Signal Interrupt
+  623-1 Multitasking
+  626-1 Advanced RAPID
+  631-1 Electronically Linked Motors
+  RW Drive module 1 key
+  ABB standard manipulator
+  IRB 6660
+  6660-205/1.9
+  810-1 Electronic Position Switches
+  Add axes IRB/drive module 4600/6600
+  No drive in pos Y2
+
+>>ROBOT_TYPE:
+Not Available
+
+
+>>HOME:
+All public files and directories
+
+>>SYSPAR:
+SYS.cfg
+PROC.cfg
+EIO.cfg
+SIO.cfg
+MOC.cfg
+MMC.cfg
+
+
+>>TASK1: (T_ROB1,NewProgramName,)
+SYSMOD/user.sys @ user.sys
+PROGMOD/TCPZ_boor_11mm_280lang.mod @ tcpz_boor_11mm_280lang.mod
+PROGMOD/MainModule.mod @ mainmodule.mod
+PROGMOD/WOBJ.mod @ wobj.mod
+PROGMOD/RapidCom.mod @ rapidcom.mod
+PROGMOD/mGripper.mod @ mgripper.mod
+PROGMOD/mBoren_Fresen_5010737.mod @ mboren_fresen_5010737.mod
+PROGMOD/TuneMasterLib.mod @ tunemasterlib.mod
+SYSMOD/mSettings_Spindle.sys @ msettings_spindle.sys
+SYSMOD/mSettings_Gripper.sys @ msettings_gripper.sys
+
+>>TASK2: (PSC_CBC,,)
+SYSMOD/user.sys @ user.sys
+
+
+>>EOF:

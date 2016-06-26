@@ -1,0 +1,223 @@
+MODULE mSettings_Gripper(SYSMODULE)
+    !! Tools
+    !! 0 geen tool
+    !! 1 DUMMY
+    !! 2 Grijper
+    PERS num nActieve_Tool:=0;
+    
+    !ingemeten punt 03-05-2016
+    !CONST robtarget pDummy:=[[15227.81,-607.60,468.05],[0.00432239,-0.999965,0.00716397,0.000387582],[-1,0,1,0],[13450,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pDummy:=[[15227.80,-607.60,468.05],[0.00432513,-0.999965,0.00716432,0.000383958],[-1,0,-3,0],[13450,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    !ingemeten punt 03-05-2016
+    !CONST robtarget pGripper:=[[16028.72,-559.07,450.99],[0.00460633,0.99993,-0.0109274,-0.00041717],[-1,-1,1,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGripper:=[[16029.79,-561.81,453.33],[0.00457733,0.999965,-0.00577939,-0.00404732],[-1,-1,-3,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    
+    VAR pos WZ_High_Pos;
+    VAR pos WZ_Low_Pos;
+    VAR shapedata WZ_Shape;
+    VAR wztemporary wz_Changer_Los;
+    PERS bool Gripper_OFF:=TRUE;
+    PERS bool Gripper_ON:=TRUE;
+    PERS bool Dummy_OFF:=TRUE;
+    PERS bool Dummy_ON:=TRUE;
+
+    
+    PROC rSet_Grijper_WZ()
+        ! routine om wereldzones op de wisselposities te leggen
+        ! in deze werledzones wordt een gesimuleerde uitgang hoog gemaakt welke in de crossconnectie om de tool te lossen gebruikt wordt
+        ! buiten deze locatie kan de tool dus niet gewisseld worden in het programma
+        Reset so_ChangePosition;
+        WZFree wz_Changer_Los;
+        rTest_Gripper;
+        IF nActieve_Tool=1 THEN
+            WZ_High_Pos:=[10,10,30] + pDummy.trans;
+            WZ_Low_Pos:=[-10,-10,-5] + pDummy.trans;
+            WZBoxDef\Inside, WZ_Shape, WZ_Low_Pos, WZ_High_Pos;
+            WZDOSet\Temp,wz_Changer_Los\Inside,WZ_Shape,so_ChangePosition,1;
+        ELSEIF nActieve_Tool=2 THEN    
+            WZ_High_Pos:=[10,10,30] + pGripper.trans;
+            WZ_Low_Pos:=[-10,-10,-5] + pGripper.trans;
+            WZBoxDef\Inside, WZ_Shape, WZ_Low_Pos, WZ_High_Pos;
+            WZDOSet\Temp,wz_Changer_Los\Inside,WZ_Shape,so_ChangePosition,1;
+        ELSE
+            SET so_Changeposition;
+        ENDIF
+    ENDPROC
+
+    PROC rTest_Gripper()
+        !
+        IF TestDI(di_Changer_Tool_Aanwezig)=TRUE THEN
+            IF TestDI(si_Changer_Test_Grijper)=TRUE THEN 
+                !Grijper hangt aan de robot
+                nActieve_Tool:=2;
+            ELSE
+                !Dummy hangt aan de robot
+                nActieve_Tool:=1;
+            ENDIF
+        ELSE
+            !geen tool aan de changer of geen contact
+            nActieve_Tool:=0;
+        ENDIF
+        !
+    ENDPROC
+
+    PROC rAttach_Dummy()
+        rTest_Gripper;
+        TEST nActieve_Tool
+        CASE 0:
+            !Geen tool
+            GOTO Attach_Dummy;
+        CASE 1:
+            !dummy attached
+            GOTO Dummy_Attached;
+        CASE 2:
+            ! Grijper attached
+            rDetach_Gripper;
+        ENDTEST
+        Attach_Dummy:
+        IF Dummy_OFF=TRUE THEN
+        rSet_Grijper_WZ;
+        MoveAbsJ [[0,0,0,0,90,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs, v1000, fine, tool0;        
+        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
+        Set so_ChangePosition;
+        set so_Changer_Open;
+        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        MoveL pDummy,v10,fine,tool0;
+        WaitTime 0.5;
+        Reset so_Changer_Open;
+        Reset do_Gripper_Open;
+        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        Reset so_ChangePosition;
+        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
+        MoveAbsJ [[0,0,0,0,90,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs, v1000, fine, tool0;
+        ENDIF
+        Dummy_Attached:
+        Dummy_ON:=TRUE;
+    ENDPROC
+
+    PROC rDetach_Dummy()
+        rTest_Gripper;
+        TEST nActieve_Tool
+        CASE 0:
+            !Geen tool
+            GOTO Dummy_Detached;
+        CASE 1:
+            !dummy attached
+            GOTO Detach_Dummy;
+        CASE 2:
+            ! Grijper attached
+            rDetach_Gripper;
+        ENDTEST
+        Detach_Dummy:
+        IF Dummy_ON=TRUE THEN
+        rSet_Grijper_WZ;
+        MoveAbsJ [[0,0,0,0,90,90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs, v1000, fine, tool0;        
+        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
+        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        MoveL pDummy,v10,fine,tool0;
+        set so_Changer_Open;
+        WaitDI di_Changer_Vergrendeld, 0;
+        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        WaitDI di_Changer_Tool_Aanwezig, 0;
+        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
+        Reset so_Changer_Open;
+        MoveAbsJ [[0,0,0,0,90,90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs, v1000, fine, tool0;
+        ENDIF
+        Dummy_Detached:
+        Dummy_OFF:=TRUE;
+    ENDPROC 
+
+    PROC rAttach_Gripper()
+        rTest_Gripper;
+        TEST nActieve_Tool
+        CASE 0:
+            !Geen tool
+            GOTO Attach_Gripper;
+        CASE 1:
+            !dummy attached
+            rDetach_Dummy;
+        CASE 2:
+            ! Grijper attached
+            GOTO Gripper_Attached;
+        ENDTEST    
+        Attach_Gripper:
+        IF Gripper_OFF=TRUE THEN
+        rSet_Grijper_WZ;
+        MoveAbsJ [[0,0,0,0,0,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tool0;
+        MoveAbsJ [[0,0,0,0,90,90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tool0;
+        MoveL RelTool(pGripper,0,0,-500),v1000,z50,tool0;
+        Set so_Changer_Open;
+        WaitDI di_Changer_Vergrendeld, 0;
+        MoveL RelTool(pGripper,0,0,-50),v100,fine,tool0;
+        MoveL pGripper,v10,fine,tool0;
+        Reset so_Changer_Open;
+        WaitDI di_Changer_Vergrendeld, 1;
+        MoveL RelTool(pGripper,0,-250,0),v20,fine,tool0;
+        MoveL RelTool(pGripper,0,-250,-850),v50,fine,tool0;
+        MoveAbsJ [[0,0,0,0,90,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v50,fine,tool0;
+        MoveAbsJ [[0,0,0,0,0,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v50,fine,tool0;
+        ENDIF
+        Gripper_Attached:
+        Gripper_ON:=TRUE;
+    ENDPROC
+    
+    
+    PROC rDetach_Gripper()
+        rTest_Gripper;
+        TEST nActieve_Tool
+        CASE 0:
+            !Geen tool
+            GOTO Gripper_Detached;
+        CASE 1:
+            !dummy attached
+            rDetach_Dummy;
+        CASE 2:
+            ! Grijper attached
+            GOTO Detach_Gripper;
+        ENDTEST    
+        Detach_Gripper:
+        IF Gripper_ON=TRUE THEN
+        rSet_Grijper_WZ;
+        MoveAbsJ [[0,0,0,0,90,-180],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tool0;
+        MoveAbsJ [[0,0,0,0,90,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tool0;
+        MoveL RelTool(pGripper,0,-250,-850),V1000,fine,tool0;
+        MoveL RelTool(pGripper,0,-250,0),v200,fine,tool0;
+        MoveL pGripper,v20,fine,tool0;
+        Set so_Changer_Open;
+        WaitDI di_Changer_Vergrendeld, 0;
+        MoveL RelTool(pGripper,0,0,-30),v10,z1,tool0;
+        MoveL RelTool(pGripper,0,0,-50),v100,z1,tool0;
+        MoveL RelTool(pGripper,0,0,-500),v1000,z50,tool0;
+        MoveAbsJ [[0,0,0,0,90,90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tool0;
+        ENDIF
+        Gripper_Detached:
+        Gripper_OFF:=TRUE;
+    ENDPROC
+    
+    PROC rGripper_Open()
+       !
+        !
+        Reset do_Gripper_Close;
+        Set do_Gripper_Open;
+        !
+      
+    WaitDI si_Grijpers_Open,1;
+    
+    !
+  ENDPROC    
+    
+    PROC rGripper_Close()
+   
+      !
+        !
+        Reset do_Gripper_Open;
+        Set do_Gripper_Close;
+        !
+    WaitDI si_Grijpers_Dicht,1;
+    
+    !
+  ENDPROC    
+    
+
+ENDMODULE
