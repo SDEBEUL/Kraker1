@@ -25,7 +25,7 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Wobjdata
     TASK PERS wobjdata wobj_Magazijn:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[0,0,-6],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[2443.8,0,0],[1,0,0,0]]];
 
     !Boolians
     PERS bool Frees_13_Attached:=TRUE;

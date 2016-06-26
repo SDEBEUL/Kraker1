@@ -42,7 +42,7 @@ MODULE mBoren_Fresen_5010737
     CONST robtarget pGat11_L:=[[-0.77,15.48,319.21],[0.000595015,-1,-9.43398E-06,-0.00058483],[-1,1,-1,0],[1000.01,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand:=[[0.02,44.29,273.70],[6.89394E-05,-1,1.95355E-05,-1.6353E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand_R:=[[4.85,-51.46,210.79],[0.00190157,0.999998,-4.59286E-06,0.000700987],[-1,-1,0,0],[14172,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pFrees_Onderrand_L:=[[0.06,44.30,208.08],[7.76932E-05,-1,1.58135E-05,-2.33494E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pFrees_Onderrand_L:=[[4.64,50.59,208.77],[9.48623E-05,-1,2.18639E-05,-2.53724E-05],[-1,1,-1,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Ziel:=[[0.01,51.77,256],[6.13094E-05,-1,2.02582E-05,-1.54504E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Flens:=[[0.01,51.77,256],[6.13094E-05,-1,2.02582E-05,-1.54504E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
     VAR robtarget pGatCenter_330:=[[0,0,0],[1.10307E-06,-1,-2.64362E-06,-9.27231E-07],[-2,0,-1,0],[1380,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -83,16 +83,15 @@ MODULE mBoren_Fresen_5010737
             UIMsgBox\Header:="Onderrand Links gekozen","Druk op 'OK' om te starten met de onderrand links type 602"\MsgLine2:="Let erop dat de aandlag goed zit (ongeveer halverwege)"\MsgLine3:="Druk op 'Cancel' om de keuze te wijzigen"\Buttons:=btnOKCancel;
             IF nAnswer=resCancel GOTO keuze_Onderrand;
             !start programma onderrand links
+
+            rOnderrand_Frezen_215537_602_L;  
             rOnderrand_B_215537_602_Links;
-            Stop;
-            rOnderrand_Frezen_215537_602_L;            
         CASE 4:
-            UIMsgBox\Header:="Onderrand Links gekozen","Druk op 'OK' om te starten met de onderrand rechts type 603"\MsgLine2:="Deze moet 16cm voorbij de laatste klem zitten"\MsgLine3:="Druk op 'Cancel' om de keuze te wijzigen"\Buttons:=btnOKCancel;
+            UIMsgBox\Header:="Onderrand Rechts gekozen","Druk op 'OK' om te starten met de onderrand rechts type 603"\MsgLine2:="Deze moet 16cm voorbij de laatste klem zitten"\MsgLine3:="Druk op 'Cancel' om de keuze te wijzigen"\Buttons:=btnOKCancel;
             IF nAnswer=resCancel GOTO keuze_Onderrand;
             !start programma onderrand rechts
-            rOnderrand_B_215537_603_Rechts;
-            Stop;
-            rOnderrand_Frezen_215537_603_R;           
+           rOnderrand_B_215537_603_Rechts;
+           rOnderrand_B_215537_603_Rechts;
         ENDTEST
         
     ENDPROC
@@ -118,15 +117,15 @@ MODULE mBoren_Fresen_5010737
         !positie puntje boor net tegen stuk 
         MoveL pGat11_L,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_L,0,0,15),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        SetAO aoPLC_Spindle_Speed,1200;
+        !SetAO aoPLC_Spindle_Speed,1200;
         MoveL RelTool(pGat11_L,0,0,105),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
         !diepte net 3 mm in onderste gat
         MoveL RelTool(pGat11_L,0,0,112),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         
         !terug omhoog en snelheid maken
         MoveL RelTool(pGat11_L,0,0,111.8),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
-        WaitTime \InPos, 1.5;
+        !SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
+        !WaitTime \InPos, 1.5;
         
         !doorboren
         MoveL RelTool(pGat11_L,0,0,126),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -187,15 +186,15 @@ MODULE mBoren_Fresen_5010737
         !positie puntje boor net tegen stuk 
         MoveL pGat11_R,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_R,0,0,15),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        SetAO aoPLC_Spindle_Speed,1200;
+        !SetAO aoPLC_Spindle_Speed,1200;
         MoveL RelTool(pGat11_R,0,0,105),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
         !diepte net 3 mm in onderste gat
         MoveL RelTool(pGat11_R,0,0,112),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         
         !terug omhoog en snelheid maken
         MoveL RelTool(pGat11_R,0,0,111.8),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
-        WaitTime \InPos, 1.5;
+        !SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
+        !WaitTime \InPos, 1.5;
         
         !doorboren
         MoveL RelTool(pGat11_R,0,0,126),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -1372,7 +1371,7 @@ MODULE mBoren_Fresen_5010737
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
         MoveJ Offs(pFrees_Onderrand_L,0,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_L,-6,6,5),v200,z0,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,-5,5,-11),v200,z0,tFrees_10\WObj:=wobj_Active;
         !
         nSpindleSpeed:=6000;
         SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
@@ -1382,16 +1381,16 @@ MODULE mBoren_Fresen_5010737
         !frees met center op aanzet van uitsparing
         !MoveL pFrees_Onderrand_L,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
         MoveL Offs(pFrees_Onderrand_L,0,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_L,73,-39.5,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_L,547,-39.5,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,78,-45,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,557,-45,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
         !frees met center op einde van uitsparing
-        MoveL Offs(pFrees_Onderrand_L,620,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_L,626,6,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,635,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,635,5,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
         !		
         rStop_Spindle;
         !uit stuk
-        MoveL Offs(pFrees_Onderrand_L,630,5,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_L,630,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,635,5,30),v200,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,635,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -1406,29 +1405,28 @@ MODULE mBoren_Fresen_5010737
         !
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
-        !
-        MoveJ Offs(pFrees_Onderrand_R,0,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_R,0,2,5),v200,z0,tFrees_10\WObj:=wobj_Active;
+        !frees met center op aanzet van uitsparing
+        !MoveL pFrees_Onderrand_R,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+ 
+        MoveL Offs(pFrees_Onderrand_R,635,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_R,635,-5,30),v200,z5,tFrees_10\WObj:=wobj_Active;
         !
         nSpindleSpeed:=6000;
         SetAO aoPLC_Spindle_Speed,nSpindleSpeed;
         rStart_Spindle;
         !
         !in stuk
-        MoveL Offs(pFrees_Onderrand_R,-5,-5,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        !frees met center op aanzet van uitsparing
-        !MoveL pFrees_Onderrand_R,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_R,0,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_R,78,45,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_R,557,45,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-        !frees met center op einde van uitsparing
-        MoveL Offs(pFrees_Onderrand_R,635,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
         MoveL Offs(pFrees_Onderrand_R,635,-2,5),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        !uit stuk
-        MoveL Offs(pFrees_Onderrand_R,635,-5,30),v200,z5,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_R,635,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !	
+        MoveL Offs(pFrees_Onderrand_R,635,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_R,557,45,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_R,78,45,-11),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_R,0,0,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        !uit stuk 
+        MoveL Offs(pFrees_Onderrand_R,-5,-5,-11),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_R,0,2,5),v200,z0,tFrees_10\WObj:=wobj_Active;
         rStop_Spindle;
+        !
+        MoveJ Offs(pFrees_Onderrand_R,0,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -1578,7 +1576,6 @@ MODULE mBoren_Fresen_5010737
         Set_Tool 3;
         MoveAbsJ pHomeJoint_Frezen_R\NoEOffs,v1000,z50,tGripper\WObj:=Wobj0;
         MoveAbsJ [[-90,0,10,0,-10,0],[14000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
-        Stop;
         rFrezen_10mm_Uitsp_635x45_R 2445-1.5,0,0,0;
         !
         rFrezen_10mm_Uitsp_635x45_R 3755-1.5,0,0,0;
