@@ -1,21 +1,21 @@
 MODULE mSettings_Spindle(SYSMODULE)
     !toolmagazijn
-    local CONST string strTool{6}:=["Boor 11mm","Frees","","","",""];
+    local CONST string strTool{6}:=["Boor 11mm","Frees","Krasnaald","","",""];
     CONST num EmptySpindel :=0;
     CONST num Boor_11m := 1;
     CONST num Frees := 2;
-    CONST num empty3 := 3;
+    CONST num Krasnaald := 3;
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
-    local PERS bool  bActiveTool{6} := [FALSE,TRUE,FALSE,FALSE,FALSE,FALSE];
+    local PERS bool  bActiveTool{6} := [FALSE,FALSE,FALSE,FALSE,FALSE,FALSE];
     local CONST num nDefaultSpeed{6} := [2000,6000,0,0,0,0];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-113.098,-15.104,3.1224,84.2322,-67.5896,-85.4401],[500.018,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
     local CONST robtarget Magazijn_Pos1:=[[-460.63,-1000.68,235.99],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    local CONST robtarget Magazijn_Pos2:=[[-310.37,-1002.67,239.95],[0.00363142,-0.999993,0.00022822,-0.000658208],[-2,0,-1,0],[500.001,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    local CONST robtarget Magazijn_Pos3:=[[-160.10,-1003.45,242.36],[0.00363494,-0.999994,0.000227547,-0.000607041],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    local CONST robtarget Magazijn_Pos2:=[[-310.78,-1003.15,242.39],[0.00365054,-0.999993,0.000240162,-0.000632287],[-2,0,-1,0],[500.006,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    local CONST robtarget Magazijn_Pos3:=[[-160.10,-1003.44,234.54],[0.00364142,-0.999993,0.000234007,-0.000609401],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos4:=[[-460.63,-1000.68,235.99],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos5:=[[-310.37,-1002.67,239.95],[0.00363142,-0.999993,0.00022822,-0.000658208],[-2,0,-1,0],[500.001,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos6:=[[-160.10,-1003.45,242.36],[0.00363494,-0.999994,0.000227547,-0.000607041],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];

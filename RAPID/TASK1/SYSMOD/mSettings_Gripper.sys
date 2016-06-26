@@ -63,10 +63,10 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Description: check if gripper is active
     !***************************************
         VAR btnres nAnswer; 
-        IF (fGet_activeTool() <> nActive_Gripper) AND  (nActive_Gripper <> ntool) THEN
-         WHILE TRUE DO 
+        lbl_retry:
+        IF (fGet_activeTool() <> nActive_Gripper) OR  (nActive_Gripper <> ntool) THEN
           nAnswer := UIMessageBox(\Header:="Grijper fout"\MsgArray:=["foute grijper actief !","ga manueel om grijper"],\BtnArray:=["","","","","OK"]); 
-         ENDWHILE
+          GOTO lbl_retry;
         ENDIF
     ENDPROC
     
@@ -287,7 +287,31 @@ MODULE mSettings_Gripper(SYSMODULE)
         !
     WaitDI si_Grijpers_Dicht,1;
     !
-  ENDPROC    
+  ENDPROC  
+  
+  FUNC bool fCheckGripperPart()
+    !***************************************	    
+    ! FUNC: f_checkPart
+    ! Description: check if part present
+    ! Handel sensor fault or ligial pos
+    !***************************************
+    VAR btnres nAnswer;
+    lbl_retry:
+    
+    IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
+      RETURN TRUE;  
+    ENDIF
+    
+    IF TestDI(di_Sensor1_Q1_In) = false AND TestDi(di_Sensor2_Q1_In) = false THEN
+     RETURN FALSE;
+    ENDIF
+
+    nAnswer := UIMessageBox(\Header:="Grijper sensor fout"
+    \MsgArray:=["sensoren niet zoals verwacht!","sensor di_Sensor1_Q1_In en di_Sensor1_Q2_In","moeten altijd gelijk zijn van status","corrigeer positie van balk en controleer sensoren"]
+    ,\BtnArray:=["","","","","OK"]);     
+    GOTO lbl_retry;
+    !
+    ENDFUNC
     
 
 ENDMODULE

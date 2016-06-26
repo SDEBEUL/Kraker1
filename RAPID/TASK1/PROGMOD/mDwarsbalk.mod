@@ -1,9 +1,9 @@
 MODULE mDwarsbalk
     !wobj voor bewerken balken in station
-    TASK PERS wobjdata wobj_BalkStation1:=[FALSE,TRUE,"",[[1928.5,-1043.5,507],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_BalkStation1:=[FALSE,TRUE,"",[[1928.5,-1043.5,510.5],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation2:=[FALSE,TRUE,"",[[4927,-1043.5,507],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation3:=[FALSE,TRUE,"",[[7926,-1043.5,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_BalkStation4:=[FALSE,TRUE,"",[[10927,-1043,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_BalkStation4:=[FALSE,TRUE,"",[[10927,-1046,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation5:=[FALSE,TRUE,"",[[13936,-1043.5,510.5],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     
     TASK PERS wobjdata wobj_Dwarsbalk330_Boor_11:=[FALSE,TRUE,"",[[15000,-1400,300],[0.707107,0.707107,0,0]],[[0,0,0],[0,1,0,0]]];
@@ -338,19 +338,7 @@ MODULE mDwarsbalk
   !===============================================================================================================
   !volledige dwarsbalk
   !===============================================================================================================
-  PROC rTest()
-      rDwarsbalk_Boren_5020330(wobj_BalkStation1);
-      Stop;
-      rDwarsbalk_Boren_5020330(wobj_BalkStation2);
-            Stop;
-      rDwarsbalk_Boren_5020330(wobj_BalkStation3);
-            Stop;
-      rDwarsbalk_Boren_5020330(wobj_BalkStation4);
-            Stop;
-      rDwarsbalk_Boren_5020332;
-            Stop;
-  ENDPROC
-  
+
   
   PROC rDwarsbalk_Boren_5020330 (wobjdata WobjActiveStation) 
         var num trackshift;
@@ -363,10 +351,9 @@ MODULE mDwarsbalk
         EOffsSet [trackshift,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_StationXboor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
-        Stop;
+        GOTO eind;
         !teach midden van balk 
         rBoren_11mm_Dwarsbalk_330_Enkel 0,0,0,trackshift;
-        Stop;
         !
         rBoren_11mm_Dwarsbalk_330_Dubbel -1202.5,27.5,0,trackshift;
         !
@@ -401,6 +388,7 @@ MODULE mDwarsbalk
         rBoren_11mm_Dwarsbalk_330_Dubbel 1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_330_Dubbel 1202.5,-27.5,0,trackshift;
+        eind:
         !
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
@@ -418,7 +406,7 @@ MODULE mDwarsbalk
         EOffsSet [trackshift,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_StationXboor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
-        Stop;
+        GOTO eind;
         !teach midden van balk 
         rBoren_11mm_Dwarsbalk_331_Enkel 0,0,0,trackshift;
         !
@@ -454,6 +442,7 @@ MODULE mDwarsbalk
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -1202.5,-27.5,0,trackshift;
         !
+        eind:
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
         !
@@ -468,8 +457,7 @@ MODULE mDwarsbalk
         EOffsSet [0,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_Station5boor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
-        Stop;
-        !
+        GOTO eind;
         !teach midden van balk 
         rBoren_11mm_Dwarsbalk_332_Enkel 0,0,0,0;
         !
@@ -509,6 +497,7 @@ MODULE mDwarsbalk
         !
       !  rBoren_11mm_Dwarsbalk_332_Enkel -1202.5,-27.5,0,0;
         !
+        eind:
         MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
         !
     ENDPROC
@@ -576,6 +565,104 @@ MODULE mDwarsbalk
         rFrezen_Gat_45mm_Dwarsbalk_330 665,0,-6,0;
         !
      !   MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+    ENDPROC
+    
+  !===============================================================================================================
+  !uitlijnen stations
+  !===============================================================================================================
+  PROC rMAN_stationsUitlijnning()
+      rSationx_uitlijnen(wobj_BalkStation1);
+      Stop;
+      rSationx_uitlijnen(wobj_BalkStation2);
+      Stop;
+      rSationx_uitlijnen(wobj_BalkStation3);
+      Stop;
+      rSationx_uitlijnen(wobj_BalkStation4);
+      Stop;
+      rSation5_uitlijnen;
+      Stop;
+  ENDPROC
+  
+  
+  PROC rSationx_uitlijnen (wobjdata WobjActiveStation) 
+        var num trackshift;
+        !
+        Set_Tool Krasnaald;
+        !
+        wobj_Active:=WobjActiveStation;
+        trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
+        !
+        EOffsSet [trackshift,0,0,0,0,0];
+        MoveAbsJ fArm_only(pHomeJoint_StationXboor11),v1000,z50,tool0; 
+        MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
+        stop;
+        !
+        rUitlijnen_Stationx 0,27.5,0,trackshift,pGat11_330; 
+        !
+        rUitlijnen_Stationx 1210,27.5,0,trackshift,pGat11_330;
+        !
+        rUitlijnen_Stationx 700,27.5,0,trackshift,pGat11_330;
+        !
+        rUitlijnen_Stationx 0,27.5,0,trackshift,pGat11_330;      
+        !
+        rUitlijnen_Stationx -700,27.5,0,trackshift,pGat11_330;
+        !    
+        rUitlijnen_Stationx -1210,27.5,0,trackshift,pGat11_330;   
+        !
+        EOffsSet [trackshift+1300,0,0,0,0,0];
+        MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
+        !
+    ENDPROC
+    
+      PROC rSation5_uitlijnen() 
+
+        !
+        Set_Tool Krasnaald;
+        !
+        wobj_Active:=wobj_BalkStation5;
+        EOffsSet [0,0,0,0,0,0];
+        MoveAbsJ fArm_only(pHomeJoint_Station5boor11),v1000,z50,tool0; 
+        MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
+        Stop;
+        !
+        rUitlijnen_Stationx 0,27.5,0,0,pGat11_332; 
+        !
+        rUitlijnen_Stationx 1210,27.5,0,0,pGat11_332;
+        !
+        rUitlijnen_Stationx 700,27.5,0,0,pGat11_332;
+        !
+        rUitlijnen_Stationx 0,27.5,0,0,pGat11_332;      
+        !
+        rUitlijnen_Stationx -700,27.5,0,0,pGat11_332;
+        !    
+        rUitlijnen_Stationx -1210,27.5,0,0,pGat11_332;   
+        !
+        MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
+        !
+    ENDPROC
+    
+    PROC rUitlijnen_Stationx(
+        num nShift_x,
+        num nShift_y,
+        num nShift_z,
+        num Shift_Track,
+        robtarget refpos)
+        !
+        PDispOff;
+        !
+        EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
+        wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
+        !
+        MoveJ RelTool(refpos,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(refpos,0,0,-30),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(refpos,0,0,20),v80,z0,boor_11mm_L190\WObj:=wobj_Active;
+        stop;
+        !MoveL refpos,v30,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(refpos,0,0,35),v50,z5,boor_11mm_L190\WObj:=wobj_Active;
+        stop;
+        MoveL RelTool(refpos,0,0,-30),v80,z5,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(refpos,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        !
     ENDPROC
     
 ENDMODULE

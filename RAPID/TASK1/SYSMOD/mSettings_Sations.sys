@@ -1,0 +1,475 @@
+MODULE mSettings_Sations(SYSMODULE)
+
+!wat er momenteel in het station ligt
+LOCAL PERS num StationStatus{5} := [10,10,9,9,10];
+!wat er in het station moet komen
+LOCAL PERS num StationReq{5} := [0,0,0,0,0];
+
+PROC Dwarsbalkmain () 
+lblLoop:
+IF bDwarbalkenGewenst() = TRUE THEN
+!roep eerst unload stations als er dan nog bewerkte stukken liggen zijn die eerst weg
+Stop;
+rUnloadStations;
+!laad nu de active stations met lege balken
+Stop;
+rloadStations;
+!kijk wat waar moet gemaakt worden
+Stop;
+rSetOrders;
+!bewerk de stukken in de stations
+Stop;
+rWorkStations;
+!ontlaad de afgewerkte stukken
+Stop;
+rUnloadStations;
+ELSE
+ TPWrite "niets te doen";
+ WaitTime 10;   
+ENDIF
+GOTO lblLoop;
+!
+ENDPROC
+
+FUNC bool bDwarbalkenGewenst()
+    !***************************************	    
+    ! Proc: bMaakDwarbalken
+    ! Description: is true als er dwarsbalken gemaakt kunnen worden
+    !dit word bekeken op vlak van UITVOER
+    !***************************************
+    IF fPutNextBuffer(Dwarsbalk330) <> 0 OR fPutNextBuffer(Dwarsbalk331) <> 0 OR fPutNextBuffer(Dwarsbalk332) <> 0 THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    ENDIF
+ENDFUNC
+
+FUNC num nEersteBufferDiewil()
+    !***************************************	    
+    ! Proc: nEersteBufferDiewil
+    ! Description: geeft de nummer van de eerste buffer die nog balken wil
+    ! ik gebruik dit om de orders te bepalen
+    !***************************************
+    VAR num nBuffernummer;
+    nBuffernummer := 0;
+    nBuffernummer := fPutNextBuffer(Dwarsbalk330);
+    IF nBuffernummer <> 0 THEN
+       RETURN nBuffernummer;
+    ENDIF
+    nBuffernummer := fPutNextBuffer(Dwarsbalk331);
+    IF nBuffernummer <> 0 THEN
+       RETURN nBuffernummer;
+    ENDIF
+    nBuffernummer := fPutNextBuffer(Dwarsbalk332);
+    IF nBuffernummer <> 0 THEN
+       RETURN nBuffernummer;
+    ENDIF
+     RETURN nBuffernummer;
+ENDFUNC
+
+PROC rSetOrders()
+    !***************************************	    
+    ! Proc: rSetOrders
+    ! Description: geef producite orders aan stations
+    ! kijkt welke buffer er stukken wil
+    !***************************************  
+    VAR num nReqestBuffer;
+    VAR num nAantal330;
+    VAR num nAantal331; 
+    VAR num nAantal332;
+    VAR num nAanTal33x;
+    
+    nReqestBuffer := nEersteBufferDiewil();
+    IF nReqestBuffer = 0 THEN
+       !niemand wil stukken
+       RETURN;
+    ENDIF
+    
+    nAantal330 := fNparsNeeded(nReqestBuffer,Dwarsbalk330);
+    nAantal331 := fNparsNeeded(nReqestBuffer,Dwarsbalk331);
+    nAantal332 := fNparsNeeded(nReqestBuffer,Dwarsbalk332);
+    FOR i FROM 1 TO 4 STEP 1 DO
+      nAanTal33x := nAantal330 + nAantal330;
+      !station niet uit dienst nieuze balk aanwezig en stuk gewenst
+      IF  (StationStatus{i} <> StationUitDienst) AND (StationStatus{i} = DwarsbalkNieuw) AND (nAanTal33x <> 0) THEN
+       IF nAantal330 <> 0 THEN !geeft voorrang aan 330 productie
+        StationReq{i} := Dwarsbalk330;
+        Decr nAantal330;
+       ELSE
+        StationReq{i} := Dwarsbalk331;
+        Decr nAantal331;   
+       ENDIF
+     ENDIF
+    ENDFOR
+    !station 5 maakt enkel 332
+    !station niet uit dienst nieuze balk aanwezig en stuk gewenst
+    IF  (StationStatus{5} <> StationUitDienst) AND (StationStatus{5} = DwarsbalkNieuw) AND (nAantal332 <> 0) THEN
+       StationReq{5} := Dwarsbalk332; 
+    ENDIF
+ENDPROC
+
+PROC rUnloadStations()
+    !***************************************	    
+    ! Proc: rUnloadStations
+    ! Description: ontladen van alle active stations
+    !***************************************	
+    VAR btnres nAnswer; 
+    VAR num buffernummer;
+     FOR i FROM 1 TO 5 STEP 1 DO
+        !niet uit dienst niet leeg en geen nieuwe balk
+       IF (StationStatus{i} <> StationUitDienst) AND (StationStatus{i} <> StationLeeg) AND (StationStatus{i} <> DwarsbalkNieuw) THEN
+          !controller op onafgewerkte stukken of Scrap
+          IF (StationStatus{i} = Dwarsbalk330B) OR (StationStatus{i} = Dwarsbalk331B) OR (StationStatus{i} = Dwarsbalk332B) OR (StationStatus{i} = DwarsbalkScrap) THEN
+           !vraag gebruiker wat te doen;
+           WHILE TRUE DO 
+            nAnswer := UIMessageBox(\Header:="Onafgewerkt stuk in station!"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
+           ENDWHILE
+          ENDIF
+       
+       !verwerk afgewerkte stukken
+       IF (StationStatus{i} = Dwarsbalk330) OR (StationStatus{i} = Dwarsbalk331) OR (StationStatus{i} = Dwarsbalk332)  THEN
+          !kijk of er een buffer is die het stuk wil 
+          nbuffernummer := fPutNextBuffer(StationStatus{i});
+          IF nBuffernummer <> 0 THEN
+            !haal stuk uit station
+            Stop;
+            rUnloadStation(i);
+            Stop;
+            !Plaats stuk in buffer
+            PUTnextpart(StationStatus{i});
+          ENDIF 
+       ENDIF
+          
+       ENDIF   
+     ENDFOR 
+ENDPROC
+
+PROC rloadStations()
+    !***************************************	    
+    ! Proc: rloadStations
+    ! Description: laad stations die leeg en in dienst zijn
+    !***************************************	
+    VAR btnres nAnswer; 
+    VAR num buffernummer;
+    FOR i FROM 1 TO 5 STEP 1 DO
+        IF (StationStatus{i} = StationLeeg) AND (StationStatus{i} <> StationUitDienst) THEN 
+           buffernummer := fGetNextBuffer();
+           IF buffernummer <> 0 THEN !er zijn stukken beschikbaar
+               !haal stuk uit buffer
+               Stop;
+               Getnextpart;
+               !laad stuk in station
+               Stop;
+               rloadStation i;
+           ELSE
+             !vraag stukken ?
+             Stop;
+           ENDIF
+        ENDIF
+    ENDFOR
+ENDPROC
+
+PROC rUnloadStation(num nStation)
+    !***************************************	    
+    ! Proc: rUnloadStation
+    ! Description: haal stuk uit een specfiek station
+    !robot begint thuis en eindigd met stuk in wachpos
+    !***************************************
+    TEST nStation
+      CASE 1:
+       Station_1_Uit;
+      CASE 2:
+       Station_2_Uit;
+      CASE 3:
+       Station_3_Uit;
+      CASE 4:
+       Station_4_Uit;
+      CASE 5:
+       Station_5_Uit;   
+    ENDTEST
+    StationStatus{nStation} := StationLeeg; 
+    StationReq{nStation} := 0;
+ENDPROC
+
+PROC rLoadStation(num nStation)
+    !***************************************	    
+    ! Proc: rLoadStation
+    ! Description: laad een station
+    !robot begint in wachtpos met stuk en eindigd ...
+    !***************************************
+    TEST nStation
+      CASE 1:
+       Station_1_In;
+       StationStatus{1} := DwarsbalkNieuw;
+      CASE 2:
+       Station_2_In;
+       StationStatus{2} := DwarsbalkNieuw;
+      CASE 3:
+       Station_3_In;
+       StationStatus{3} := DwarsbalkNieuw;
+      CASE 4:
+       Station_4_In;
+       StationStatus{4} := DwarsbalkNieuw;
+      CASE 5:
+       Station_5_In;
+       StationStatus{5} := DwarsbalkNieuw;    
+    ENDTEST
+ENDPROC
+
+
+PROC rWorkStations()
+    !***************************************	    
+    ! Proc: rWorkStations
+    ! Description: bewerk stuk in de stations waar nodig
+    !***************************************
+    !ga eerst op ale stations die in klaar zijn voor werk gaan boren 
+     FOR i FROM 1 TO 5 STEP 1 DO
+        !niet uit dienst niet leeg en nieuwe balk
+       IF (StationStatus{i} <> StationUitDienst) AND (StationStatus{i} <> StationLeeg) AND (StationStatus{i} = DwarsbalkNieuw) THEN
+         rWorkStationBoren(i);
+       ENDIF
+     ENDFOR
+     !ga nu op al de stations die in dienst staan gaan boren
+      FOR i FROM 1 TO 5 STEP 1 DO
+        !niet uit dienst niet leeg en nieuwe balk
+       IF (StationStatus{i} <> StationUitDienst) AND (StationStatus{i} <> StationLeeg) THEN
+        !enkel stukken die nog niet klaar zijn
+        IF (StationStatus{i} = Dwarsbalk330B) OR (StationStatus{i} = Dwarsbalk331B) OR (StationStatus{i} = Dwarsbalk332B) OR (StationStatus{i} = DwarsbalkNieuw)THEN
+           rWorkStationFrezen(i);
+        ENDIF
+       ENDIF
+     ENDFOR
+ENDPROC
+
+PROC rWorkStationBoren(num nStation)
+    !***************************************	    
+    ! Proc: rWorkStationBoren
+    ! Description: bewerk stuk in het station
+    !***************************************
+TEST nStation
+  CASE 1:  !station 1
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        StationStatus{nStation} := Dwarsbalk330B;
+        rDwarsbalk_Boren_5020330(wobj_BalkStation1);
+     CASE Dwarsbalk331:
+        StationStatus{nStation} := Dwarsbalk331B;
+        rDwarsbalk_Boren_5020331(wobj_BalkStation1);
+    CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+
+  CASE 2:  !station 2
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        StationStatus{nStation} := Dwarsbalk330B;
+        rDwarsbalk_Boren_5020330(wobj_BalkStation2);
+     CASE Dwarsbalk331:
+        StationStatus{nStation} := Dwarsbalk331B;
+        rDwarsbalk_Boren_5020331(wobj_BalkStation2);
+     CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+    
+   CASE 3:  !station 3
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        StationStatus{nStation} := Dwarsbalk330B;
+        rDwarsbalk_Boren_5020330(wobj_BalkStation3);
+     CASE Dwarsbalk331:
+        StationStatus{nStation} := Dwarsbalk331B;
+        rDwarsbalk_Boren_5020331(wobj_BalkStation3);
+     CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+    
+   CASE 4:  !station 4
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        StationStatus{nStation} := Dwarsbalk330B;
+        rDwarsbalk_Boren_5020330(wobj_BalkStation4);
+     CASE Dwarsbalk331:
+        StationStatus{nStation} := Dwarsbalk331B;
+        rDwarsbalk_Boren_5020331(wobj_BalkStation4);
+     CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+    
+   CASE 5:  !station 5
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+     !mag niet in dit station
+     CASE Dwarsbalk331:
+     !mag niet in dit station
+     CASE Dwarsbalk332:
+     StationStatus{nStation} := Dwarsbalk332B;
+       rDwarsbalk_Boren_5020332;
+    ENDTEST
+
+ENDTEST
+ENDPROC
+
+PROC rWorkStationFrezen(num nStation)
+    !***************************************	    
+    ! Proc: rWorkStationFrezen
+    ! Description: bewerk stuk in het station
+    !***************************************
+Stop;
+TEST nStation
+  CASE 1:  !station 1
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        !rDwarsbalk_Frezen_5020330(wobj_BalkStation1);
+        StationStatus{nStation} := Dwarsbalk330;
+     CASE Dwarsbalk331:
+        !rDwarsbalk_Frezen_5020331(wobj_BalkStation1);
+        StationStatus{nStation} := Dwarsbalk331;
+    CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+
+  CASE 2:  !station 2
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        !rDwarsbalk_Frezen_5020330(wobj_BalkStation2);
+        StationStatus{nStation} := Dwarsbalk330;
+     CASE Dwarsbalk331:
+        !rDwarsbalk_Frezen_5020331(wobj_BalkStation2);
+        StationStatus{nStation} := Dwarsbalk331;
+    CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+    
+   CASE 3:  !station 3
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        !rDwarsbalk_Frezen_5020330(wobj_BalkStation3);
+        StationStatus{nStation} := Dwarsbalk330;
+     CASE Dwarsbalk331:
+        !rDwarsbalk_Frezen_5020331(wobj_BalkStation3);
+        StationStatus{nStation} := Dwarsbalk331;
+    CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+    
+   CASE 4:  !station 4
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+        !rDwarsbalk_Frezen_5020330(wobj_BalkStation4);
+        StationStatus{nStation} := Dwarsbalk330;
+     CASE Dwarsbalk331:
+        !rDwarsbalk_Frezen_5020331(wobj_BalkStation4);
+        StationStatus{nStation} := Dwarsbalk331;
+    CASE Dwarsbalk332:
+       !mag niet in dit station
+    ENDTEST
+    
+   CASE 5:  !station 5
+    TEST StationReq{nStation}
+     CASE Dwarsbalk330:
+     !mag niet in dit station
+     CASE Dwarsbalk331:
+     !mag niet in dit station
+     CASE Dwarsbalk332:
+       !rDwarsbalk_Frezen_5020332;
+       StationStatus{nStation} := Dwarsbalk332;
+    ENDTEST
+
+ENDTEST
+
+ENDPROC
+
+
+PROC rSetSationClamps(num nStation,bool bClose, \num nWaittime)
+    !***************************************	    
+    ! Proc: rSetSationClamps
+    ! Description: open of sluit klemmen 
+    !***************************************
+    VAR num nState;
+    
+    IF bClose THEN
+        nState := 0;
+    ELSE
+        nState := 1;
+    ENDIF
+    
+    TEST nStation
+          CASE 1:
+              SetDO doKP_1_Ventiel,nState;
+          CASE 2:
+              SetDO doKP_2_Ventiel,nState;
+          CASE 3:
+              SetDO doKP_3_Ventiel,nState;
+          CASE 4:
+              SetDO doKP_4_Ventiel,nState;
+          CASE 5:
+              SetDO doKP_5_Ventiel,nState;   
+    ENDTEST
+    
+    IF Present(nWaittime) THEN
+      WaitTime nWaittime;
+    ELSE
+       WaitTime 3;
+    ENDIF
+ENDPROC
+
+
+
+
+PROC rSetStationStatus(num stationnum)
+        VAR btnres nAnswer;
+        lbl_begin:
+        nAnswer:=UIMessageBox(\Header:="Station status voor station"+NumToStr(stationnum,0)
+        \MsgArray:=["Dit Station heeft momenteel het volgende status"
+        ,"StationStatus="+NumToStr(StationStatus{stationnum},0),
+        "StationUitDienst="+NumToStr(StationUitDienst,0) +  " StationLeeg="+NumToStr(StationLeeg,0)  + " DwarsbalkScrap="+NumToStr(DwarsbalkScrap,0)],
+        \BtnArray:=["UitDienst","Leeg","SCRAP","Klemmen","Exit"]);
+        !moet andere statussen nog verder aanvullen 
+        TEST nAnswer
+        CASE 1:
+          StationStatus{stationnum} := StationUitDienst;
+          GOTO lbl_begin;
+        CASE 2:
+          StationStatus{stationnum} := StationLeeg;
+          GOTO lbl_begin;
+        CASE 3:
+          StationStatus{stationnum} := DwarsbalkScrap;
+          GOTO lbl_begin;
+        CASE 4:
+          rSetStationClamps(stationnum);
+          GOTO lbl_begin;
+        CASE 5:
+           GOTO lblExit;
+        ENDTEST  
+       lblExit:
+ENDPROC
+
+PROC rSetStationClamps(num stationnum)
+        VAR btnres nAnswer;
+        lbl_begin:
+        nAnswer:=UIMessageBox(\Header:="Station klemmen voor station"+NumToStr(stationnum,0)
+        \MsgArray:=["Dit Station heeft momenteel het volgende status"
+        ,"klemmen= xx",
+        "open=1 close = 0"],
+        \BtnArray:=["OPEN","","CLOSE","","Exit"]);
+        TEST nAnswer
+        CASE 1:
+          !open klemmen
+          rSetSationClamps stationnum, FALSE,\nWaittime:=0;
+          GOTO lbl_begin;
+        CASE 2:
+           !leeg
+        CASE 3:
+          !sluit klemmen
+          rSetSationClamps stationnum, TRUE,\nWaittime:=0;
+          GOTO lbl_begin;
+        CASE 4:
+          !leeg
+        CASE 5:
+           GOTO lblExit;
+        ENDTEST  
+       lblExit:
+ENDPROC
+
+
+ENDMODULE

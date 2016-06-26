@@ -20,7 +20,7 @@ MODULE mStation
     LOCAL PERS Num Shift_x:=0;
     LOCAL PERS Num Shift_y:=0;
     LOCAL PERS Num Shift_z:=0;
-    LOCAL PERS Num Shift_Track:=3000;
+    LOCAL PERS Num Shift_Track:=0;
     
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     

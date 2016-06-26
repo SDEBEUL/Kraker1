@@ -1,8 +1,8 @@
 #
 # Generated backup file, do not edit.
 #
-# Originally at: /hd0a/temp/f136e5b7
-# 16-06-19  15:54:46
+# Originally at: /hd0a/temp/1320af2b
+# 16-06-20  16:05:51
 #
 >>SYSTEM_ID:
 66-60711
@@ -68,9 +68,11 @@ PROGMOD/RapidCom.mod @ rapidcom.mod
 PROGMOD/TuneMasterLib.mod @ tunemasterlib.mod
 SYSMOD/mSettings_Spindle.sys @ msettings_spindle.sys
 SYSMOD/L_support.sys @ l_support.sys
+SYSMOD/mSettings_Sations.sys @ msettings_sations.sys
 PROGMOD/mDwarsbalk.mod @ mdwarsbalk.mod
 PROGMOD/mOnderRanden.mod @ monderranden.mod
 PROGMOD/mStation.mod @ mstation.mod
+SYSMOD/mSettings_Buffer.sys @ msettings_buffer.sys
 SYSMOD/mSettings_Gripper.sys @ msettings_gripper.sys
 
 >>TASK2: (PSC_CBC,,)
