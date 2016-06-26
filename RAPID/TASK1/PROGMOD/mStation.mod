@@ -20,7 +20,7 @@ MODULE mStation
     LOCAL PERS Num Shift_x:=0;
     LOCAL PERS Num Shift_y:=0;
     LOCAL PERS Num Shift_z:=0;
-    LOCAL PERS Num Shift_Track:=0;
+    LOCAL PERS Num Shift_Track:=11990;
     
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
@@ -161,7 +161,7 @@ ENDPROC
 PROC Station_1_Uit()
 
 ! Uithalen dwarsbalk in mal pos 1
-    Set_Gripper(2);
+    Set_Gripper(GrijperTool);
     !
     Shift_Track:=0;
     
@@ -185,7 +185,7 @@ ENDPROC
 PROC Station_2_Uit()
     
 ! Uithalen dwarsbalk in mal pos 2
-    Set_Gripper(2);
+    Set_Gripper(GrijperTool);
     !
     Shift_Track:=3000;
     
@@ -211,7 +211,7 @@ ENDPROC
 PROC Station_3_Uit()
 
 ! Uithalen dwarsbalk in mal pos 3
-    Set_Gripper(2);
+    Set_Gripper(GrijperTool);
     !
     Shift_Track:=6150;
     
@@ -236,7 +236,7 @@ ENDPROC
 PROC Station_4_Uit()
 
 ! Uithalen dwarsbalk in mal pos 4
-    Set_Gripper(2);
+    Set_Gripper(GrijperTool);
     !
     Shift_Track:=8993;
     
@@ -261,7 +261,7 @@ ENDPROC
 PROC Station_5_Uit()
 
 ! Uithalen dwarsbalk in mal pos 5
-    Set_Gripper(2);
+    Set_Gripper(GrijperTool);
     !
     Shift_Track:=11990;
     

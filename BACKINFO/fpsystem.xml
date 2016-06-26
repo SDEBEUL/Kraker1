@@ -25,6 +25,11 @@
     <DATA id="UserSettings">
       <PROP name="RapidEditorFontIndex" value="5" />
     </DATA>
+    <DATA id="ViewInManFull">
+      <PROP name="text" value="PARAM_TXT_VIEWINMANFULL" />
+      <PROP name="dll" value="" />
+      <PROP name="type" value="" />
+    </DATA>
     <DATA id="ViewInAuto">
       <PROP name="text" value="PARAM_TXT_VIEWINAUTO" />
       <PROP name="dll" value="TpsViewProductionWnd.dll" />
@@ -46,9 +51,6 @@
       <PROP name="allowInAuto" value="No" />
       <PROP name="pressed" value="" />
       <PROP name="target" value="" />
-    </DATA>
-    <DATA id="ChangeInstruction">
-      <PROP name="Last Assignment DataType" value="num" />
     </DATA>
     <DATA id="Backup Restore">
       <PROP name="LastPath" value="ctrl:/hd0a/BACKUP/" />
@@ -74,10 +76,8 @@
       <PROP name="pressed" value="SetTo0" />
       <PROP name="target" value="doPLC_Spindle_Aan" />
     </DATA>
-    <DATA id="ViewInManFull">
-      <PROP name="text" value="PARAM_TXT_VIEWINMANFULL" />
-      <PROP name="dll" value="" />
-      <PROP name="type" value="" />
+    <DATA id="ChangeInstruction">
+      <PROP name="Last Assignment DataType" value="num" />
     </DATA>
     <DATA id="QuickSet">
       <PROP name="IncrementToggle" value="Small" />

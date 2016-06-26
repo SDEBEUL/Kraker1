@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=3;
+    PERS num nActive_Gripper:=2;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;
@@ -68,6 +68,23 @@ MODULE mSettings_Gripper(SYSMODULE)
           nAnswer := UIMessageBox(\Header:="Grijper fout"\MsgArray:=["foute grijper actief !","ga manueel om grijper"],\BtnArray:=["","","","","OK"]); 
           GOTO lbl_retry;
         ENDIF
+        !
+    ENDPROC
+    
+    PROC Check_Notool()
+    !***************************************	    
+    ! Proc: Check_Notool
+    ! Description: check if too is gone 
+    !***************************************
+        VAR btnres nAnswer; 
+        lbl_retry:
+              
+        IF TestDI(di_Changer_Tool_Aanwezig) THEN
+          nAnswer := UIMessageBox(\Header:="Grijper fout"\MsgArray:=["Tool zo los moeten zijn!","ga manueel en los op"],\BtnArray:=["","","","","OK"]); 
+          GOTO lbl_retry;
+        ENDIF
+        nActive_Gripper := NoTool;
+        !
     ENDPROC
     
     PROC Set_Gripper(num nGripper)
@@ -180,8 +197,8 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
         MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
         rToolchanger_Open;   
-        MoveL pDummy,v10,fine,tool0;
-        rToolchanger_close;
+        MoveL pDummy,v100,fine,tool0;
+        rToolchanger_close \Nocheck:=true;
         nActive_Gripper := DummyTool;
         Reset so_Changer_Open;
         Reset do_Gripper_Open;
@@ -199,6 +216,9 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
         MoveL pDummy,v10,fine,tool0;
         rToolchanger_Open;
+        MoveL reltool(pDummy,0,0,-5),v100,fine,tool0;
+        WaitTime \InPos,0.1;
+        Check_Notool;
         MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
         rReset_Grijper_WZ;
         WaitDI di_Changer_Tool_Aanwezig, 0;
@@ -217,9 +237,11 @@ MODULE mSettings_Gripper(SYSMODULE)
         rToolchanger_Open;
         MoveL pGripper,v10,fine,tool0;
         rToolchanger_close;
+        rGripper_Open;
         nActive_Gripper := GrijperTool;
-        MoveL RelTool(pGripper,0,-250,0),v20,fine,tool0;
-        MoveL RelTool(pGripper,0,-250,-850),v50,fine,tool0;
+        Check_gripper(GrijperTool);
+        MoveL RelTool(pGripper,0,-250,0),v200,fine,tool0;
+        MoveL RelTool(pGripper,0,-250,-850),v200,fine,tool0;
         MoveAbsJ pHomeJoint_Grijper\NoEOffs,v1000,fine,tool0;
         !
     ENDPROC
@@ -231,9 +253,11 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveAbsJ pHomeJoint_Grijper\NoEOffs,v1000,fine,tool0;
         MoveJ RelTool(pGripper,0,-250,-850),V1000,fine,tool0;
         MoveL RelTool(pGripper,0,-250,0),v200,fine,tool0;
-        MoveL pGripper,v20,fine,tool0;
+        MoveL pGripper,v50,fine,tool0;
         rToolchanger_Open;
-        MoveL RelTool(pGripper,0,0,-30),v10,z1,tool0;
+        MoveL RelTool(pGripper,0,0,0-5),v50,fine,tool0;
+        Check_Notool;
+        MoveL RelTool(pGripper,0,0,-30),v100,z1,tool0;
         rReset_Grijper_WZ;
         MoveL RelTool(pGripper,0,0,-50),v100,z1,tool0;
         MoveL RelTool(pGripper,0,0,-500),v1000,z50,tool0;
@@ -249,18 +273,21 @@ MODULE mSettings_Gripper(SYSMODULE)
       rSet_Grijper_WZ;
       Set so_Changer_Open;
       WaitDI di_Changer_Vergrendeld, 0;
-      nActive_Gripper := NoTool;
+      !WaitDI diChanger_Open, 1;
     !
   ENDPROC 
   
-  LOCAL PROC rToolchanger_close()
+  LOCAL PROC rToolchanger_close(\bool Nocheck)
     !***************************************	    
     ! Proc: rToolchanger_close
     ! Description: sluit toolchanger
     !***************************************
       Reset so_Changer_Open;
+      IF not Present(Nocheck) then
       WaitDI di_Changer_Vergrendeld, 1;
       WaitDi di_Changer_Tool_Aanwezig, 1;
+      endif
+      !WaitDI diChanger_Open, 0;
       rReset_Grijper_WZ;
     !
   ENDPROC 
@@ -297,7 +324,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
     VAR btnres nAnswer;
     lbl_retry:
-    
+    WaitTime \inpos, 0.5;
     IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
       RETURN TRUE;  
     ENDIF

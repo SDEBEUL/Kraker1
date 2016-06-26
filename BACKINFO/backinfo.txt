@@ -1,8 +1,8 @@
 #
 # Generated backup file, do not edit.
 #
-# Originally at: /hd0a/temp/1320af2b
-# 16-06-20  16:05:51
+# Originally at: /hd0a/temp/155128f2
+# 16-06-21  15:50:49
 #
 >>SYSTEM_ID:
 66-60711
@@ -72,7 +72,7 @@ SYSMOD/mSettings_Sations.sys @ msettings_sations.sys
 PROGMOD/mDwarsbalk.mod @ mdwarsbalk.mod
 PROGMOD/mOnderRanden.mod @ monderranden.mod
 PROGMOD/mStation.mod @ mstation.mod
-SYSMOD/mSettings_Buffer.sys @ msettings_buffer.sys
+PROGMOD/mSettings_buffer.mod @ msettings_buffer.mod
 SYSMOD/mSettings_Gripper.sys @ msettings_gripper.sys
 
 >>TASK2: (PSC_CBC,,)

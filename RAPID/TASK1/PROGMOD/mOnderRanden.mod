@@ -366,55 +366,55 @@ MODULE mOnderRanden
         !
         rBoren_11mm_Onderrand_Dubbel_L 10282.5-5.5+4.2,2.1,0,0;
         !70
-        rBoren_11mm_Onderrand_Dubbel_L 10337.5-5.5+4.2,2.1,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 10337.5-5.5+4.2,1.1,0,0;
        
         !
-        rBoren_11mm_Onderrand_Dubbel_L 10567.5-5.5+4.9,2.1,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 10567.5-5.5+4.9,1.1,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 10622.5-5.5+4.9,2.1,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 10622.5-5.5+4.9,1.1,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 10852.5-5.5+4.9,2.1,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 10852.5-5.5+4.9,1.1,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 10907.5-5.5+4.9,2.1,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 10907.5-5.5+4.9,1.1,0,0;
         !75
-        rBoren_11mm_Onderrand_Dubbel_L 11137.5-5.5+4.9,2.3,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11137.5-5.5+4.9,1.3,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11192.5-5.5+4.9,2.3,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11192.5-5.5+4.9,1.3,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11402.5-5.5+4.9,2.3,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11402.5-5.5+4.9,1.3,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11462.5-5.5+4.9,2.4,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11462.5-5.5+4.9,1.4,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11517.5-5.5+4.9,2.4,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11517.5-5.5+4.9,1.4,0,0;
         !80
-        rBoren_11mm_Onderrand_Dubbel_L 11577.5-5.5+4.9,2.4,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11577.5-5.5+4.9,1.4,0,0;
        
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11657.5-5.5+5.6,2.3,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11657.5-5.5+5.6,1.3,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11717.5-5.6+5.6,2.2,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11717.5-5.6+5.6,1.2,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11772.5-5.6+5.6,2.1,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11772.5-5.6+5.6,1.1,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11832.5-5.7+5.6,2,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11832.5-5.7+5.6,1,0,0;
         !85
-        rBoren_11mm_Onderrand_Dubbel_L 11912.5-5.7+5.6,1.9,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11912.5-5.7+5.6,0.9,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 11972.5-5.7+5.6,1.8,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 11972.5-5.7+5.6,0.8,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 12027.5-5.7+5.6,1.7,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 12027.5-5.7+5.6,0.7,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 12087.5-5.8+5.6,1.6,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 12087.5-5.8+5.6,0.6,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 12167.5-5.8+5.6,1.5,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 12167.5-5.8+5.6,0.5,0,0;
         !90
-        rBoren_11mm_Onderrand_Dubbel_L 12227.5-5.8+5.6,1.4,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 12227.5-5.8+5.6,0.4,0,0;
        
         !
-        rBoren_11mm_Onderrand_Dubbel_L 12282.5-5.8+6.3,1.4,0,0;
+        rBoren_11mm_Onderrand_Dubbel_L 12282.5-5.8+6.3,0.4,0,0;
         !
-        rBoren_11mm_Onderrand_Dubbel_L 12342.5-5.8+6.3,1.4,0,0;
-        !
+        rBoren_11mm_Onderrand_Dubbel_L 12342.5-5.8+6.3,0.4,0,0;
+        !qqqq
         rBoren_11mm_Onderrand_Dubbel_L 12540-5.9+6.3,1.4,0,0;
         !
         rBoren_11mm_Onderrand_Dubbel_L 12595-5.9+6.3,1.4,0,0;

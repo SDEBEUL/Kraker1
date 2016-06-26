@@ -1,7 +1,7 @@
 MODULE L_support(SYSMODULE)
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[1928.5,-1043.5,510.5],[0.707107,0.707107,0,0]],[[-700,27.5,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[3389.9,1.9,0],[1,0,0,0]]];
   !loadata
    PERS loaddata Spindel:=[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0];
    PERS loaddata Grijper:=[104.4,[-101.6,29.8,446.9],[1,0,0,0],22.193,21.253,2.04];

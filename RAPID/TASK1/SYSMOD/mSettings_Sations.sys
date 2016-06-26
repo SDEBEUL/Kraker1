@@ -1,30 +1,31 @@
 MODULE mSettings_Sations(SYSMODULE)
 
 !wat er momenteel in het station ligt
-LOCAL PERS num StationStatus{5} := [10,10,9,9,10];
+LOCAL PERS num StationStatus{5} := [4,9,9,9,4];
 !wat er in het station moet komen
-LOCAL PERS num StationReq{5} := [0,0,0,0,0];
+LOCAL PERS num StationReq{5} := [0,0,2,2,0];
 
 PROC Dwarsbalkmain () 
 lblLoop:
 IF bDwarbalkenGewenst() = TRUE THEN
+IF NOT bDwarbalkenBeschikbaar() THEN
+  TPWrite "Geen nieuwe balken beschikbaar";
+  WaitTime 10;  
+ENDIF
 !roep eerst unload stations als er dan nog bewerkte stukken liggen zijn die eerst weg
-Stop;
 rUnloadStations;
 !laad nu de active stations met lege balken
-Stop;
 rloadStations;
 !kijk wat waar moet gemaakt worden
-Stop;
 rSetOrders;
 !bewerk de stukken in de stations
-Stop;
 rWorkStations;
 !ontlaad de afgewerkte stukken
-Stop;
 rUnloadStations;
 ELSE
- TPWrite "niets te doen";
+ !laad nu de active stations met lege balken
+ rloadStations;
+ TPWrite "Geen rekken voor uitvoer of geen opdrachten";
  WaitTime 10;   
 ENDIF
 GOTO lblLoop;
@@ -33,11 +34,23 @@ ENDPROC
 
 FUNC bool bDwarbalkenGewenst()
     !***************************************	    
-    ! Proc: bMaakDwarbalken
+    ! Proc: bDwarbalkenGewenst
     ! Description: is true als er dwarsbalken gemaakt kunnen worden
     !dit word bekeken op vlak van UITVOER
     !***************************************
     IF fPutNextBuffer(Dwarsbalk330) <> 0 OR fPutNextBuffer(Dwarsbalk331) <> 0 OR fPutNextBuffer(Dwarsbalk332) <> 0 THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    ENDIF
+ENDFUNC
+
+FUNC bool bDwarbalkenBeschikbaar()
+    !***************************************	    
+    ! Proc: bDwarbalkenBeschikbaar
+    ! Description: kijk of er nieuwe balken beschikbaar zijn 
+    !***************************************
+    IF fGetNextBuffer() <> 0 THEN
         RETURN TRUE;
     ELSE
         RETURN FALSE;
@@ -89,7 +102,7 @@ PROC rSetOrders()
     nAantal331 := fNparsNeeded(nReqestBuffer,Dwarsbalk331);
     nAantal332 := fNparsNeeded(nReqestBuffer,Dwarsbalk332);
     FOR i FROM 1 TO 4 STEP 1 DO
-      nAanTal33x := nAantal330 + nAantal330;
+      nAanTal33x := nAantal330 + nAantal331;
       !station niet uit dienst nieuze balk aanwezig en stuk gewenst
       IF  (StationStatus{i} <> StationUitDienst) AND (StationStatus{i} = DwarsbalkNieuw) AND (nAanTal33x <> 0) THEN
        IF nAantal330 <> 0 THEN !geeft voorrang aan 330 productie
@@ -115,6 +128,7 @@ PROC rUnloadStations()
     !***************************************	
     VAR btnres nAnswer; 
     VAR num buffernummer;
+    VAR num nPArtypeIngripper;
      FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg en geen nieuwe balk
        IF (StationStatus{i} <> StationUitDienst) AND (StationStatus{i} <> StationLeeg) AND (StationStatus{i} <> DwarsbalkNieuw) THEN
@@ -129,14 +143,15 @@ PROC rUnloadStations()
        !verwerk afgewerkte stukken
        IF (StationStatus{i} = Dwarsbalk330) OR (StationStatus{i} = Dwarsbalk331) OR (StationStatus{i} = Dwarsbalk332)  THEN
           !kijk of er een buffer is die het stuk wil 
-          nbuffernummer := fPutNextBuffer(StationStatus{i});
-          IF nBuffernummer <> 0 THEN
+          buffernummer := fPutNextBuffer(StationStatus{i});
+          IF buffernummer <> 0 THEN
             !haal stuk uit station
-            Stop;
             rUnloadStation(i);
-            Stop;
+            nPArtypeIngripper := StationStatus{i};
+            StationStatus{i} := StationLeeg; 
+            StationReq{i} := 0;
             !Plaats stuk in buffer
-            PUTnextpart(StationStatus{i});
+            PUTnextpart(nPArtypeIngripper);
           ENDIF 
        ENDIF
           
@@ -156,14 +171,11 @@ PROC rloadStations()
            buffernummer := fGetNextBuffer();
            IF buffernummer <> 0 THEN !er zijn stukken beschikbaar
                !haal stuk uit buffer
-               Stop;
                Getnextpart;
                !laad stuk in station
-               Stop;
                rloadStation i;
            ELSE
-             !vraag stukken ?
-             Stop;
+             !geen nieuze stukken meer 
            ENDIF
         ENDIF
     ENDFOR
@@ -187,8 +199,6 @@ PROC rUnloadStation(num nStation)
       CASE 5:
        Station_5_Uit;   
     ENDTEST
-    StationStatus{nStation} := StationLeeg; 
-    StationReq{nStation} := 0;
 ENDPROC
 
 PROC rLoadStation(num nStation)
@@ -255,6 +265,7 @@ TEST nStation
      CASE Dwarsbalk331:
         StationStatus{nStation} := Dwarsbalk331B;
         rDwarsbalk_Boren_5020331(wobj_BalkStation1);
+        StationStatus{nStation} := Dwarsbalk331;
     CASE Dwarsbalk332:
        !mag niet in dit station
     ENDTEST
@@ -267,6 +278,7 @@ TEST nStation
      CASE Dwarsbalk331:
         StationStatus{nStation} := Dwarsbalk331B;
         rDwarsbalk_Boren_5020331(wobj_BalkStation2);
+        StationStatus{nStation} := Dwarsbalk331;
      CASE Dwarsbalk332:
        !mag niet in dit station
     ENDTEST
@@ -279,6 +291,7 @@ TEST nStation
      CASE Dwarsbalk331:
         StationStatus{nStation} := Dwarsbalk331B;
         rDwarsbalk_Boren_5020331(wobj_BalkStation3);
+        StationStatus{nStation} := Dwarsbalk331;
      CASE Dwarsbalk332:
        !mag niet in dit station
     ENDTEST
@@ -291,6 +304,7 @@ TEST nStation
      CASE Dwarsbalk331:
         StationStatus{nStation} := Dwarsbalk331B;
         rDwarsbalk_Boren_5020331(wobj_BalkStation4);
+        StationStatus{nStation} := Dwarsbalk331;
      CASE Dwarsbalk332:
        !mag niet in dit station
     ENDTEST
@@ -314,7 +328,6 @@ PROC rWorkStationFrezen(num nStation)
     ! Proc: rWorkStationFrezen
     ! Description: bewerk stuk in het station
     !***************************************
-Stop;
 TEST nStation
   CASE 1:  !station 1
     TEST StationReq{nStation}
@@ -322,8 +335,7 @@ TEST nStation
         !rDwarsbalk_Frezen_5020330(wobj_BalkStation1);
         StationStatus{nStation} := Dwarsbalk330;
      CASE Dwarsbalk331:
-        !rDwarsbalk_Frezen_5020331(wobj_BalkStation1);
-        StationStatus{nStation} := Dwarsbalk331;
+!geen frezen voor deze balk 
     CASE Dwarsbalk332:
        !mag niet in dit station
     ENDTEST
@@ -412,9 +424,6 @@ PROC rSetSationClamps(num nStation,bool bClose, \num nWaittime)
        WaitTime 3;
     ENDIF
 ENDPROC
-
-
-
 
 PROC rSetStationStatus(num stationnum)
         VAR btnres nAnswer;

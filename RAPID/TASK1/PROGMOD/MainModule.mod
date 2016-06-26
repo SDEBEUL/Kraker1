@@ -3,18 +3,14 @@ MODULE MainModule
     PROC Main()
         VelSet 100, 800;
         AccSet 50,50;
-        Buffer_1_Uit;
-        Stop;
-        
-        
         rInterFaceHome;
     ENDPROC
 
     PROC rInterFaceHome()
         VAR btnres nAnswer;
         nAnswer:=UIMessageBox(\Header:="Karker Trailers **K-FORCE**"
-        \MsgArray:=["Wat wilt u doen?","OndeRanden => selecteer productie onderranden","DwarsBalken => selecteer productie dwarsbalken","ResetBuffer => buffer resetten","Onderhoud => Onderhouds functies"],
-        \BtnArray:=["OnderRanden","DwarsBalken","","ResetBuffer","Onderhoud"]);
+        \MsgArray:=["Wat wilt u doen?","OndeRanden => selecteer productie onderranden","DwarsBalken => selecteer productie dwarsbalken","Onderhoud => Onderhouds functies"],
+        \BtnArray:=["OnderRanden","DwarsBalken","","","Onderhoud"]);
         TEST nAnswer
         CASE 1:
           rOnderRanden;
@@ -23,7 +19,7 @@ MODULE MainModule
         CASE 3:
           !leeg
         CASE 4:
-          RESET_Buffer;
+          !leeg
         CASE 5:
           rMaint;
         ENDTEST  
@@ -71,7 +67,7 @@ MODULE MainModule
         VAR btnres nAnswer;
         lblBegin:
         nAnswer:=UIMessageBox(\Header:="Dwarsbalken"
-        \MsgArray:=["CONTROLLER WELKE BUFFERS ACTIEF ZIJN!","BufferIn  => " + strActive_BufferIn + "  actief (nieuwe balken) ","BufferUit => " + strActive_BufferOut +" actief (afgewerkte balken)","Start => begin met procutie"],
+        \MsgArray:=["CONTROLLER WELKE BUFFERS ACTIEF ZIJN!","BufferIn  => " + "" + "  actief (nieuwe balken) ","BufferUit => " + "" +" actief (afgewerkte balken)","Start => begin met procutie"],
         \BtnArray:=["Start","SetBufferIn","Stations","SetBufferUit","Cancel"]);
         TEST nAnswer
         CASE 1:

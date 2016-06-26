@@ -1,6 +1,6 @@
 MODULE mDwarsbalk
     !wobj voor bewerken balken in station
-    TASK PERS wobjdata wobj_BalkStation1:=[FALSE,TRUE,"",[[1928.5,-1043.5,510.5],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_BalkStation1:=[FALSE,TRUE,"",[[1926.9,-1043.5,510.5],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation2:=[FALSE,TRUE,"",[[4927,-1043.5,507],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation3:=[FALSE,TRUE,"",[[7926,-1043.5,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation4:=[FALSE,TRUE,"",[[10927,-1046,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
@@ -14,8 +14,8 @@ MODULE mDwarsbalk
     TASK PERS wobjdata wobj_Dwarsbalk332_Boor_11:=[FALSE,TRUE,"",[[15000,-1400,300],[0.707107,0.707107,0,0]],[[0,0,0],[0,1,0,0]]];
     TASK PERS wobjdata wobj_Dwarsbalk332_Frees:=[FALSE,TRUE,"",[[15000,-1400,300],[0,1,0,0]],[[0,0,0],[0,1,0,0]]];
     !Robtargets  
-    CONST robtarget pGat11_330:=[[-0.01,-0.01,-0.02],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pGat11_331:=[[-0.81,0.64,0.52],[3.49432E-05,2.42889E-06,-4.25262E-05,-1],[-1,-1,-1,0],[12590.8,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGat11_330:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGat11_331:=[[0,0,0],[0.996832,-3.67099E-05,-1.70326E-05,0.0795373],[-2,0,0,0],[3200,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGat11_332:=[[0,0,0],[0.064009,-7.21238E-06,1.02838E-05,0.99795],[-1,-1,-1,0],[12590.8,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand:=[[0.02,44.29,273.70],[6.89394E-05,-1,1.95355E-05,-1.6353E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Ziel:=[[0.01,51.77,256],[6.13094E-05,-1,2.02582E-05,-1.54504E-05],[-2,0,-1,0],[999.988,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -89,12 +89,11 @@ MODULE mDwarsbalk
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
         MoveJ RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
-        !rStart_Spindle;
+        rStart_Spindle;
         MoveL RelTool(pGat11_331,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        Stop;
-        !MoveL RelTool(pGat11_331,0,0,5),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_331,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         rStop_Spindle;
         MoveL RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -113,15 +112,16 @@ MODULE mDwarsbalk
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
         MoveJ RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
-        !rStart_Spindle;
+        rStart_Spindle;
         MoveL RelTool(pGat11_331,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        Stop;
-        !MoveL RelTool(pGat11_331,0,0,5),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_331,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,85),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,110), vBoren_11_190, fine, boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         rStop_Spindle;
-        MoveL RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_330,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -140,7 +140,7 @@ MODULE mDwarsbalk
         rStart_Spindle;
         MoveL RelTool(pGat11_332,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_332,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_332,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         rStop_Spindle;
@@ -160,12 +160,13 @@ MODULE mDwarsbalk
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
         MoveJ RelTool(pGat11_332,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
-        !rStart_Spindle;
+        rStart_Spindle;
         MoveL RelTool(pGat11_332,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_332,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        Stop;
-        !MoveL RelTool(pGat11_331,0,0,5),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_332,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,85),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,110), vBoren_11_190, fine, boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         rStop_Spindle;
         MoveL RelTool(pGat11_332,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -351,13 +352,18 @@ MODULE mDwarsbalk
         EOffsSet [trackshift,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_StationXboor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
-        GOTO eind;
         !teach midden van balk 
-        rBoren_11mm_Dwarsbalk_330_Enkel 0,0,0,trackshift;
+        !rBoren_11mm_Dwarsbalk_330_Enkel 0,0,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_330_Dubbel -1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_330_Dubbel -1202.5, -27.5, 0, trackshift;
+        
+        !
+        rBoren_11mm_Dwarsbalk_330_Enkel -1150,20,0,trackshift;
+        !
+        rBoren_11mm_Dwarsbalk_330_Enkel -1040,20,0,trackshift;
+
         
         !
         rBoren_11mm_Dwarsbalk_330_Enkel -690,27.5,0,trackshift;
@@ -385,16 +391,20 @@ MODULE mDwarsbalk
         rBoren_11mm_Dwarsbalk_330_Enkel 690,-27.5,0,trackshift;
         
         !
+        rBoren_11mm_Dwarsbalk_330_Enkel 1040,20,0,trackshift;
+        !
+        rBoren_11mm_Dwarsbalk_330_Enkel 1150,20,0,trackshift;
+        
+        !
         rBoren_11mm_Dwarsbalk_330_Dubbel 1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_330_Dubbel 1202.5,-27.5,0,trackshift;
-        eind:
         !
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
         !
     ENDPROC
-
+    
   PROC rDwarsbalk_Boren_5020331(wobjdata WobjActiveStation) 
         var num trackshift;
         !
@@ -406,43 +416,47 @@ MODULE mDwarsbalk
         EOffsSet [trackshift,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_StationXboor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
-        GOTO eind;
         !teach midden van balk 
-        rBoren_11mm_Dwarsbalk_331_Enkel 0,0,0,trackshift;
+        !rBoren_11mm_Dwarsbalk_331_Enkel 0,0,0,trackshift;
         !
-        rBoren_11mm_Dwarsbalk_331_Enkel 1202.5,27.5,0,trackshift;
+        rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,27.5,0,trackshift;
         !
-        rBoren_11mm_Dwarsbalk_331_Enkel 1202.5,-27.5,0,trackshift;
+        rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,-27.5,0,trackshift;
+       
         !
         rBoren_11mm_Dwarsbalk_331_Enkel 1150,20,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel 1040,20,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel 750,20,0,trackshift;
+        
         !
         rBoren_11mm_Dwarsbalk_331_Enkel 690,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel 690,-27.5,0,trackshift;
+        
         !
         rBoren_11mm_Dwarsbalk_331_Enkel 350,20,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -350,20,0,trackshift;
+        
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -690,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -690,-27.5,0,trackshift;
+        
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -750,20,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -1040,20,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -1150,20,0,trackshift;
+        
         !
-        rBoren_11mm_Dwarsbalk_331_Enkel -1202.5,27.5,0,trackshift;
+        rBoren_11mm_Dwarsbalk_331_Dubbel -1202.5,27.5,0,trackshift;
         !
-        rBoren_11mm_Dwarsbalk_331_Enkel -1202.5,-27.5,0,trackshift;
+        rBoren_11mm_Dwarsbalk_331_Dubbel -1202.5,-27.5,0,trackshift;
         !
-        eind:
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
         !
@@ -457,47 +471,28 @@ MODULE mDwarsbalk
         EOffsSet [0,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_Station5boor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
-        GOTO eind;
         !teach midden van balk 
-        rBoren_11mm_Dwarsbalk_332_Enkel 0,0,0,0;
+        !rBoren_11mm_Dwarsbalk_332_Enkel 0,0,0,0;
         !
-       ! rBoren_11mm_Dwarsbalk_332_Enkel 1202.5,27.5,0,0;
+        rBoren_11mm_Dwarsbalk_332_Dubbel 1202.5,27.5,0,0;
         !
-       ! rBoren_11mm_Dwarsbalk_332_Enkel 1202.5,-27.5,0,0;
+        rBoren_11mm_Dwarsbalk_332_Dubbel 1202.5,-27.5,0,0;
+       
         !
-       ! rBoren_11mm_Dwarsbalk_332_Enkel 1150,20,0,0;
+        rBoren_11mm_Dwarsbalk_332_Enkel 690,27.5,0,0;
         !
-       ! rBoren_11mm_Dwarsbalk_332_Enkel 1040,20,0,0;
+        rBoren_11mm_Dwarsbalk_332_Enkel 690,-27.5,0,0;
+        
         !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel 690,27.5,0,0;
+        rBoren_11mm_Dwarsbalk_332_Enkel -690,27.5,0,0;
         !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel 690,-27.5,0,0;
+        rBoren_11mm_Dwarsbalk_332_Enkel -690,-27.5,0,0;
+        
         !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel 280,27.5,0,0;
+        rBoren_11mm_Dwarsbalk_332_Dubbel -1202.5,27.5,0,0;
         !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel 280,-27.5,0,0;
+        rBoren_11mm_Dwarsbalk_332_Dubbel -1202.5,-27.5,0,0;
         !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel 0,27.5,0,0;
-        !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel 0,-27.5,0,0;
-        !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel -280,27.5,0,0;
-        !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel -280,-27.5,0,0;
-        !
-     !   rBoren_11mm_Dwarsbalk_332_Enkel -690,27.5,0,0;
-        !
-     !   rBoren_11mm_Dwarsbalk_332_Enkel -690,-27.5,0,0;
-        !
-    !    rBoren_11mm_Dwarsbalk_332_Enkel -1040,20,0,0;
-        !
-    !    rBoren_11mm_Dwarsbalk_332_Enkel -1150,20,0,0;
-        !
-     !   rBoren_11mm_Dwarsbalk_332_Enkel -1202.5,27.5,0,0;
-        !
-      !  rBoren_11mm_Dwarsbalk_332_Enkel -1202.5,-27.5,0,0;
-        !
-        eind:
         MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
         !
     ENDPROC
