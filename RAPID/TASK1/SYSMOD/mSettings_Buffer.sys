@@ -1,147 +1,109 @@
-MODULE mSettings_Buffer(SYSMODULE)
-  
-!==================================================================================
-!Buffer logica    
-!==================================================================================
-!onderste buffer zijn enkel voor nieuwe balken.
-!Deze kunnen het volgende status hebben.
-local const num InbuffUitdienst := 1;
-local const num InbuffVol := 2;
-local const num InbuffIngebruik := 3; ! (niet vol niet leeg)
-local const num InbuffLeeg := 4;
-LOCAL CONST num InbuffMaxParts := 40;
-LOCAL PERS num InbuffParts{6} := [38,0,0,0,0,0];
-!bovenste buffers zijn enkel voor afgewerkte balken.
-!Deze kunnen het volgende status hebben.
-local const num OutbuffUitdienst := 1;
-local const num OutbuffVol := 2;
-local const num OutbuffIngebruik := 3; ! (niet vol niet leeg)
-local const num OutbuffLeeg := 4;
-LOCAL CONST num OutbuffMaxParts := 40;
-!Deze bovenste rekken hebben ook nog een Request lijst.
-!Deze lijst bevat de opdracht. Hoeveel stukken van welk type wil de buffer.
-!Dan is er ook nog een status lijst. Hoeveel stukken van welk type zitten er in de buffer.
-local PERS num InbuffStatus{6} := [3,1,1,1,1,1];
-local PERS num OutbuffStatus{6} := [4,1,1,1,1,1];
-!types van movelijke stukken zowel voor buffers als stations
- CONST num Dwarsbalk330 := 1;
- CONST num Dwarsbalk331 := 2;
- CONST num Dwarsbalk332 := 3;
- CONST num DwarsbalkNieuw := 4;
- CONST num DwarsbalkScrap := 5;
- CONST num Dwarsbalk330B := 6;
- CONST num Dwarsbalk331B := 7;
- CONST num Dwarsbalk332B := 8; !type b wil zeggen dat het stuk nog niet is afgewerkt
-!!stations kunnen het volgende status hebben
- const num StationUitDienst := 9;
- const num StationLeeg := 10;
-!
-local PERS num OutbuffRequest{6,3} := [[5,5,5],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
-local PERS num OutbuffParts{6,3} := [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
-  
-!voor de inbuffers zal de robot steeds de eerste active buffer nemen die in dienst staat en niet meer volledig vol is.
-!voor de outbuffers zal de robot steeds het eerste active buffer nemen die nog stukken nodig heeft. 
-!==================================================================================
-!Buffer logica    
-!==================================================================================
-
-
-!Boolians
-    PERS bool bBalk_Gevonden:=true;
-    PERS bool bOpnieuw:=FALSE;
-
-  !Stringdata
-    PERS string strActive_BufferIn:="Buffer1";
-    PERS num nActive_BufferIn := 1;
-    PERS string strActive_BufferOut:="Buffer1";
-    PERS num nActive_BufferOut := 1;
+ MODULE mSettings_buffer(SYSMODULE)
     
-    CONST string Buttons_1a{5}:=["Buffer1","Buffer2","Buffer3","MEER",""];
-    CONST string Buttons_1b{5}:=["Buffer4","Buffer5","Buffer6","",""];
-    CONST string Buttons_2{5}:=["JA","","","","Nee"];
-    CONST string Buttons_3{5}:=["ONDER","","","","BOVEN"];
-    CONST string Buttons_5a{5}:=["Buffer1","Buffer2","Buffer3","MEER",""];
-    CONST string Buttons_5b{5}:=["Buffer4","Buffer5","Buffer6","",""];
-    VAR string Message{5}:= ["","","","",""];
-
-  !Variabelen
-    VAR btnres Answer;
-    
-FUNC num fGetInbuffStatus(num buffnum)
-  RETURN InbuffStatus{buffnum};
-ENDFUNC 
-
-FUNC num fGetOutbuffStatus(num buffnum)
-  RETURN OutbuffStatus{buffnum};
-ENDFUNC 
-
-FUNC num fGetNextBuffer()
+FUNC num nGetInvoerbuffer()
     !***************************************	    
-    ! Func: fGetNextBuffer
+    ! Func: nGetInvoerbuffer
     ! Description: uit welke buffer het stuk nemen;
+    ! zoekt de nummer van de buffer die al in gebruik is.
+    ! indien geen buffer al in gebruik geeft hij de laagste volle buffer 
+    ! indien geen buffer beschikbaar return 0 
     !***************************************
    VAR num nBuffernummer := 0;
    VAR btnres nAnswer; 
    lblRetry:
     FOR i FROM 1 TO 6 STEP 1 DO
         !niet uit dienst of niet leeg
-       IF (InbuffStatus{i} <> Inbuffuitdienst) AND (InbuffStatus{i} <> Inbuffleeg) THEN
+       IF InvoerBuffer{i}.indienst = true AND InvoerBuffer{i}.leeg = false THEN
            !Als buffer al in gebruik is neem dan onmiddelijk die
-           IF InbuffStatus{i} <> Inbuffvol THEN
+           IF InvoerBuffer{i}.vol = False THEN
              nBuffernummer := i;
              RETURN nBuffernummer;
            ENDIF
-           !Als buffer vol is onthoud dan de laagste buffernummer en zoek verder
-           IF (InbuffStatus{i} = Inbuffvol) AND (nBuffernummer = 0) THEN
-            nBuffernummer := i;
+           !Als buffer vol is onthoud en nog geen buffer gevonden. 
+           IF InvoerBuffer{i}.vol = true  AND (nBuffernummer = 0) THEN
+             nBuffernummer := i;
            ENDIF
        ENDIF   
      ENDFOR   
-     !return de laagste active volle buffer
+     !return de laagste buffer
      RETURN nbuffernummer;
+     !
 ENDFUNC
 
 PROC Getnextpart()
     !***************************************	    
     ! Func: Getnextpart
     ! Description: haal een nieuwe balk
-    !gaat er van uit dat robot home is
     !***************************************
     VAR num nbuffernummer := 0;
     VAR btnres nAnswer; 
-    nbuffernummer := fGetNextBuffer();
+    nbuffernummer := nGetInvoerbuffer();
     !robot kan nergens met het stuk naartoe
     IF nbuffernummer = 0 THEN
+       LoggProc "mBuffer",2,"Niet mogelijk om balk te halen";
        WHILE TRUE DO 
          nAnswer := UIMessageBox(\Header:="Kan negens een balk halen"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
        ENDWHILE
     ENDIF
-    
-    !routine van GERT (ik overschrijf zijn buffernumer en zet die dan terug)
-    Stop;
     getpart(nbuffernummer);
     !update het buffer status
-    rUpdateInbuff nbuffernummer;
+    rUpdateInvoerbuffer nbuffernummer;
+    !
 ENDPROC
 
-FUNC num fPutNextBuffer(Num nPartType)
+FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType)
     !***************************************	    
-    ! Func: fPutNextBuffer
+    ! Func: bUitvoerbufferPartNeeded
+    ! Description: kijk of een bepaalde buffer een bepaald stuktype wil
+    !***************************************
+   VAR PartType AantalPartsGewenst;
+   VAR PartType AantalPartsAanwezig; 
+   AantalPartsGewenst := UitvoerBuffer{nBuffer}.AantalPartsGewenst;
+   AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
+   
+    IF (AantalPartsAanwezig.Balk330 < AantalPartsGewenst.Balk330) AND nPartType = part.Balk330 THEN
+      RETURN TRUE;
+    ENDIF
+    IF (AantalPartsAanwezig.Balk331 < AantalPartsGewenst.Balk331) AND nPartType = part.Balk331 THEN
+      RETURN TRUE;
+    ENDIF
+    IF (AantalPartsAanwezig.Balk332 < AantalPartsGewenst.Balk332) AND nPartType = part.Balk332 THEN
+      RETURN TRUE;
+    ENDIF     
+   RETURN FALSE;
+    !  
+ENDFUNC
+
+FUNC num nGetUitvoerbuffer(Num nPartType)
+    !***************************************	    
+    ! Func: nGetUitvoerbuffer
     ! Description: naar welke buffer moet dit stuk
+    ! zoek de eerste buffer die dit stuk wenst
+    ! 0 wil zeggen niemand wil dit stuk 
     !***************************************
    VAR num nBuffernummer := 0;
+   VAR btnres nAnswer; 
+   !kijk of dit een goed stuk is 
+   IF nPartType = part.Balk330 OR nPartType = part.Balk331 OR nPartType = part.Balk332  THEN
     FOR i FROM 1 TO 6 STEP 1 DO
         !niet uit dienst of niet vol
-       IF (OutbuffStatus{i} <> Outbuffuitdienst) AND (OutbuffStatus{i} <> Outbuffvol) THEN
+       IF UitvoerBuffer{i}.indienst AND UitvoerBuffer{i}.vol = false THEN
            !kijk of het rek nog een stuk van dit type wil 
-           IF OutbuffRequest{i,nPartType} > OutbuffParts{i,nPartType} THEN 
+           IF bUitvoerbufferPartNeeded(i,nPartType) THEN
                nBuffernummer := i;
                RETURN i;
            ENDIF
        ENDIF   
      ENDFOR
+    ELSE
+      LoggProc "mBuffer",3,"stuktype niet geldig voor buffer";
+      WHILE TRUE DO 
+         nAnswer := UIMessageBox(\Header:="stuktype niet geldig voor buffer"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
+      ENDWHILE
+   ENDIF
      !return de eerste buffer die het stuk kan ontvangen 0 wil zeggen stuk niet nodig
      RETURN nbuffernummer;
+     !
 ENDFUNC
 
 PROC PUTnextpart(Num nPartType)
@@ -152,299 +114,149 @@ PROC PUTnextpart(Num nPartType)
     !***************************************
     VAR num nbuffernummer := 0;
     VAR btnres nAnswer; 
-    nbuffernummer := fPutNextBuffer(nPartType);
+    nbuffernummer := nGetUitvoerbuffer(nPartType);
     !robot kan nergens met het stuk naartoe
     IF nbuffernummer = 0 THEN
-       WHILE TRUE DO 
+        LoggProc "mBuffer",4,"Kan de balk nergens plaatsen";
+        WHILE TRUE DO 
          nAnswer := UIMessageBox(\Header:="Kan de balk nergens plaatsen"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
        ENDWHILE
     ENDIF
-    
-    !routine van GERT (ik overschrijf zijn buffernumer en zet die dan terug)
+    !controleer nog eens of buffer wel veilig is. (is normaal al goed vanin unload station
+     IF NOT UitvoerBuffer{nbuffernummer}.veilig THEN
+        LoggProc "mBuffer",14,"buffer niet veilig";
+        WHILE TRUE DO 
+         nAnswer := UIMessageBox(\Header:="Buffer niet veilig"\MsgArray:=["ga manueel en lost het op","Buffer is niet veilig.","Dit zo niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
+       ENDWHILE
+    ENDIF
+    !steek het stuk in de buffer
     putpart(nbuffernummer);
     !update het buffer status
-    rUpdateOutbuff nbuffernummer,nPartType;
+    rUpdateUitvoerbuffer nbuffernummer,nPartType;
+    !
 ENDPROC
 
-LOCAL PROC rUpdateInbuff(num buffnum)
+LOCAL PROC rUpdateInvoerbuffer(num nBuffer)
     !***************************************	    
-    ! Func: rUpdateInbuff
+    ! Func: rUpdateInvoerbuffer
     ! Description: update het status van de buffer 
     !*************************************** 
-    Decr InbuffParts{buffnum};
-    IF InbuffParts{buffnum} = 0 THEN
-        InbuffStatus{buffnum} := InbuffLeeg;
+    IF (InvoerBuffer{nBuffer}.actiefstuk * InvoerBuffer{nBuffer}.actievelaag) >= 40 THEN 
+        InvoerBuffer{nBuffer}.vol := true;
     ENDIF
-    
-    IF InbuffParts{buffnum} < InbuffMaxParts THEN 
-        InbuffStatus{buffnum} := InbuffIngebruik;
-    ENDIF
+    !
 ENDPROC
 
-LOCAL PROC rUpdateOutbuff(num buffnum, num nPartType)
+LOCAL PROC rUpdateUitvoerbuffer(num nBuffer, num nPartType)
     !***************************************	    
-    ! Func: rUpdateOutbuff
+    ! Func: rUpdateUitvoerbuffer
     ! Description: update het status van de buffer 
     !*************************************** 
-    Incr OutbuffParts{buffnum,nPartType};
-    OutbuffStatus{buffnum} := OutbuffIngebruik;
-    IF (OutbuffParts{buffnum,Dwarsbalk330} + OutbuffParts{buffnum,Dwarsbalk330} + OutbuffParts{buffnum,Dwarsbalk330}) >= OutbuffMaxParts THEN
-        OutbuffStatus{buffnum} := OutbuffVol;
+   VAR PartType AantalPartsGewenst;
+   VAR PartType AantalPartsAanwezig; 
+   AantalPartsGewenst := UitvoerBuffer{nBuffer}.AantalPartsGewenst;
+   AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
+    IF nPartType = part.Balk330 THEN
+        Incr AantalPartsAanwezig.Balk330;
     ENDIF
-    IF (OutbuffRequest{buffnum,Dwarsbalk330} = OutbuffParts{buffnum,Dwarsbalk330}) 
-    AND (OutbuffRequest{buffnum,Dwarsbalk331} = OutbuffParts{buffnum,Dwarsbalk331}) 
-    AND (OutbuffRequest{buffnum,Dwarsbalk332} = OutbuffParts{buffnum,Dwarsbalk332})  THEN
-     OutbuffStatus{buffnum} := OutbuffVol;
+    IF nPartType = part.Balk331 THEN
+        Incr AantalPartsAanwezig.Balk331;
     ENDIF
+    IF nPartType = part.Balk332 THEN
+        Incr AantalPartsAanwezig.Balk332;
+    ENDIF
+    UitvoerBuffer{nBuffer}.AantalPartsAanwezig := AantalPartsAanwezig;
+    !kijk of gewenst aantal stukken is berijkt
+    IF  AantalPartsAanwezig.Balk330 = AantalPartsGewenst.Balk330
+    AND AantalPartsAanwezig.Balk331 = AantalPartsGewenst.Balk331
+    AND AantalPartsAanwezig.Balk332 = AantalPartsGewenst.Balk332 THEN
+     UitvoerBuffer{nBuffer}.Vol := TRUE;
+     LoggProc "mBuffer",5,"Buffer:"+NumToStr(nBuffer,0)+" Vol (target)";
+    ENDIF
+    !kijk of het maximaal aantal stukken is berijkt
+    IF (AantalPartsAanwezig.Balk330 + AantalPartsAanwezig.Balk331 + AantalPartsAanwezig.Balk332) >= 40 THEN
+        UitvoerBuffer{nBuffer}.Vol := TRUE;
+        LoggProc "mBuffer",6,"Buffer:"+NumToStr(nBuffer,0)+" Vol (Max)";
+    ENDIF
+    !
 ENDPROC
 
-LOCAL PROC rResetInbuff(num buffnum)
+
+PROC rDecrInvoerbuffer(num nBuffer)
     !***************************************	    
-    ! Func: rResetInbuff
-    ! Description: set het status vol van inbuffer
+    ! Func: rDecrInvoerbuffer
+    ! Description: tellers updaten 1 stuk uit buffer
     !***************************************  
-    InbuffParts{buffnum} := InbuffMaxParts;
-    InbuffStatus{buffnum} := InbuffVol;
+    !tel 1 stuk bij de rij 
+    Incr InvoerBuffer{nBuffer}.ActiefStuk;
+    !als rij meer dan 8 is volgende 
+    IF InvoerBuffer{nBuffer}.ActiefStuk > 8 THEN
+        InvoerBuffer{nBuffer}.ActiefStuk := 1;
+        Incr InvoerBuffer{nBuffer}.Actievelaag;
+    ENDIF
+    !veiligeid voor slechte tellers veilige situatie is LEEG
+    IF (InvoerBuffer{nBuffer}.ActiefStuk > 8) OR (InvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
+      InvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",7,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
+    ENDIF
+    IF (InvoerBuffer{nBuffer}.Actievelaag > 5) OR (InvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
+      InvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",8,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
+    ENDIF
+    !
 ENDPROC
 
-LOCAL PROC rResetOutbuff(num buffnum)
+PROC rIncrUitvoerbuffer(num nBuffer)
     !***************************************	    
-    ! Func: rResetOutbuff
-    ! Description: set het status vol van inbuffer
-    !*************************************** 
-        OutbuffStatus{buffnum} := OutbuffLeeg;
-        OutbuffParts{buffnum,Dwarsbalk330} := 0;
-        OutbuffParts{buffnum,Dwarsbalk331} := 0;
-        OutbuffParts{buffnum,Dwarsbalk332} := 0;
+    ! Func: rIncrUitvoerbuffer
+    ! Description: tellers updaten 1 stuk bij buffer
+    !***************************************  
+    !trek 1 stuk van de rij 
+    Decr UitvoerBuffer{nBuffer}.ActiefStuk;
+    !als rij minder dan 1 is volgende 
+    IF  UitvoerBuffer{nBuffer}.ActiefStuk < 1 THEN
+        UitvoerBuffer{nBuffer}.ActiefStuk := 8;
+        Decr UitvoerBuffer{nBuffer}.Actievelaag;
+    ENDIF
+    
+    !veiligeid voor slechte tellers veilige situatie is VOl 
+    IF UitvoerBuffer{nBuffer}.ActiefStuk > 8 THEN 
+     UitvoerBuffer{nBuffer}.vol := true;
+     LoggProc "mBuffer",9,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
+    ENDIF
+    IF UitvoerBuffer{nBuffer}.Actievelaag < 1 THEN
+     UitvoerBuffer{nBuffer}.vol := true;
+     LoggProc "mBuffer",10,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
+    ENDIF
+    !
 ENDPROC
 
-FUNC num fNparsNeeded(num buffnum, num Parttype)
+PROC rDecrUitvoerbuffer(num nBuffer)
     !***************************************	    
-    ! Func: fNparsNeeded
-    ! Description: kijkt hoeveel stukken van een bepaald type een buffer nog wil
-    !*************************************** 
-    VAR num nAantalNodig;
-    VAR num nAantalAanweig;
-    VAR num nResult;    
-    nAantalNodig := OutbuffRequest{buffnum,Parttype};
-    nAantalAanweig := OutbuffParts{buffnum,Parttype};
-    nResult :=  nAantalNodig - nAantalAanweig ;
-    RETURN nResult;
-ENDFUNC
-
-PROC rSetInbuffStatus(num buffnum)
-        VAR btnres nAnswer;
-        lbl_begin:
-        nAnswer:=UIMessageBox(\Header:="INbuffer status voor buffer"+NumToStr(buffnum,0)
-        \MsgArray:=["Deze buffer heeft momenteel het volgende status"
-        ,"InbuffStatus="+NumToStr(InbuffStatus{buffnum},0),"InbuffParts="+NumToStr(InbuffParts{buffnum},0),"InbuffMAXParts="+NumToStr(InbuffMaxParts,0)],
-        \BtnArray:=["InDienst","UitDienst","VOL","","Exit"]);
-        TEST nAnswer
-        CASE 1:
-          InbuffStatus{buffnum} := InbuffIngebruik;
-          GOTO lbl_begin;
-        CASE 2:
-          InbuffStatus{buffnum} := InbuffUitdienst;
-          GOTO lbl_begin;
-        CASE 3:
-          rResetInbuff(buffnum);
-          GOTO lbl_begin;
-        CASE 4:
-          !leeg
-        CASE 5:
-           GOTO lblExit;
-        ENDTEST  
-       lblExit:
+    ! Func: rDecrUitvoerbuffer
+    ! Description: tellers updaten 1 stuk uit buffer
+    !***************************************  
+    !tel 1 stuk bij de rij 
+    Incr UitvoerBuffer{nBuffer}.ActiefStuk;
+    !als rij meer dan 8 is volgende 
+    IF UitvoerBuffer{nBuffer}.ActiefStuk > 8 THEN
+        UitvoerBuffer{nBuffer}.ActiefStuk := 1;
+        Incr UitvoerBuffer{nBuffer}.Actievelaag;
+    ENDIF
+    !veiligeid voor slechte tellers veilige situatie is LEEG
+    IF (UitvoerBuffer{nBuffer}.ActiefStuk > 8) OR (UitvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
+      UitvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",17,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
+    ENDIF
+    IF (UitvoerBuffer{nBuffer}.Actievelaag > 5) OR (UitvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
+      UitvoerBuffer{nBuffer}.leeg := true;
+      LoggProc "mBuffer",18,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
+    ENDIF
+    !
 ENDPROC
 
-PROC rSetOutbuffStatus(num buffnum)
-        VAR btnres nAnswer;
-        lbl_begin:
-        nAnswer:=UIMessageBox(\Header:="OUTbuffer status voor buffer"+NumToStr(buffnum,0)
-        \MsgArray:=["Deze buffer heeft momenteel het volgende status"
-        ,"OutbuffStatus="+NumToStr(OutbuffStatus{buffnum},0),
-         "OutbuffTotalParts="+NumToStr( (OutbuffParts{buffnum,Dwarsbalk330}+OutbuffParts{buffnum,Dwarsbalk331}+OutbuffParts{buffnum,Dwarsbalk332}) ,0),
-         "Type330="+NumToStr(OutbuffParts{buffnum,Dwarsbalk330},0) + " Type331=" + numtostr(OutbuffParts{buffnum,Dwarsbalk331},0) + " Type332=" + numtostr(OutbuffParts{buffnum,Dwarsbalk332},0),
-         "OutbuffMAXParts="+NumToStr(InbuffMaxParts,0),
-         "Type330="+NumToStr(OutbuffRequest{buffnum,Dwarsbalk330},0) + " Type331=" + numtostr(OutbuffRequest{buffnum,Dwarsbalk331},0) + " Type332=" + numtostr(OutbuffRequest{buffnum,Dwarsbalk332},0)],
-        \BtnArray:=["InDienst","UitDienst","LEEG","Settings","Exit"]);
-        TEST nAnswer
-        CASE 1:
-          OutbuffStatus{buffnum} := OutbuffIngebruik;
-          GOTO lbl_begin;
-        CASE 2:
-          OutbuffStatus{buffnum} := OutbuffUitdienst;
-          GOTO lbl_begin;
-        CASE 3:
-          rResetOutbuff(buffnum);
-          GOTO lbl_begin;
-        CASE 4:
-          !pas stuk verdeling aan
-          GOTO lbl_begin;
-        CASE 5:
-           GOTO lblExit;
-        ENDTEST  
-       lblExit:
-ENDPROC
-    
-!====================================================================================================
-
-PROC RESET_Buffer()
-        !manuele functie om buffer te resetten
-        Answer:= UIMessageBox (\Header:= "Buffer Resetten?"
-            \Message:="Welke buffer ?" 
-            \BtnArray:=Buttons_3
-            \Icon:=iconInfo);
-            
-        TEST Answer
-            CASE 1:
-                
-                Answer:= UIMessageBox (\Header:= "Buffer Resetten?"
-                \Message:="Welk buffer nummer?" 
-                \BtnArray:=Buttons_1a
-                \Icon:=iconInfo);
-
-                TEST Answer
-                    CASE 1:
-                        nAantal_Laag1_Uit:=5;
-                        nAantal_Balk1_Uit:=0;
-                    CASE 2:
-                        nAantal_Laag2_Uit:=5;
-                        nAantal_Balk2_Uit:=0;
-                    CASE 3:
-                        nAantal_Laag3_Uit:=5;
-                        nAantal_Balk3_Uit:=0;
-                    CASE 4:
-                        Answer:= UIMessageBox (\Header:= "?"
-                        \Message:="Welke buffer ?" 
-                        \BtnArray:=Buttons_1b
-                        \Icon:=iconInfo);
-            
-                        TEST Answer
-                            CASE 1:
-                                nAantal_Laag4_Uit:=5;
-                                nAantal_Balk4_Uit:=0;
-                            CASE 2:
-                                nAantal_Laag5_Uit:=5;
-                                nAantal_Balk5_Uit:=0;
-                            CASE 3:
-                                nAantal_Laag6_Uit:=5;
-                                nAantal_Balk6_Uit:=0;
-                            
-                            DEFAULT:
-                        ENDTEST
-                ENDTEST
-
-            CASE 5:
-                
-                Answer:= UIMessageBox (\Header:= "Buffer Resetten?"
-                \Message:="Welk buffer nummer?" 
-                \BtnArray:=Buttons_5a
-                \Icon:=iconInfo);
-
-                TEST Answer
-                    CASE 1:
-                        nAantal_Laag1_In:=1;
-                        nAantal_Balk1_In:=0;
-                    CASE 2:
-                        nAantal_Laag2_In:=1;
-                        nAantal_Balk2_In:=0;
-                    CASE 3:
-                        nAantal_Laag3_In:=1;
-                        nAantal_Balk3_In:=0;
-                    CASE 4:
-                        Answer:= UIMessageBox (\Header:= "?"
-                        \Message:="Welke buffer ?" 
-                        \BtnArray:=Buttons_5b
-                        \Icon:=iconInfo);
-            
-                        TEST Answer
-                            CASE 1:
-                                nAantal_Laag4_In:=1;
-                                nAantal_Balk4_In:=0;
-                            CASE 2:
-                                nAantal_Laag5_In:=1;
-                                nAantal_Balk5_In:=0;
-                            CASE 3:
-                                nAantal_Laag6_In:=1;
-                                nAantal_Balk6_In:=0;
-                            
-                            DEFAULT:
-                ENDTEST
-            ENDTEST
-        ENDTEST
-    
-    ENDPROC
-
-    PROC Lege_Buffer()
-    !word geroepen als buffer leeg is tijdens productie;
-        Answer:= UIMessageBox (\Header:= "Pallet leeg?"
-            \Message:="Welke Buffer nu gebruiken ?" 
-            \BtnArray:=Buttons_1a
-            \Icon:=iconInfo);
-
-        TEST Answer
-            CASE 1:
-                Buffer_1_Uit;
-            CASE 2:
-                Buffer_2_Uit;
-            CASE 3:
-                Buffer_3_Uit;
-            CASE 4:
-                !
-        Answer:= UIMessageBox (\Header:= "?"
-            \Message:="Welke Buffer nu gebruiken ?" 
-            \BtnArray:=Buttons_1b
-            \Icon:=iconInfo);
-        TEST Answer
-            CASE 1:
-                Buffer_4_Uit;
-            CASE 2:
-                Buffer_5_Uit;
-            CASE 3:
-                Buffer_6_Uit;
-            DEFAULT:
-                EXIT;
-         ENDTEST
-        ENDTEST
-
-    ENDPROC
-
-    PROC Volle_Buffer()
-    !word geroepen als buffer vol is tijdens productie
-        Answer:= UIMessageBox (\Header:= "Pallet vol?"
-            \Message:="Welke Buffer nu gebruiken ?" 
-            \BtnArray:=Buttons_1a
-            \Icon:=iconInfo);
-
-        TEST Answer
-            CASE 1:
-                Buffer_1_In;
-            CASE 2:
-                Buffer_2_In;
-            CASE 3:
-                Buffer_3_In;
-            CASE 4:
-                !
-        Answer:= UIMessageBox (\Header:= "?"
-            \Message:="Welke Buffer nu gebruiken ?" 
-            \BtnArray:=Buttons_1b
-            \Icon:=iconInfo);
-        TEST Answer
-            CASE 1:
-                Buffer_4_In;
-            CASE 2:
-                Buffer_5_In;
-            CASE 3:
-                Buffer_6_In;
-            DEFAULT:
-                EXIT;
-         ENDTEST
-        ENDTEST
-
-    ENDPROC
-
-    PROC getpart(Num nBuffernummer)
+ PROC Getpart(Num nBuffernummer)
+      Set_Gripper(GrijperTool);
       TEST nBuffernummer
        CASE 1:
         Buffer_1_Uit;
@@ -459,165 +271,71 @@ PROC RESET_Buffer()
        CASE 6:
         Buffer_6_Uit;
       ENDTESt 
-    ENDPROC
+      !
+  ENDPROC
     
-  PROC Putpart(Num nBuffernummer)
+  PROC Putpart(Num nBuffernummer \switch Safecheck)
       TEST nBuffernummer
        CASE 1:
-        Buffer_1_In;
+        Buffer_1_In \Safecheck?Safecheck;
        CASE 2:
-        Buffer_2_In;
+        Buffer_2_In \Safecheck?Safecheck;
        CASE 3:
-        Buffer_3_In;
+        Buffer_3_In \Safecheck?Safecheck;
        CASE 4:
-        Buffer_4_In;
+        Buffer_4_In \Safecheck?Safecheck;
        CASE 5:
-        Buffer_5_In;
+        Buffer_5_In \Safecheck?Safecheck;
        CASE 6:
-        Buffer_6_In;
+        Buffer_6_In \Safecheck?Safecheck;
       ENDTESt 
+      !
     ENDPROC
     
     
-    PROC rBalk_In()
-    !
-        IF fCheckGripperPart() THEN
-          bBalk_Gevonden:=false;
-        ELSE
-          bBalk_Gevonden:=true;
-        ENDIF  
-        !
-        IF bBalk_Gevonden=FALSE THEN
-          
-            TEST nBuffernummer
-                CASE 1:
-                    !
-                    Incr nAantal_Balk1_In;
-                      IF nAantal_Balk1_In = 8 THEN
-                        Incr nAantal_Laag1_In;
-                      ENDIF    
-                    Buffer_1_In;
-                CASE 2:
-                    !
-                    Incr nAantal_Balk2_In;
-                      IF nAantal_Balk2_In = 8 THEN
-                        Incr nAantal_Laag2_In;
-                      ENDIF    
-                    Buffer_2_In;
-                CASE 3:
-                    !
-                    Incr nAantal_Balk3_In;
-                      IF nAantal_Balk3_In = 8 THEN
-                        Incr nAantal_Laag3_In;
-                      ENDIF    
-                    Buffer_3_In;
-                CASE 4:
-                    !
-                    Incr nAantal_Balk4_In;
-                      IF nAantal_Balk4_In = 8 THEN
-                        Incr nAantal_Laag4_In;
-                      ENDIF    
-                    Buffer_4_In;
-                CASE 5:
-                    !
-                    Incr nAantal_Balk5_In;
-                      IF nAantal_Balk5_In = 8 THEN
-                        Incr nAantal_Laag5_In;
-                      ENDIF    
-                    Buffer_5_In;
-                CASE 6:
-                    !
-                    Incr nAantal_Balk6_In;
-                      IF nAantal_Balk6_In = 8 THEN
-                        Incr nAantal_Laag6_In;
-                      ENDIF    
-                    Buffer_6_In;
-            ENDTEST
-        ELSE
-           RETURN;  
-        ENDIF    
- 
-    ENDPROC
-     
-    PROC rBalk_Uit() 
-    !
-        IF fCheckGripperPart() THEN
-          bBalk_Gevonden:=false;
-        ELSE
-          bBalk_Gevonden:=true;
-        ENDIF  
-        !
-        IF bBalk_Gevonden=FALSE THEN
-          
-            TEST nBuffernummer
-                CASE 1:
-                    !
-                    Incr nAantal_Balk1_Uit;
-                      IF nAantal_Balk1_Uit = 8 THEN
-                          MoveL Offs(pBuffer_Onder_1,0,-750,0),v1000,z50,tGripper\WObj:=Wobj_Buffer_Onder_1;
-                        Decr nAantal_Laag1_Uit;
-                      ENDIF    
-                    bOpnieuw:=TRUE;
-                CASE 2:
-                    !
-                    Incr nAantal_Balk2_Uit;
-                      IF nAantal_Balk2_Uit = 8 THEN
-                        Decr nAantal_Laag2_Uit;
-                      ENDIF    
-                    bOpnieuw:=TRUE;
-                CASE 3:
-                    !
-                    Incr nAantal_Balk3_Uit;
-                      IF nAantal_Balk3_Uit = 8 THEN
-                        Decr nAantal_Laag3_Uit;
-                      ENDIF    
-                    bOpnieuw:=TRUE;
-                CASE 4:
-                    !
-                    Incr nAantal_Balk4_Uit;
-                      IF nAantal_Balk4_Uit = 8 THEN
-                        Decr nAantal_Laag4_Uit;
-                      ENDIF    
-                    bOpnieuw:=TRUE;
-                CASE 5:
-                    !
-                    Incr nAantal_Balk5_Uit;
-                      IF nAantal_Balk5_Uit = 8 THEN
-                        Decr nAantal_Laag5_Uit;
-                      ENDIF    
-                    bOpnieuw:=TRUE;
-                CASE 6:
-                    !
-                    Incr nAantal_Balk6_Uit;
-                      IF nAantal_Balk6_Uit = 8 THEN
-                        Decr nAantal_Laag6_Uit;
-                      ENDIF    
-                    bOpnieuw:=TRUE;
-            ENDTEST
-        ENDIF    
-    ENDPROC
+ FUNC num nYposPart(num nActiefStukf)
+ !stuk in de laag.   
+ VAR num nYpos;
+    !   
+    TEST nActiefStukf 
+        CASE 1:
+            nYpos:=0;
+        CASE 2:
+            nYpos:=90;
+        CASE 3:
+            nYpos:=180;
+        CASE 4:
+            nYpos:=270;
+        CASE 5:
+            nYpos:=357;
+        CASE 6:
+            nYpos:=443;
+        CASE 7:
+            nYpos:=529;
+        CASE 8:
+            nYpos:=615;
+    ENDTEST
+RETURN nYpos; 
+!
+ENDFUNC
 
-    PROC Station()
-        Message{1}:="";
-        Message{2}:="";
-        Message{3}:="";
-        Message{4}:="";
-        Message{5}:="";
-        !
-        answer := UIMessageBox (\Header:="Uit welke buffer moeten de dwarsbalken gepakt worden?",
-        \MsgArray:=Message
-        \BtnArray:=Buttons_1a
-        \Icon:=iconInfo);
-        !
-        IF answer = 1 THEN
-          Stop;
-          Buffer_1_Uit;
-        ELSEIF answer = 2 THEN
-          Buffer_2_Uit;  
-        ELSEIF answer = 3 THEN
-          Buffer_2_Uit;  
-          EXIT;
-        ENDIF
-    ENDPROC
-    
+FUNC num nZposPart(num nActievelaag)
+ !laagnummer.   
+ VAR num nZpos;
+    TEST nActievelaag
+        CASE 5:
+            nZpos:=0;
+        CASE 4:
+            nZpos:=100;
+        CASE 3:
+            nZpos:=200;
+        CASE 2:
+            nZpos:=300;
+        CASE 1:
+            nZpos:=400;
+    ENDTEST
+RETURN nZpos;
+!
+ENDFUNC 
+ 
 ENDMODULE

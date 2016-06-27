@@ -257,9 +257,9 @@ MODULE mSettings_Spindle(SYSMODULE)
         SetDO doSpindle_Air_On,1;
         Reset doSpindle_Lock;
         SetDO doSpindle_Release,1;
-        WaitDI diSpindle_S2,1;
-        WaitDI diSpindle_S3,0;
-        WaitDI diSpindle_S4,0;
+        CheckInput diSpindle_S2,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S2 0 ";
+        CheckInput diSpindle_S3,0, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S3 1 ";
+        CheckInput diSpindle_S4,0, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S4 1 ";
         ! 
     ENDPROC
     
@@ -271,9 +271,9 @@ MODULE mSettings_Spindle(SYSMODULE)
         SetDO doSpindle_Air_On,1;
         Reset doSpindle_Release;
         SetDO doSpindle_Lock,1;
-        WaitDI diSpindle_S2,0;
-        WaitDI diSpindle_S3,1;
-        WaitDI diSpindle_S4,1;
+        CheckInput diSpindle_S2,0,  \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S2 1 ";
+        CheckInput diSpindle_S3,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S3 2 ";
+        CheckInput diSpindle_S4,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S4 0 ";
         Reset doSpindle_Air_On;
         !
     ENDPROC
@@ -375,6 +375,7 @@ MODULE mSettings_Spindle(SYSMODULE)
        FOR i FROM 1 TO nPulses DO
            WaitDI diSpindle_No_Rotation, nFlipstate \MaxTime:=3000 \Timeflag := bTimeout;
            IF bTimeout THEN
+             Stop;
              nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);  
              GOTO lblreset;
            ENDIF

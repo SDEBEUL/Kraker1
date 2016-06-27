@@ -54,6 +54,20 @@ MODULE L_support(SYSMODULE)
       bool Onderanden;
       bool Bovenranden;
   ENDRECORD 
+  
+  RECORD SpindeltoolType 
+      string toolnaam;
+      num defaultspeed;
+      speeddata Boorsnelheid;
+      speeddata Freessnelheid;
+      speeddata BoorsnelheidAanzet;
+      speeddata FreessnelheidAanzet;
+      num nGatengeboord;
+      num nMetergefreest;
+      string sLaatsgewisseld;
+      num nMaxaantalgaten;
+      num nMaxMeterfrezen;
+  ENDRECORD 
     
  !gedeelde record over de verschillende taken.
  !pas hier nooit iets handmatig aan maar gebruik altijd de interface! 
@@ -62,6 +76,7 @@ MODULE L_support(SYSMODULE)
   PERS UitvoerBufferType UitvoerBuffer{6};
   PERS InvoerBufferType InvoerBuffer{6};
   PERS ProcuctionType Production;
+  PERS SpindeltoolType Spindeltool{6};
    
   
   !******************************************************************************
@@ -191,9 +206,8 @@ MODULE L_support(SYSMODULE)
     VAR signaldi signal,
     dionum value
     \switch Skip
-    \num CheckTimeOut
-    \num AlarmTimeOut
-    \num AlarmNumber,
+    \num CheckTimeOut,
+    \num AlarmTimeOut,
     string text_msg)
     VAR num key_in;
     VAR num maxWaitTime:=0.1;
@@ -247,7 +261,7 @@ MODULE L_support(SYSMODULE)
         ELSE
           TPErase;
           IF signal<>value THEN
-            IF Present(AlarmNumber) ErrWrite\W,"CheckInput:",text_msg;
+            ErrWrite\W,"CheckInput:",text_msg;
             TPReadFK key_in,text_msg,"","","","","RETRY"\BreakFlag:=errvar;
             ResetAlarm:=TRUE;
           ENDIF  
@@ -255,7 +269,7 @@ MODULE L_support(SYSMODULE)
       ENDIF
       IF (OpMode()<>OP_AUTO OR (Present(Skip) AND (NOT Present(CheckTimeOut)))) AND signal<>value THEN
         TPErase;
-        IF Present(AlarmNumber) ErrWrite\W,"CheckInput:",text_msg;
+        ErrWrite\W,"CheckInput:",text_msg;
         TPErase;
         TPReadFK key_in,text_msg,"","","","SKIP","RETRY"\BreakFlag:=errvar;
         TPErase;
@@ -292,7 +306,7 @@ MODULE L_support(SYSMODULE)
             clkreset wait_clock;
           ENDIF          	
         ENDIF
-        IF (NOT repeat) AND Present(AlarmNumber) THEN
+        IF (NOT repeat)  THEN
           ErrWrite\W,"CheckInput:",text_msg;
           ResetAlarm:=TRUE;
           exequtedOnce:=FALSE;
@@ -325,17 +339,11 @@ MODULE L_support(SYSMODULE)
       IF AxisDiff(CurrentJoint,ExpectJoint\ArmOnly?ArmOnly)<MaxJointDiff NoMoreLoop:=TRUE;
       IF AxisDiff(CurrentJoint,ExpectJoint\ArmOnly?ArmOnly)>MaxJointDiff THEN
         TPErase;
-        ! The Robot is NOT in
-        TPWrite "Robot is not in position";
-        ! STARTPOS for this program
-        TPWrite "Start";
-        ! Continue to start pos?
-        TPReadFK nNum,"Start beweging?","","","","YES","NO";
+        TPReadFK nNum,"ROBOT NOT IN HOME! Start beweging to home?","","","","YES","NO";
         TPErase;
         TEST nNum
         CASE 4:
           TPErase;
-          ! The Robot will start to move now
           TPWrite "Robot gaat bewegen!";
           WaitTime 1;
           TempTool:=CTool();
@@ -432,14 +440,15 @@ MODULE L_support(SYSMODULE)
     ENDIF
     RETURN maxdiff;
   ENDFUNC
-
-  !*********** LoggProcedure *************
-    
+  
   PROC LoggProc(string text,num ErrCode,string keytext)
     VAR num key_in:=0;
     VAR bool tempBool;
     VAR bool disable:=TRUE;
-
+    !***************************************
+    ! PROC: LoggProc
+    ! Description: log data into a file 
+    !***************************************
     logCounterErrDisp:=logCounterErrDisp+1;
     IF logCounterErrDisp>maxLogCounErrDisp THEN
       IF Isfile(file2LoggErrW) RemoveFile "Home:/"+file2LoggErrW;

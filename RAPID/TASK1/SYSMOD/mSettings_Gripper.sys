@@ -42,7 +42,6 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Description: manueel grijper actief zetten
     !***************************************
         nActive_Gripper := fSelect_tool();
-        Stop;
         !
     ENDPROC
     
@@ -52,7 +51,6 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Description: manueel grijper wisselen
     !***************************************
      Set_Gripper(fSelect_tool());
-     Stop;
      !
     ENDPROC
 
@@ -198,7 +196,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
         rToolchanger_Open;   
         MoveL pDummy,v100,fine,tool0;
-        rToolchanger_close \Nocheck:=true;
+        rToolchanger_close \NoLockcheck;
         nActive_Gripper := DummyTool;
         Reset so_Changer_Open;
         Reset do_Gripper_Open;
@@ -272,22 +270,20 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
       rSet_Grijper_WZ;
       Set so_Changer_Open;
-      WaitDI di_Changer_Vergrendeld, 0;
-      !WaitDI diChanger_Open, 1;
+      CheckInput di_Changer_Vergrendeld,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 1 ";
     !
   ENDPROC 
   
-  LOCAL PROC rToolchanger_close(\bool Nocheck)
+  LOCAL PROC rToolchanger_close(\switch NoLockcheck)
     !***************************************	    
     ! Proc: rToolchanger_close
     ! Description: sluit toolchanger
     !***************************************
       Reset so_Changer_Open;
-      IF not Present(Nocheck) then
-      WaitDI di_Changer_Vergrendeld, 1;
-      WaitDi di_Changer_Tool_Aanwezig, 1;
+      IF not Present(NoLockcheck) then
+          CheckInput di_Changer_Vergrendeld,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 0 ";
       endif
-      !WaitDI diChanger_Open, 0;
+      CheckInput di_Changer_Tool_Aanwezig,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Tool_Aanwezig 0 ";
       rReset_Grijper_WZ;
     !
   ENDPROC 
@@ -300,7 +296,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         Reset do_Gripper_Close;
         Set do_Gripper_Open;
         !
-    WaitDI si_Grijpers_Open,1;
+    CheckInput si_Grijpers_Open,1, \Skip, \CheckTimeOut:=3,"Grijper sensor fout si_Grijpers_Open 0 ";
     !
   ENDPROC    
     
@@ -312,7 +308,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         Reset do_Gripper_Open;
         Set do_Gripper_Close;
         !
-    WaitDI si_Grijpers_Dicht,1;
+    CheckInput si_Grijpers_Dicht,1, \Skip, \CheckTimeOut:=3,"Grijper sensor fout si_Grijpers_Dicht 0 ";
     !
   ENDPROC  
   
