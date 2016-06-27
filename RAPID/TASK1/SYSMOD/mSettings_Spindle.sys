@@ -27,15 +27,26 @@ MODULE mSettings_Spindle(SYSMODULE)
     TASK PERS tooldata tFrees_10:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
 
     !Speedata
-    CONST speeddata vBoren_11_190:=[0.9,500,5000,1000];
-    CONST speeddata vBoren:=[2,500,5000,1000];
-    !CONST speeddata vFrezen:=[1.5,500,5000,1000];
-    !getest op 20000 toeren 
-    CONST speeddata vFrezen:=[4,500,5000,1000];
+    PERS speeddata vBoren_11_190:=[0.9,500,5000,1000];
+    PERS speeddata vBoren_aanzet:=[25,500,5000,1000];
+    
+    PERS speeddata vFrezen:=[4,500,5000,1000]; 
+    PERS speeddata vBorenMetFrees:=[1,500,5000,1000];
+    PERS speeddata vFrees_aanzet:=[25,500,5000,1000];
+
+    
+    
+    LOCAL PROC rInitSpindelData()
+        !voorlopig gefoefel
+        
+        vBoren_11_190 := Spindeltool{1}.Boorsnelheid;
+        vBoren_aanzet := Spindeltool{1}.BoorsnelheidAanzet;
+        
+        vFrezen := Spindeltool{2}.Freessnelheid;
+        vBorenMetFrees := Spindeltool{2}.Boorsnelheid;
+        vFrees_aanzet := Spindeltool{2}.FreessnelheidAanzet;
      
-    CONST speeddata vBorenMetFrees:=[1,500,5000,1000];
-    CONST speeddata vFrees_aanzet:=[25,500,5000,1000];
-    CONST speeddata vBoren_aanzet:=[25,500,5000,1000];
+    ENDPROC
     
     LOCAL PROC rteach_mag_Pos()
     !***************************************	    
@@ -284,6 +295,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Description: start spindel
     ! nSpeed wil override default toolspeed
     !***************************************
+        rInitSpindelData;
         Set doSpindle_Air_On; !moet anders draait hij stroef !
         Set so_Boren_aan;
         IF Present(nSpeed) THEN

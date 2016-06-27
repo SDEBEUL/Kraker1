@@ -10,7 +10,7 @@ ENDPROC
             "OnderRanden => Instelling productie onderranden  Productie="+ sBooltoString(Production.Onderanden),
             "DwarsBalken => Instelling productie dwarsbalken  Productie="+ sBooltoString(Production.Dwarsbalken),
             "Stations    => Instellingen van stations"],
-        \BtnArray:=["OnderRanden","DwarsBalken","Stations","",""]);
+        \BtnArray:=["OnderRanden","DwarsBalken","Stations","","TOOLS"]);
         TEST nAnswer
         CASE 1:
           rOnderRanden;
@@ -21,7 +21,7 @@ ENDPROC
         CASE 4:
           !leeg
         CASE 5:
-          !leeg
+          rSpindelToolUI;
         ENDTEST  
     ENDPROC
     

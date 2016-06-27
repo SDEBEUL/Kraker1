@@ -51,6 +51,20 @@ MODULE L_support
       bool Bovenranden;
   ENDRECORD 
   
+  RECORD SpindeltoolType 
+      string toolnaam;
+      num defaultspeed;
+      speeddata Boorsnelheid;
+      speeddata Freessnelheid;
+      speeddata BoorsnelheidAanzet;
+      speeddata FreessnelheidAanzet;
+      num nGatengeboord;
+      num nMetergefreest;
+      string sLaatsgewisseld;
+      num nMaxaantalgaten;
+      num nMaxMeterfrezen;
+  ENDRECORD 
+  
  !gedeelde record over de verschillende taken.
  !pas hier nooit iets handmatig aan maar gebruik altijd de interface! 
   CONST PartType part := [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -58,6 +72,7 @@ MODULE L_support
   PERS UitvoerBufferType UitvoerBuffer{6};
   PERS InvoerBufferType InvoerBuffer{6};
   PERS ProcuctionType Production;
+  PERS SpindeltoolType Spindeltool{6};
   
   
   FUNC string sBooltoString(bool bBool)

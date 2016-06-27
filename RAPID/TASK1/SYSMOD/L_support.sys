@@ -76,7 +76,15 @@ MODULE L_support(SYSMODULE)
   PERS UitvoerBufferType UitvoerBuffer{6};
   PERS InvoerBufferType InvoerBuffer{6};
   PERS ProcuctionType Production;
-  PERS SpindeltoolType Spindeltool{6};
+  PERS SpindeltoolType Spindeltool{6} := 
+  [
+  ["Boor 11",1800,[0.1,500,5000,1000],[10,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
+  ["Frees 11",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000]
+  ];
    
   
   !******************************************************************************
@@ -92,7 +100,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=5000;
-  LOCAL PERS num logCounterErrDisp:=28;
+  LOCAL PERS num logCounterErrDisp:=36;
   LOCAL VAR iodev file;
    
   PROC SyncPos()
