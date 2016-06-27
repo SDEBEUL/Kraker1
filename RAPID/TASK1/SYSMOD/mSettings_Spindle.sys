@@ -284,8 +284,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Description: start spindel
     ! nSpeed wil override default toolspeed
     !***************************************
-        Reset so_Boren_aan;
-        WaitTime 0.1;
+        Set doSpindle_Air_On; !moet anders draait hij stroef !
         Set so_Boren_aan;
         IF Present(nSpeed) THEN
          SetAO aoPLC_Spindle_Speed,nSpeed;
@@ -305,6 +304,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         !rSpindelSprVsn FALSE;
         SetAO aoPLC_Spindle_Speed,0;
         Reset so_Boren_aan;
+        Reset doSpindle_Air_On;
         !
     ENDPROC
     
