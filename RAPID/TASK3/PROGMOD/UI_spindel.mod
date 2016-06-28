@@ -1,5 +1,5 @@
 MODULE UI_spindel
-  
+    VAR intnum Int3ManUnlock := 3;
 
     
  PROC rSpindelToolUI() 
@@ -103,5 +103,46 @@ answer := UINumEntry (\Header:= "Stel de parameter in tussen de toegelaten waard
 \InitValue:=CurrentValue \MinValue:=MinValue \MaxValue:=MaxValue);
 RETURN answer;
 ENDFUNC
+
+
+  PROC rSpindelManUnlock(bool bEnable \switch init)
+    !***************************************	    
+    ! Trap: rSpindelManUnlock
+    ! Description: supervision for spindle  
+    ! check if spindel is not stopped
+    !***************************************        
+     IF Present(init) THEN   
+      IDelete Int3ManUnlock;  
+      CONNECT Int3ManUnlock WITH tSpindelManUnlock;
+      ISignalDI diSpindle_Button,1,Int3ManUnlock;
+      ISleep Int3ManUnlock;
+     ENDIF
+     
+     IF bEnable THEN
+      IWatch Int3ManUnlock;
+     ELSE
+      ISleep Int3ManUnlock;
+     ENDIF
+    ENDPROC
+
+  TRAP tSpindelManUnlock
+    !***************************************	    
+    ! Trap: tSpindelManUnlock
+    ! Description: unlock spindel with buton 
+    ! stops robot with alarm message 
+    ! Connected in rSpindelSprVsn
+    !***************************************	    
+        SetDO doSpindle_Air_On,1;
+        Reset doSpindle_Lock;
+        SetDO doSpindle_Release,1;
+      
+        WaitDI diSpindle_Button, 0;
+        
+        SetDO doSpindle_Air_On,1;
+        Reset doSpindle_Release;
+        SetDO doSpindle_Lock,1;
+        IWatch Int3ManUnlock;
+  ENDTRAP
+
 
 ENDMODULE

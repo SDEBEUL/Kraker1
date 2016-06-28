@@ -1,5 +1,7 @@
 MODULE m_Main
 PROC Main()
+    rSpindelManUnlock TRUE \init;
+    
     rInterFaceHome;
 ENDPROC
   
@@ -53,6 +55,7 @@ ENDPROC
                GOTO lblBegin;
               CASE 1:
                !start programma onderrand links
+                Station{6}.indienst := TRUE;
                 Station{6}.Lading := part.OnbewerkteOnderrand;
                 Station{6}.Opdracht := part.OnderrandLinks;
             ENDTEST
@@ -65,8 +68,9 @@ ENDPROC
                 GOTO lblBegin;
               CASE 1:
                !start programma onderrand rechts
+                Station{6}.indienst := TRUE;
                 Station{6}.Lading := part.OnbewerkteOnderrand;
-                Station{6}.Opdracht := part.OnderrandLinks;
+                Station{6}.Opdracht := part.OnderrandRechts;
             ENDTEST
          CASE 5:
            !exit
