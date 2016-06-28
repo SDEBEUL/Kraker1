@@ -79,7 +79,7 @@ MODULE L_support(SYSMODULE)
   PERS SpindeltoolType Spindeltool{6} := 
   [
   ["Boor 11",4500,[4,500,5000,1000],[10,500,5000,1000],[25,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
-  ["Frees 11",10000,[4,500,5000,1000],[2.5,500,5000,1000],[10,500,5000,1000],[10,500,5000,1000],0,0,"",1000,1000],
+  ["Frees 11",6000,[4,500,5000,1000],[1.2,500,5000,1000],[10,500,5000,1000],[10,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
@@ -90,7 +90,7 @@ MODULE L_support(SYSMODULE)
   !******************************************************************************
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[284,2,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[2443.8,0,0],[1,0,0,0]]];
   PERS tooldata TempTool:=[TRUE,[[502,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
   PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[14550,-1400,300],[0,0,0,1]],[[459.5,0,0],[1,0,0,0]]];
   !interupts
@@ -100,7 +100,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=5000;
-  LOCAL PERS num logCounterErrDisp:=48;
+  LOCAL PERS num logCounterErrDisp:=50;
   LOCAL VAR iodev file;
    
   PROC SyncPos()
@@ -159,6 +159,7 @@ MODULE L_support(SYSMODULE)
     ! Armfirst moves the arm home before the track
     !***************************************
     VAR jointtarget tempJnt;
+    EOffsSet [0,0,0,0,0,0];
     IF nActive_Gripper = GrijperTool THEN
       Check_gripper(GrijperTool);
       tempJnt := pHomeJoint_Grijper;
