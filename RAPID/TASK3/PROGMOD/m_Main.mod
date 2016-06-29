@@ -1,8 +1,9 @@
 MODULE m_Main
 PROC Main()
     rSpindelManUnlock TRUE \init;
-    
-    rInterFaceHome;
+    WHILE TRUE DO 
+        rInterFaceHome;
+    ENDWHILE
 ENDPROC
   
    PROC rInterFaceHome()
@@ -13,6 +14,7 @@ ENDPROC
             "DwarsBalken => Instelling productie dwarsbalken  Productie="+ sBooltoString(Production.Dwarsbalken),
             "Stations    => Instellingen van stations"],
         \BtnArray:=["OnderRanden","DwarsBalken","Stations","","TOOLS"]);
+        
         TEST nAnswer
         CASE 1:
           rOnderRanden;
@@ -49,7 +51,7 @@ ENDPROC
         CASE 3:
             nAnswer := UIMessageBox(\Header:="Onderrand Links gekozen",
             \MsgArray:=["Druk op 'OK' om te starten met de onderrand links type 602","Let erop dat de aanslag goed zit (ongeveer halverwege)","Druk op 'Cancel' om de keuze te wijzigen"],
-            \BtnArray:=["OK","","","","Terug"]);
+            \BtnArray:=["OK","","","","Terug"] );
             TEST nAnswer
               CASE 5:
                GOTO lblBegin;
@@ -62,7 +64,7 @@ ENDPROC
         CASE 4:
             nAnswer := UIMessageBox(\Header:="Onderrand Rechts gekozen",
             \MsgArray:=["Druk op 'OK' om te starten met de onderrand Rechts type 602","Let erop dat de aanslag goed zit (ongeveer halverwege)","Druk op 'Cancel' om de keuze te wijzigen"],
-            \BtnArray:=["OK","","","","Terug"]);
+            \BtnArray:=["OK","","","","Terug"] );
             TEST nAnswer
               CASE 5:
                 GOTO lblBegin;

@@ -53,11 +53,11 @@ MODULE L_support
   
   RECORD SpindeltoolType 
       string toolnaam;
-      num defaultspeed;
-      speeddata Boorsnelheid;
-      speeddata Freessnelheid;
-      speeddata BoorsnelheidAanzet;
-      speeddata FreessnelheidAanzet;
+      num Toerental;
+      speeddata VoedingBoren;
+      speeddata VoedingFrezen;
+      speeddata VoedingAanzetBoren;
+      speeddata VoedingAanzetFrezen;
       num nGatengeboord;
       num nMetergefreest;
       string sLaatsgewisseld;

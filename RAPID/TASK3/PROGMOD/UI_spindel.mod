@@ -19,23 +19,23 @@ MODULE UI_spindel
          rSetSpindelTool(3);
          GOTO lbl_begin;
         CASE 4:
-        nAnswer:=UIMessageBox(\Header:="SpindelTools"
-        \MsgArray:=["Dit zijn de tools die de spindel kan gebruiken","selecteer een tool om iets te veranderen"],
-         \BtnArray:=[Spindeltool{4}.toolnaam,Spindeltool{5}.toolnaam,Spindeltool{6}.toolnaam,"meer","Terug"]);
-        TEST nAnswer
-        CASE 1:
-         rSetSpindelTool(4);
-         GOTO lbl_begin;
-        CASE 2:
-         rSetSpindelTool(5);
-         GOTO lbl_begin;
-        CASE 3:
-         !leeg
-        CASE 4:
-         GOTO lbl_begin; 
-        CASE 5:
-         GOTO lblExit;
-        ENDTEST
+            nAnswer:=UIMessageBox(\Header:="SpindelTools"
+            \MsgArray:=["Dit zijn de tools die de spindel kan gebruiken","selecteer een tool om iets te veranderen"],
+             \BtnArray:=[Spindeltool{4}.toolnaam,Spindeltool{5}.toolnaam,Spindeltool{6}.toolnaam,"meer","Terug"]);
+                TEST nAnswer
+                CASE 1:
+                 rSetSpindelTool(4);
+                 GOTO lbl_begin;
+                CASE 2:
+                 rSetSpindelTool(5);
+                 GOTO lbl_begin;
+                CASE 3:
+                 !leeg
+                CASE 4:
+                 GOTO lbl_begin; 
+                CASE 5:
+                 GOTO lblExit;
+                ENDTEST
         
         CASE 5:
          GOTO lblExit;
@@ -46,8 +46,14 @@ MODULE UI_spindel
   PROC rSetSpindelTool(num toolnum)
         VAR btnres nAnswer;
         lbl_begin:
-        nAnswer:=UIMessageBox(\Header:="status voor de tool"+NumToStr(toolnum,0)
-        \MsgArray:=["Deze tool heeft momenteel volgende parameters",""]
+        nAnswer:=UIMessageBox(\Header:="status voor de tool:"+NumToStr(toolnum,0)+ " ("+Spindeltool{toolnum}.toolnaam+")"
+        \MsgArray:=["Deze tool heeft momenteel volgende parameters",
+        "Toerental           = "+NumToStr(Spindeltool{toolnum}.Toerental,0) +" RPM",
+        "VoedingBoren        = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingBoren),2) +" mm/s", 
+        "VoedingFrezen       = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingFrezen),2) +" mm/s", 
+        "VoedingAanzetBoren  = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingAanzetBoren),2) +" mm/s", 
+        "VoedingAanzetFrezen = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingAanzetFrezen),2) +" mm/s", 
+            ""]
         \BtnArray:=["Parameters","","","","Terug"]);
         TEST nAnswer
         CASE 1:
@@ -68,31 +74,34 @@ MODULE UI_spindel
        lblExit:
 ENDPROC
 
+FUNC num ftcpSpeed(speeddata speed)
+RETURN speed.v_tcp;
+ENDFUNC
 
 PROC rlistToolParams(Num toolnum)
-VAR listitem ParmList{5} := [["","defaultspeed"], ["","Boorsnelheid"], ["","Freessnelheid"], ["","BoorsnelheidAanzet"], ["","FreessnelheidAanzet"]];
+VAR listitem ParmList{5} := [["","Toerental"], ["","VoedingBoren"], ["","VoedingFrezen"], ["","VoedingAanzetBoren"], ["","VoedingAanzetFrezen"]];
 VAR num list_item;
 VAR speeddata SpeedDummy;
 list_item := UIListView( \Header:="Selecteer de parameter die u wilt aanpassen",ParmList \Icon:=iconInfo);
     TEST list_item
       CASE 1:
-       Spindeltool{toolnum}.defaultspeed := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.defaultspeed,1800,24000);
+       Spindeltool{toolnum}.Toerental := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.Toerental,1800,24000);
       CASE 2:
-          SpeedDummy := Spindeltool{toolnum}.Boorsnelheid;
+          SpeedDummy := Spindeltool{toolnum}.VoedingBoren;
           SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
-          Spindeltool{toolnum}.Boorsnelheid := SpeedDummy;
+          Spindeltool{toolnum}.VoedingBoren := SpeedDummy;
       CASE 3:
-          SpeedDummy := Spindeltool{toolnum}.Freessnelheid;
+          SpeedDummy := Spindeltool{toolnum}.VoedingFrezen;
           SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
-          Spindeltool{toolnum}.Freessnelheid := SpeedDummy;
+          Spindeltool{toolnum}.VoedingFrezen := SpeedDummy;
       CASE 4:
-          SpeedDummy := Spindeltool{toolnum}.BoorsnelheidAanzet;
-          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
-          Spindeltool{toolnum}.BoorsnelheidAanzet := SpeedDummy;
+          SpeedDummy := Spindeltool{toolnum}.VoedingAanzetBoren;
+          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,100);
+          Spindeltool{toolnum}.VoedingAanzetBoren := SpeedDummy;
       CASE 5:
-          SpeedDummy := Spindeltool{toolnum}.FreessnelheidAanzet;
-          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
-          Spindeltool{toolnum}.FreessnelheidAanzet := SpeedDummy;
+          SpeedDummy := Spindeltool{toolnum}.VoedingAanzetFrezen;
+          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,100);
+          Spindeltool{toolnum}.VoedingAanzetFrezen := SpeedDummy;
     ENDTEST
 ENDPROC
 
@@ -132,16 +141,19 @@ ENDFUNC
     ! stops robot with alarm message 
     ! Connected in rSpindelSprVsn
     !***************************************	    
-        SetDO doSpindle_Air_On,1;
-        Reset doSpindle_Lock;
-        SetDO doSpindle_Release,1;
-      
-        WaitDI diSpindle_Button, 0;
-        
-        SetDO doSpindle_Air_On,1;
-        Reset doSpindle_Release;
-        SetDO doSpindle_Lock,1;
-        IWatch Int3ManUnlock;
+        WaitTime 3;
+        IF TestDI(diSpindle_Button) THEN
+            SetDO doSpindle_Air_On,1;
+            Reset doSpindle_Lock;
+            SetDO doSpindle_Release,1;
+          
+            WaitDI diSpindle_Button, 0;
+            
+            SetDO doSpindle_Air_On,1;
+            Reset doSpindle_Release;
+            SetDO doSpindle_Lock,1;
+            IWatch Int3ManUnlock;
+        ENDIF
   ENDTRAP
 
 

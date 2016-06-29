@@ -1,6 +1,5 @@
 MODULE mSettings_Spindle(SYSMODULE)
     !toolmagazijn
-    local CONST string strTool{6}:=["Boor 11mm","Frees","Krasnaald","","",""];
     CONST num EmptySpindel :=0;
     CONST num Boor_11m := 1;
     CONST num Frees := 2;
@@ -9,7 +8,6 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty5 := 5;
     CONST num empty6 := 6;
     local PERS bool  bActiveTool{6} := [FALSE,TRUE,FALSE,FALSE,FALSE,FALSE];
-    local CONST num nDefaultSpeed{6} := [2000,15000,0,0,0,0];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-113.098,-15.104,3.1224,84.2322,-67.5896,-85.4401],[500.018,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
@@ -39,12 +37,12 @@ MODULE mSettings_Spindle(SYSMODULE)
     LOCAL PROC rInitSpindelData()
         !voorlopig gefoefel
         
-        vBoren_11_190 := Spindeltool{1}.Boorsnelheid;
-        vBoren_aanzet := Spindeltool{1}.BoorsnelheidAanzet;
+        vBoren_11_190 := Spindeltool{1}.VoedingBoren;
+        vBoren_aanzet := Spindeltool{1}.VoedingAanzetBoren;
         
-        vFrezen := Spindeltool{2}.Freessnelheid;
-        vBorenMetFrees := Spindeltool{2}.Boorsnelheid;
-        vFrees_aanzet := Spindeltool{2}.FreessnelheidAanzet;
+        vFrezen := Spindeltool{2}.VoedingFrezen;
+        vBorenMetFrees := Spindeltool{2}.VoedingBoren;
+        vFrees_aanzet := Spindeltool{2}.VoedingAanzetFrezen;
      
     ENDPROC
     
@@ -104,12 +102,10 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Description: manueel tool selecteren
     !***************************************
         VAR btnres nAnswer;
-        CONST string Buttons_1{5}:=[strTool{1},strTool{2},strTool{3},"","MEER"];
-        CONST string Buttons_2{5}:=[strTool{4},strTool{5},strTool{6},"GeenTool","MEER"];
         lbl_1:
-            nAnswer:=UIMessageBox(\Header:="Welke spindel tool?",\BtnArray:=Buttons_1);
+            nAnswer:=UIMessageBox(\Header:="Welke spindel tool?",\BtnArray:=[Spindeltool{1}.toolnaam,Spindeltool{2}.toolnaam,Spindeltool{3}.toolnaam,"","MEER"]);
             IF nAnswer > 3 THEN
-              nAnswer:=UIMessageBox(\Header:="Welke spindel tool?",\BtnArray:=Buttons_2);
+              nAnswer:=UIMessageBox(\Header:="Welke spindel tool?",\BtnArray:=[Spindeltool{4}.toolnaam,Spindeltool{5}.toolnaam,Spindeltool{6}.toolnaam,"GeenTool","MEER"]);
               IF nAnswer = 5 THEN
                 GOTO lbl_1;
               ELSEIF nAnswer = 4 THEN
@@ -306,7 +302,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         IF Present(nSpeed) THEN
          SetAO aoPLC_Spindle_Speed,nSpeed;
         ELSE
-         SetAO aoPLC_Spindle_Speed,Spindeltool{fGet_activeTool()}.defaultspeed;
+         SetAO aoPLC_Spindle_Speed,Spindeltool{fGet_activeTool()}.Toerental;
         ENDIF
         IF (bAlreadyOn = FALSE) THEN
          rCheckSpindelRunning \nPulses:=3;
