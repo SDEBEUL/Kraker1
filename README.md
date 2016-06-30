@@ -18,3 +18,8 @@ toolcontrole sensor op robot
 **interface stations voor lading
 
 
+Sick DT35
+voor Q1 enkel far teachen. (met het opbject op de verste plek waar het mag gezien worden) 
+Ik denk als ik Q1 near al heb gedaan dat ik Q1 near ook opnieuw moet teachen maar met 'niets' in de weg 
+
+voor Q2 near teachen met de balk in pick pos. Q3 far teachen op pos voor het rek met het laatste stuk in het rek ? 
