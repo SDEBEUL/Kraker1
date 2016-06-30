@@ -49,4 +49,91 @@
 2016-06-27, 10:38:24, mStations ,Code , 11 ,Info , Sation:6 EindBoren Type:7 
 2016-06-27, 10:38:24, mStations ,Code , 12 ,Info , Sation:6 StartFrezen Type:7 
 2016-06-29, 08:18:10, Main ,Code , 18 ,Info , PP to main 
-2016-06-29, 08:37:44, Main ,Code , 18 ,Info , PP to main
+2016-06-29, 08:37:44, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 07:06:30, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 08:27:05, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 08:43:04, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 08:44:03, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 08:45:42, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 09:06:17, Offset ,Code , 31 ,Info , offset voor sation:1 x=-1562.58 Pos1=-796.80 Pos2=765.79 
+2016-06-29, 09:16:57, Offset ,Code , 31 ,Info , offset voor sation:1 x=-1558.58 Pos1=-796.74 Pos2=761.83 
+2016-06-29, 09:20:52, Offset ,Code , 31 ,Info , offset voor sation:1 x=-1550.84 Pos1=-793.27 Pos2=757.57 
+2016-06-29, 09:21:32, Offset ,Code , 31 ,Info , offset voor sation:1 x=-1543.05 Pos1=-791.21 Pos2=751.84 
+2016-06-29, 09:22:09, Offset ,Code , 31 ,Info , offset voor sation:1 x=-1530.69 Pos1=-784.45 Pos2=746.23 
+2016-06-29, 09:24:04, Offset ,Code , 31 ,Info , offset voor sation:1 x=1521.10 Pos1=-780.11 Pos2=740.98 
+2016-06-29, 09:24:25, Offset ,Code , 31 ,Info , offset voor sation:1 x=1514.33 Pos1=-778.91 Pos2=735.42 
+2016-06-29, 09:28:55, Offset ,Code , 31 ,Info , offset voor sation:1 x=1502.88 Pos1=-773.88 Pos2=729.00 
+2016-06-29, 09:35:17, Offset ,Code , 31 ,Info , offset voor sation:1 x=-27.68 Pos1=-791.45 Pos2=763.78 
+2016-06-29, 09:39:12, Offset ,Code , 31 ,Info , offset voor sation:1 x=-28.67 Pos1=-793.70 Pos2=765.03 
+2016-06-29, 09:40:30, Offset ,Code , 31 ,Info , offset voor sation:1 x=-34.31 Pos1=-791.60 Pos2=757.29 
+2016-06-29, 09:40:46, Offset ,Code , 31 ,Info , offset voor sation:1 x=-34.52 Pos1=-796.40 Pos2=761.88 
+2016-06-29, 09:41:02, Offset ,Code , 31 ,Info , offset voor sation:1 x=-29.41 Pos1=-795.82 Pos2=766.41 
+2016-06-29, 09:41:30, Offset ,Code , 31 ,Info , offset voor sation:1 x=-33.52 Pos1=-794.55 Pos2=761.03 
+2016-06-29, 09:42:05, Offset ,Code , 31 ,Info , offset voor sation:1 x=-43.01 Pos1=-798.57 Pos2=755.55 
+2016-06-29, 09:42:45, Offset ,Code , 31 ,Info , offset voor sation:1 x=9.13 Pos1=-771.29 Pos2=780.42 
+2016-06-29, 09:43:25, Offset ,Code , 31 ,Info , offset voor sation:1 x=-3.95 Pos1=-779.01 Pos2=775.06 
+2016-06-29, 09:45:59, Offset ,Code , 31 ,Info , offset voor sation:1 x=-10.40 Pos1=-780.22 Pos2=769.82 
+2016-06-29, 09:50:31, Offset ,Code , 31 ,Info , offset voor sation:1 x=997.51 Pos1=-280.18 Pos2=1277.69 
+2016-06-29, 09:54:01, Offset ,Code , 31 ,Info , offset voor sation:1 x=-12.66 Pos1=-782.79 Pos2=770.13 
+2016-06-29, 09:54:14, Offset ,Code , 31 ,Info , offset voor sation:1 x=-13.52 Pos1=-788.24 Pos2=774.73 
+2016-06-29, 09:54:29, Offset ,Code , 31 ,Info , offset voor sation:1 x=-13.96 Pos1=-783.36 Pos2=769.40 
+2016-06-29, 09:54:42, Offset ,Code , 31 ,Info , offset voor sation:1 x=-14.38 Pos1=-788.45 Pos2=774.07 
+2016-06-29, 09:54:57, Offset ,Code , 31 ,Info , offset voor sation:1 x=-14.53 Pos1=-783.39 Pos2=768.87 
+2016-06-29, 09:55:34, Offset ,Code , 31 ,Info , offset voor sation:1 x=-12.00 Pos1=-785.52 Pos2=773.52 
+2016-06-29, 09:55:58, Offset ,Code , 31 ,Info , offset voor sation:1 x=-18.91 Pos1=-786.98 Pos2=768.07 
+2016-06-29, 09:56:12, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.42 Pos1=-782.02 Pos2=772.60 
+2016-06-29, 09:57:07, Offset ,Code , 31 ,Info , offset voor sation:2 x=1.16 Pos1=-777.39 Pos2=778.55 
+2016-06-29, 09:57:52, Offset ,Code , 31 ,Info , offset voor sation:2 x=-2.78 Pos1=-776.18 Pos2=773.40 
+2016-06-29, 09:58:05, Offset ,Code , 31 ,Info , offset voor sation:2 x=-3.11 Pos1=-781.26 Pos2=778.15 
+2016-06-29, 09:58:20, Offset ,Code , 31 ,Info , offset voor sation:2 x=-3.22 Pos1=-776.18 Pos2=772.95 
+2016-06-29, 09:58:33, Offset ,Code , 31 ,Info , offset voor sation:2 x=-3.36 Pos1=-780.96 Pos2=777.60 
+2016-06-29, 09:58:48, Offset ,Code , 31 ,Info , offset voor sation:2 x=-3.31 Pos1=-775.79 Pos2=772.48 
+2016-06-29, 09:59:01, Offset ,Code , 31 ,Info , offset voor sation:2 x=-3.75 Pos1=-780.88 Pos2=777.13 
+2016-06-29, 10:31:44, Offset ,Code , 31 ,Info , offset voor sation:1 x=-12.30 Pos1=-777.81 Pos2=765.51 
+2016-06-29, 10:32:14, Offset ,Code , 31 ,Info , offset voor sation:1 x=-5.71 Pos1=-779.77 Pos2=774.06 
+2016-06-29, 10:32:24, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.82 Pos1=-783.89 Pos2=774.08 
+2016-06-29, 10:32:34, Offset ,Code , 31 ,Info , offset voor sation:1 x=-10.15 Pos1=-783.92 Pos2=773.77 
+2016-06-29, 10:32:44, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.61 Pos1=-783.61 Pos2=774.00 
+2016-06-29, 10:32:54, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.82 Pos1=-783.80 Pos2=773.98 
+2016-06-29, 10:33:04, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.85 Pos1=-783.80 Pos2=773.95 
+2016-06-29, 10:33:14, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.68 Pos1=-783.61 Pos2=773.92 
+2016-06-29, 10:33:24, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.85 Pos1=-783.76 Pos2=773.90 
+2016-06-29, 10:33:34, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.85 Pos1=-783.77 Pos2=773.92 
+2016-06-29, 10:33:44, Offset ,Code , 31 ,Info , offset voor sation:1 x=-9.62 Pos1=-783.53 Pos2=773.91 
+2016-06-29, 10:34:13, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.07 Pos1=-773.83 Pos2=773.89 
+2016-06-29, 10:34:24, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.31 Pos1=-773.73 Pos2=774.04 
+2016-06-29, 10:34:35, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.03 Pos1=-773.90 Pos2=773.93 
+2016-06-29, 10:34:46, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.04 Pos1=-773.57 Pos2=773.60 
+2016-06-29, 10:34:57, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.03 Pos1=-773.94 Pos2=773.97 
+2016-06-29, 10:35:08, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.04 Pos1=-773.84 Pos2=773.89 
+2016-06-29, 10:35:19, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.30 Pos1=-773.73 Pos2=774.03 
+2016-06-29, 10:35:30, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.36 Pos1=-773.65 Pos2=774.01 
+2016-06-29, 10:35:41, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.07 Pos1=-773.84 Pos2=773.92 
+2016-06-29, 10:35:51, Offset ,Code , 31 ,Info , offset voor sation:2 x=-10.10 Pos1=-783.74 Pos2=773.64 
+2016-06-29, 10:36:01, Offset ,Code , 31 ,Info , offset voor sation:2 x=-9.86 Pos1=-783.71 Pos2=773.85 
+2016-06-29, 10:36:12, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.52 Pos1=-773.45 Pos2=773.97 
+2016-06-29, 10:36:23, Offset ,Code , 31 ,Info , offset voor sation:2 x=0.03 Pos1=-773.85 Pos2=773.87 
+2016-06-29, 10:37:37, Offset ,Code , 31 ,Info , offset voor sation:2 x=2.78 Pos1=-773.49 Pos2=776.28 
+2016-06-29, 10:38:15, Offset ,Code , 31 ,Info , offset voor sation:3 x=11.06 Pos1=-772.92 Pos2=783.98 
+2016-06-29, 10:38:25, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.04 Pos1=-773.98 Pos2=784.03 
+2016-06-29, 10:38:35, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.88 Pos1=-773.25 Pos2=784.13 
+2016-06-29, 10:38:45, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.36 Pos1=-773.59 Pos2=783.94 
+2016-06-29, 10:38:55, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.07 Pos1=-773.86 Pos2=783.93 
+2016-06-29, 10:39:05, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.33 Pos1=-773.66 Pos2=783.99 
+2016-06-29, 10:39:15, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.33 Pos1=-773.71 Pos2=784.04 
+2016-06-29, 10:39:25, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.34 Pos1=-773.74 Pos2=784.09 
+2016-06-29, 10:39:35, Offset ,Code , 31 ,Info , offset voor sation:3 x=10.51 Pos1=-773.55 Pos2=784.05 
+2016-06-29, 10:40:23, Offset ,Code , 31 ,Info , offset voor sation:4 x=9.88 Pos1=-774.13 Pos2=784.00 
+2016-06-29, 10:40:33, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.43 Pos1=-773.59 Pos2=784.02 
+2016-06-29, 10:40:43, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.48 Pos1=-773.67 Pos2=784.14 
+2016-06-29, 10:40:53, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.34 Pos1=-773.75 Pos2=784.09 
+2016-06-29, 10:41:03, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.37 Pos1=-773.84 Pos2=784.21 
+2016-06-29, 10:41:13, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.35 Pos1=-773.63 Pos2=783.99 
+2016-06-29, 10:41:23, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.75 Pos1=-773.60 Pos2=784.34 
+2016-06-29, 10:41:33, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.90 Pos1=-773.20 Pos2=784.10 
+2016-06-29, 10:41:43, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.18 Pos1=-773.73 Pos2=783.91 
+2016-06-29, 10:41:53, Offset ,Code , 31 ,Info , offset voor sation:4 x=10.48 Pos1=-773.54 Pos2=784.02 
+2016-06-29, 10:42:24, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 10:42:59, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 10:59:06, Main ,Code , 18 ,Info , PP to main 
+2016-06-29, 10:59:41, mStations ,Code , 10 ,Info , Sation:6 StartBoren Type:8

@@ -1,14 +1,14 @@
 #
 # Generated backup file, do not edit.
 #
-# Originally at: C:/Users/admin/Desktop/kraker/Kraker1_BACKUP_2016-06-29Uicleanup
-# 16-06-29  08:39:39
+# Originally at: /hd0a/temp/90ed5f41
+# 16-06-29  11:02:08
 #
 >>SYSTEM_ID:
 66-60711
 
 >>PRODUCTS_ID:
-RobotWare Version: 5.15.1091.01
+RobotWare Version: 5.15.9100.10
 
   RW Control module key
   RobotWare OS and English
@@ -60,31 +60,31 @@ MMC.cfg
 
 
 >>TASK1: (T_ROB1,KrakerTrailers,)
-SYSMOD\user.sys @ user.sys
-PROGMOD\mBuffer.mod @ mbuffer.mod
-PROGMOD\MainModule.mod @ mainmodule.mod
-PROGMOD\WOBJ.mod @ wobj.mod
-PROGMOD\RapidCom.mod @ rapidcom.mod
-PROGMOD\TuneMasterLib.mod @ tunemasterlib.mod
-SYSMOD\mSettings_Spindle.sys @ msettings_spindle.sys
-SYSMOD\L_support.sys @ l_support.sys
-SYSMOD\mSettings_Sations.sys @ msettings_sations.sys
-PROGMOD\mDwarsbalk.mod @ mdwarsbalk.mod
-PROGMOD\mOnderRanden.mod @ monderranden.mod
-PROGMOD\mStation.mod @ mstation.mod
-SYSMOD\mSettings_Gripper.sys @ msettings_gripper.sys
-SYSMOD\mSettings_buffer.sys @ msettings_buffer.sys
+SYSMOD/user.sys @ user.sys
+PROGMOD/mBuffer.mod @ mbuffer.mod
+PROGMOD/MainModule.mod @ mainmodule.mod
+PROGMOD/WOBJ.mod @ wobj.mod
+PROGMOD/RapidCom.mod @ rapidcom.mod
+PROGMOD/TuneMasterLib.mod @ tunemasterlib.mod
+SYSMOD/mSettings_Spindle.sys @ msettings_spindle.sys
+SYSMOD/L_support.sys @ l_support.sys
+SYSMOD/mSettings_Sations.sys @ msettings_sations.sys
+PROGMOD/mDwarsbalk.mod @ mdwarsbalk.mod
+PROGMOD/mOnderRanden.mod @ monderranden.mod
+PROGMOD/mStation.mod @ mstation.mod
+SYSMOD/mSettings_buffer.sys @ msettings_buffer.sys
+SYSMOD/mSettings_Gripper.sys @ msettings_gripper.sys
 
 >>TASK2: (PSC_CBC,,)
-SYSMOD\user.sys @ user.sys
+SYSMOD/user.sys @ user.sys
 
 >>TASK3: (T_ui,,)
-PROGMOD\m_Main.mod @ m_main.mod
-PROGMOD\UI_Buffers.mod @ ui_buffers.mod
-SYSMOD\user.sys @ user.sys
-PROGMOD\UI_spindel.mod @ ui_spindel.mod
-PROGMOD\UI_Stations.mod @ ui_stations.mod
-PROGMOD\L_support.mod @ l_support.mod
+PROGMOD/m_Main.mod @ m_main.mod
+PROGMOD/UI_Buffers.mod @ ui_buffers.mod
+SYSMOD/user.sys @ user.sys
+PROGMOD/UI_spindel.mod @ ui_spindel.mod
+PROGMOD/UI_Stations.mod @ ui_stations.mod
+PROGMOD/L_support.mod @ l_support.mod
 
 
 >>EOF:

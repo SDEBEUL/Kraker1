@@ -78,13 +78,13 @@ ENDPROC
 
 
 PROC rSetStationLoad(Num stationum)
-VAR listitem PartTypeList{10};
+VAR listitem PartTypeList{12};
 VAR num list_item;
-FOR i FROM 1 TO 10 STEP 1 DO 
-  PartTypeList{i} := ["",sPartTypetoString(i)];  
+FOR i FROM 1 TO 12 STEP 1 DO 
+  PartTypeList{i} := ["",sPartTypetoString(i-1)];  
 ENDFOR
 list_item := UIListView( \Header:="Selecteer the parttype dat in het station aanwezig is",PartTypeList \Icon:=iconInfo);
-Station{stationum}.Lading := list_item;
+Station{stationum}.Lading := list_item-1;
 ENDPROC
 
 PROC rSetStationClamps(num stationnum)
