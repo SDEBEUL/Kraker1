@@ -25,8 +25,8 @@ MODULE mSettings_Spindle(SYSMODULE)
     TASK PERS tooldata tFrees_10:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
 
     !Speedata
-    PERS speeddata vBoren_11_190:=[4,500,5000,1000];
-    PERS speeddata vBoren_aanzet:=[25,500,5000,1000];
+    PERS speeddata vBoren_11_190:=[2.5,500,5000,1000];
+    PERS speeddata vBoren_aanzet:=[85,500,5000,1000];
     
     PERS speeddata vFrezen:=[1.2,500,5000,1000]; 
     PERS speeddata vBorenMetFrees:=[4,500,5000,1000];

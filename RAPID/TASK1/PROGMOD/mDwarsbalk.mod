@@ -1,9 +1,9 @@
 MODULE mDwarsbalk
     !wobj voor bewerken balken in station
     TASK PERS wobjdata wobj_BalkStation1:=[FALSE,TRUE,"",[[1926.9,-1043.5,510.5],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_BalkStation2:=[FALSE,TRUE,"",[[4927,-1043.5,507],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_BalkStation3:=[FALSE,TRUE,"",[[7926,-1043.5,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_BalkStation4:=[FALSE,TRUE,"",[[10927,-1046,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_BalkStation2:=[FALSE,TRUE,"",[[4926.3,-1043.5,507],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_BalkStation3:=[FALSE,TRUE,"",[[7925.3,-1043.5,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_BalkStation4:=[FALSE,TRUE,"",[[10925.9,-1046,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_BalkStation5:=[FALSE,TRUE,"",[[13936,-1043.5,510.5],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
     
     TASK PERS wobjdata wobj_Dwarsbalk330_Boor_11:=[FALSE,TRUE,"",[[15000,-1400,300],[0.707107,0.707107,0,0]],[[0,0,0],[0,1,0,0]]];
@@ -25,8 +25,8 @@ MODULE mDwarsbalk
     CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     
-    PERS robtarget pMeasurePos1Start:=[[-780.911,20,50],[0.00304342,-0.707919,0.706283,-0.00244585],[-1,0,-3,0],[800.049,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget pMeasurePos2Start:=[[777.978,20,50],[0.00305563,-0.707889,0.706313,-0.00247986],[-1,0,-3,0],[1717.42,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos1Start:=[[-761.645,20.0849,50.2279],[0.00303584,-0.707937,0.706265,-0.00245748],[-1,0,-3,0],[800.053,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos2Start:=[[1680.56,21.3614,50.5337],[0.00305126,-0.708139,0.706063,-0.00249027],[-1,0,-3,0],[2494.52,9E+09,9E+09,9E+09,9E+09,9E+09]];
  
     
     !jointagerts
@@ -98,15 +98,15 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_331,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
-        MoveL RelTool(pGat11_331,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
-        rStop_Spindle;
-        MoveL RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        !rStop_Spindle;
+        MoveL RelTool(pGat11_331,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -121,17 +121,17 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_331,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_331,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
-        MoveL RelTool(pGat11_331,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,85),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,110), vBoren_11_190, fine, boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
-        rStop_Spindle;
-        MoveL RelTool(pGat11_330,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        !rStop_Spindle;
+        MoveL RelTool(pGat11_330,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -463,6 +463,8 @@ MODULE mDwarsbalk
         !
         rBoren_11mm_Dwarsbalk_331_Dubbel -1202.5,-27.5,0,trackshift;
         !
+        rStop_Spindle;
+        !
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v1000,z50,tool0; 
         !
@@ -650,7 +652,7 @@ MODULE mDwarsbalk
         ENDWHILE
         !
     ENDPROC
-    
+
     PROC rMeasureStationOffset(num nStation, Wobjdata WobjActiveStation )
     !***************************************	    
     ! Proc: rMeasureStationOffset
@@ -662,6 +664,9 @@ MODULE mDwarsbalk
       VAR robtarget Pos1StartDummy;
       VAR robtarget Pos2StartDummy;
       VAR num Xoffset;
+      VAR num beamlength;
+      VAR num beamCenterX;
+      CONST num sensoroffset := 953.8;
       !
       wobj_Active:=WobjActiveStation;
       trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,wobj_Active);
@@ -669,33 +674,42 @@ MODULE mDwarsbalk
       EOffsSet [trackshift,0,0,0,0,0];
       !
       MoveL RelTool(pMeasurePos1Start,-140,0,0), v1000, z10, tGripper\WObj:=wobj_Active;
-      MoveL Reltool(pMeasurePos1Start,0,20,0), v1000, z10, tGripper\WObj:=wobj_Active;
+      MoveL Reltool(pMeasurePos1Start,0,10,0), v1000, fine, tGripper\WObj:=wobj_Active;
       !teach only 
       !MoveL pMeasurePos1Start, v1000, fine, tGripper\WObj:=wobj_Active;
       !
-      !CheckInput di_Sensor1_Q1_In,0, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q1_In";
+      CheckInput di_Sensor1_Q1_In,0, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q1_In";
       Pos1StartDummy := pMeasurePos1Start;
       !meet links
-      SearchL\Stop, di_Sensor1_Q1_In, Pos1StartDummy, Reltool(pMeasurePos1Start,0,-20,0), v10, tGripper\WObj:=wobj_Active;
-      Pos1 := CRobT(\Tool:=tool0,\WObj:=wobj_Active);
+      SearchL\Stop, di_Sensor1_Q1_In, Pos1StartDummy, Reltool(pMeasurePos1Start,0,-10,0), v10, tGripper\WObj:=wobj_Active;
+      !uncomment to optimize startpos 
+      !pMeasurePos1Start := Pos1StartDummy;
       !
-      MoveL RelTool(pMeasurePos1Start,-140,-20,0), v1000, z10, tGripper\WObj:=wobj_Active;
+      Pos1 := CRobT(\Tool:=boor_11mm_L190,\WObj:=wobj0);
+      !
+      MoveL RelTool(pMeasurePos1Start,-140,10,0), v1000, z10, tGripper\WObj:=wobj_Active;
       MoveL RelTool(pMeasurePos2Start,-140,0,0), v1000, z10, tGripper\WObj:=wobj_Active;
-      MoveL  Reltool(pMeasurePos2Start,0,-20,0), v1000, z10, tGripper\WObj:=wobj_Active;
+      MoveL  Reltool(pMeasurePos2Start,0,-10,0), v1000, fine, tGripper\WObj:=wobj_Active;
       !teach only 
       !MoveL pMeasurePos2Start, v1000, fine, tGripper\WObj:=wobj_Active;
       !
-      !CheckInput di_Sensor2_Q1_In,0, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor2_Q1_In";
-      Pos2StartDummy := pMeasurePos2Start;
+      CheckInput di_Sensor2_Q1_In,0, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor2_Q1_In";
+      !Pos2StartDummy := pMeasurePos2Start;
       !meet rechts
-      SearchL\Stop, di_Sensor2_Q1_In, Pos2StartDummy, RelTool(pMeasurePos2Start,0,20,0), v10, tGripper\WObj:=wobj_Active;
-      Pos2:=CRobT(\Tool:=tool0,\WObj:=wobj_Active); 
+      SearchL\Stop, di_Sensor1_Q1_In, Pos2StartDummy, RelTool(pMeasurePos2Start,0,10,0), v10, tGripper\WObj:=wobj_Active;
+      !uncomment to optimize startpos 
+      pMeasurePos2Start := Pos2StartDummy;
       !
-      MoveL RelTool(pMeasurePos2Start,-140,20,0), v1000, z10, tGripper\WObj:=wobj_Active;
+      Pos2:=CRobT(\Tool:=boor_11mm_L190,\WObj:=wobj0); 
       !
-      Station{nStation}.xOffset := Pos2.trans.x  + Pos1.trans.x;
+      MoveL RelTool(pMeasurePos2Start,-140,-10,0), v1000, z10, tGripper\WObj:=wobj_Active;
+      !
+      beamlength := Pos2.trans.x - Pos1.trans.x;
+      beamCenterX:= beamlength / 2;
+      Station{nStation}.xOffset := wobj_Active.uframe.trans.x - ((Pos1.trans.x-sensoroffset) + beamCenterX) ;
       TPWrite ("offset voor sation:"+NumToStr(nStation,0)+ " x=" + numtostr(Station{nStation}.xOffset,2) + " Pos1=" + numtostr(Pos1.trans.x,2) + " Pos2=" + numtostr(Pos2.trans.x,2));
       LoggProc "Offset",31,"offset voor sation:"+NumToStr(nStation,0)+ " x=" + numtostr(Station{nStation}.xOffset,2) + " Pos1=" + numtostr(Pos1.trans.x,2) + " Pos2=" + numtostr(Pos2.trans.x,2);
+      Stop;
       !
 ENDPROC 
     PROC rUitlijnen_Stationx(

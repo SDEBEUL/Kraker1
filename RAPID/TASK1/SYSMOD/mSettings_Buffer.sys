@@ -246,10 +246,14 @@ PROC rDecrUitvoerbuffer(num nBuffer)
     !veiligeid voor slechte tellers veilige situatie is LEEG
     IF (UitvoerBuffer{nBuffer}.ActiefStuk > 8) OR (UitvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
       UitvoerBuffer{nBuffer}.leeg := true;
+      UitvoerBuffer{nBuffer}.Actievelaag := 1;
+      UitvoerBuffer{nBuffer}.ActiefStuk := 8;
       LoggProc "mBuffer",17,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     IF (UitvoerBuffer{nBuffer}.Actievelaag > 5) OR (UitvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
       UitvoerBuffer{nBuffer}.leeg := true;
+      UitvoerBuffer{nBuffer}.Actievelaag := 1;
+      UitvoerBuffer{nBuffer}.ActiefStuk := 8;
       LoggProc "mBuffer",18,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     !
@@ -275,6 +279,7 @@ ENDPROC
   ENDPROC
     
   PROC Putpart(Num nBuffernummer \switch Safecheck)
+     Set_Gripper GrijperTool;
       TEST nBuffernummer
        CASE 1:
         Buffer_1_In \Safecheck?Safecheck;
@@ -337,5 +342,12 @@ FUNC num nZposPart(num nActievelaag)
 RETURN nZpos;
 !
 ENDFUNC 
+
+PROC rResetBufferSafe()
+ FOR i FROM 1 TO 6 DO 
+     UitvoerBuffer{i}.Veilig := FALSE;
+     InvoerBuffer{i}.veilig  := FALSE;
+ ENDFOR
+ENDPROC
  
 ENDMODULE

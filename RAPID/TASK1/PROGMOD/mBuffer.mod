@@ -75,9 +75,9 @@ MODULE mBuffer
    wobj_Active.oframe.trans:=[xPos,ypos,zpos];
    rGripper_Open;
   lbl_retry:
-   MoveL Offs(Pbuffer,0,-200,0),v1000,z50,tGripper\WObj:=wobj_Active;
+   MoveL Offs(Pbuffer,0,-200,0),v2000,z50,tGripper\WObj:=wobj_Active;
    !postie waar de sensoren het rek zien.
-   MoveL Offs(Pbuffer,0,-150,-150), v100, fine, tGripper\WObj:=wobj_Active;   
+   MoveL Offs(Pbuffer,0,-150,-150), v2000, fine, tGripper\WObj:=wobj_Active;   
     IF NOT fCheckGripperPart() THEN
        !NO RACK
         LoggProc "mBuffer",30,"Actieve invoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
@@ -86,8 +86,8 @@ MODULE mBuffer
        TEST nAnswer
          CASE 1:
           InvoerBuffer{nBuffernum}.Leeg := TRUE;
-          MoveL Offs(Pbuffer,0,-150,0),v1000,z50,tGripper\WObj:=wobj_Active;
-          MoveL Pbuffer,v1000,z50,tGripper\WObj:=wobj_Active;
+          MoveL Offs(Pbuffer,0,-150,0),v2000,z50,tGripper\WObj:=wobj_Active;
+          MoveL Pbuffer,v2000,z50,tGripper\WObj:=wobj_Active;
           !ja en nu ... ? volgende buffer kiezen ? 
           Stop;
           RETURN;
@@ -96,9 +96,9 @@ MODULE mBuffer
        ENDTEST
        RETURN;
     ENDIF
-    MoveL Offs(Pbuffer,0,-200,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL Offs(Pbuffer,0,-200,0),v2000,z50,tGripper\WObj:=wobj_Active;
     !100 mm van stuk1 onderste rij
-    MoveL Offs(Pbuffer,0,-80,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL Offs(Pbuffer,0,-80,0),v2000,z50,tGripper\WObj:=wobj_Active;
     !beweeg richting bovenste laag tot check range dan 1 laag omhoog
     FOR laag FROM 5 TO 1 STEP -1 DO
       MoveL Offs(Pbuffer,0,-80,nZposPart(laag)),v100,z0,tGripper\WObj:=wobj_Active;
@@ -165,6 +165,8 @@ MODULE mBuffer
         !stuk tegen aanslag en goed duwen 
           MoveL Offs(Pbuffer,10,0,0),v1000,fine,tGripper\WObj:=wobj_Active;
           rGripper_Open;
+          MoveL Offs(Pbuffer,10,-10,0),v1000,z50,tGripper\WObj:=wobj_Active;
+          MoveL Offs(Pbuffer,0,-10,0),v1000,z50,tGripper\WObj:=wobj_Active;
           MoveL Pbuffer, v1000, fine, tGripper\WObj:=wobj_Active;
           rGripper_CheckPart TRUE;
           rGripper_Close;
@@ -331,6 +333,24 @@ ENDPROC
      !
  ENDPROC
  
+ LOCAL PROC rResetUitvoerbuffer(num nBuffer)
+    !***************************************	    
+    ! Func: rResetUitvoerbuffer
+    ! Description: set het status vol van inbuffer
+    !*************************************** 
+   VAR PartType AantalPartsAanwezig; 
+   AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
+   UitvoerBuffer{nBuffer}.leeg := true;
+   AantalPartsAanwezig.Balk330 := 0;
+   AantalPartsAanwezig.Balk331 := 0;
+   AantalPartsAanwezig.Balk332 := 0;
+   UitvoerBuffer{nBuffer}.AantalPartsAanwezig := AantalPartsAanwezig;
+   UitvoerBuffer{nBuffer}.ActiefStuk := 8; !leeg rek = part8 rij5
+   UitvoerBuffer{nBuffer}.Actievelaag := 5; !leeg rek = part8 rij5
+   UitvoerBuffer{nBuffer}.Veilig := FALSE;
+   !
+ENDPROC
+ 
   PROC Buffer_IN_safeCheck(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
  !calc position
    VAR num xPos := 0;
@@ -346,7 +366,7 @@ ENDPROC
    wobj_Active.oframe.trans:=[xPos,ypos,zpos];
    rGripper_Open;
   lbl_retry:
-   MoveL Offs(Pbuffer,0,-200,0),v1000,z50,tGripper\WObj:=wobj_Active;
+   MoveL Offs(Pbuffer,0,-200,450),v1000,z50,tGripper\WObj:=wobj_Active;
    !postie waar de sensoren het rek zien.
    MoveL Offs(Pbuffer,0,-150,-150), v100, fine, tGripper\WObj:=wobj_Active;   
     IF NOT fCheckGripperPart() THEN
@@ -384,18 +404,20 @@ ENDPROC
      FOR stuk FROM 1 TO 8 STEP 1 DO
        MoveL Offs(Pbuffer,0,-80+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
        IF (fCheckGripperNotInrange() = FALSE) OR (stuk = 8) THEN
-           nStuk := stuk;
+          nStuk := stuk;
           GOTO Lbl_stukgevonden;
        ENDIF
      ENDFOR
      
-   Lbl_stukgevonden:
+Lbl_stukgevonden:
        UitvoerBuffer{nBuffernum}.ActiefStuk := nStuk;
        UitvoerBuffer{nBuffernum}.Actievelaag := nLaag;
 !zoek nu tot je de balk effectief ziet liggen
 lbl_nextpart:
    yPos := nYposPart(UitvoerBuffer{nBuffernum}.ActiefStuk);
    ZPos := nZposPart(UitvoerBuffer{nBuffernum}.Actievelaag);
+   wobj_Active:=WobjBufferx;
+   wobj_Active.oframe.trans:=[xPos,ypos,zpos];
    !
         MoveL Offs(Pbuffer,0,-75,0),v1000,z50,tGripper\WObj:=wobj_Active;
         MoveL Pbuffer, v100, fine, tGripper\WObj:=wobj_Active;
@@ -412,11 +434,19 @@ lbl_nextpart:
              !beweeg weg van het stuk
              MoveL Offs(Pbuffer,0,-75,0),v1000,z50,tGripper\WObj:=wobj_Active;
              MoveL Offs(Pbuffer,0,-100,5),v1000,z50,tGripper\WObj:=wobj_Active;
-          ELSE !stuk nog steeds niet aanwezig = volgende stuk 
+          ELSE !stuk nog steeds niet aanwezig = volgende stuk of als laag 1 stuk 8 rek leeg 
               rDecrUitvoerbuffer(nBuffernum);
+              TPWrite NumToStr(UitvoerBuffer{nBuffernum}.ActiefStuk,0) + " w " + NumToStr(UitvoerBuffer{nBuffernum}.Actievelaag,0);
+              IF UitvoerBuffer{nBuffernum}.leeg  THEN
+                  rResetUitvoerbuffer nBuffernum;
+                  UitvoerBuffer{nBuffernum}.veilig :=TRUE;
+                  RETURN;
+              ENDIF 
               goto lbl_nextPart; 
           ENDIF
         ENDIF 
+        ! 1 stuk minder dan active 
+        rIncrUitvoerbuffer(nBuffernum);
         ! set safe
         UitvoerBuffer{nBuffernum}.Veilig := TRUE;
         !
@@ -437,9 +467,9 @@ lbl_nextpart:
     MoveL Pbuffer, v50, fine, tGripper\WObj:=wobj_Active;
     rGripper_PartSupervisionOff;
     rGripper_Open;
-    MoveL offs(pBuffer_Boven_1,0,-20,0), v50, fine, tGripper\WObj:=wobj_Active;
+    MoveL offs(pBuffer_Boven_1,0,-90,0), v50, fine, tGripper\WObj:=wobj_Active;
     rGripper_CheckPart FALSE;
-    MoveL offs(pBuffer_Boven_1,0,-75,0), v50, fine, tGripper\WObj:=wobj_Active;
+    MoveL offs(pBuffer_Boven_1,0,-120,0), v50, fine, tGripper\WObj:=wobj_Active;
    ! check part off  ? 
    rIncrUitvoerbuffer nBuffernum;
    !

@@ -8,64 +8,63 @@ MODULE mStation
 	TASK PERS wobjdata Wobj_Station5:=[FALSE,TRUE,"",[[11992.5,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
 
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    CONST robtarget pStation_x:=[[10.97,1.84,61.38],[0.00529898,-0.707562,0.706621,-0.00399822],[-1,0,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
-    CONST robtarget pStation_1:=[[1938.3,-1098.56,517.6],[0.502707,-0.498405,0.501191,0.497681],[-1,0,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pStation_2:=[[1963,-1098.56,517.6],[0.502707,-0.498405,0.501191,0.497681],[-1,0,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pStation_3:=[[1941.8,-1098.56,517.6],[0.502707,-0.498405,0.501191,0.497681],[-1,0,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pStation_4:=[[1944.3,-1098.56,517.6],[0.502707,-0.498405,0.501191,0.497681],[-1,0,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pStation_5:=[[1944.8,-1098.56,517.6],[0.502707,-0.498405,0.501191,0.497681],[-1,0,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  VAR num Shift_Track;
 
-    LOCAL PERS Num Shift_x:=0;
-    LOCAL PERS Num Shift_y:=0;
-    LOCAL PERS Num Shift_z:=0;
-    LOCAL PERS Num Shift_Track:=0;
-    
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-PROC rPutPartInStation(Num nStation, robtarget Ppos, Wobjdata WobjStation)
-    !
-    wobj_Active := WobjStation;
+PROC rPutPartInStation(Num nStation, Wobjdata WobjStation)
+    VAR num trackshift;
     !
     rSetSationClamps nStation, \open;
-    MoveL reltool(Ppos,-250,0,50),v1000,z50,tGripper\WObj:=wobj_Active;
-    MoveL Ppos, v1000, fine, tGripper\WObj:=wobj_Active;
     !
-    rSetSationClamps nStation,\close;
+    wobj_Active:=WobjStation;
+    trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjStation);
+    !
+    EOffsSet [trackshift,0,0,0,0,0];
+    !
+    MoveL reltool(pStation_x,-250,0,50),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL pStation_x, v1000, fine, tGripper\WObj:=wobj_Active;
+    !
     rGripper_PartSupervisionOff;
     rGripper_Open;
     !
-    MoveL reltool(Ppos,-0,0,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL reltool(pStation_x,-100,0,0),v1000,z50,tGripper\WObj:=wobj_Active;
     rGripper_CheckPart FALSE;
-    MoveL reltool(Ppos,-250,0,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    rSetSationClamps nStation,\close;
+    MoveL reltool(pStation_x,-250,0,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    !
+    FOR i FROM 1 TO 3 DO 
+      rMeasureStationOffset nStation, WobjStation;
+    endfor
     !
 ENDPROC
 
-PROC rGetPartInStation(Num nStation, robtarget Ppos, Wobjdata WobjStation)
+PROC rGetPartInStation(Num nStation, Wobjdata WobjStation)
+    VAR num trackshift;
     !
-    wobj_Active := WobjStation;
+    wobj_Active:=WobjStation;
+    trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjStation);
+    !
+    EOffsSet [trackshift,0,0,0,0,0];
     !
     rGripper_Open;
-    MoveJ reltool(pStation_1,-250,0,0),v1000,z50,tGripper\WObj:=Wobj_Station1;
-    MoveL pStation_1, v1000, fine, tGripper\WObj:=Wobj_Station1;
+    rSetSationClamps nStation, \open;
+    MoveJ reltool(pStation_x,-250,0,0),v1000,z50,tGripper\WObj:=wobj_Active;
+    MoveL pStation_x, v1000, fine, tGripper\WObj:=wobj_Active;
     !
     rGripper_CheckPart TRUE;
     rGripper_Close;
     rGripper_CheckPart TRUE, \Supervision;
-    rSetSationClamps nStation, \open;
     !
-    MoveL reltool(pStation_1,-250,0,50),v1000,fine,tGripper\WObj:=Wobj_Station1;
+    MoveL reltool(pStation_x,-250,0,50),v1000,fine,tGripper\WObj:=wobj_Active;
     !
     rSetSationClamps nStation, \close, \nWaittime :=0;
     !
 ENDPROC
-
-PROC rTeststqtIn()
-  Station_1_In;  
-    
-    
-ENDPROC 
 
 PROC Station_1_In(\switch Safecheck)
 ! Inleggen dwarsbalk in mal pos 1
@@ -76,8 +75,7 @@ PROC Station_1_In(\switch Safecheck)
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station1;
     MoveJ [[1947.15,-1046.04,1111.32],[0.164581,-0.688201,0.687891,0.16155],[0,-1,-2,0],[425.015,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station1;
     !
-    rPutPartInStation 1,pStation_1, Wobj_Station1;
-    rTESTmeetSTation;
+    rPutPartInStation 1, wobj_BalkStation1;
     !
     MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station1;
     !  
@@ -92,7 +90,7 @@ PROC Station_2_In(\switch Safecheck)
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station2;
     MoveJ [[1947.15,-1046.04,1111.32],[0.164581,-0.688201,0.687891,0.16155],[0,-1,-2,0],[425.015,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station2;
     !
-    rPutPartInStation 2,pStation_2, Wobj_Station2;
+    rPutPartInStation 2, wobj_BalkStation2;
     !
     MoveAbsJ pHomeJoint_Bu_2\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station2;
     ! 
@@ -107,7 +105,7 @@ PROC Station_3_In(\switch Safecheck)
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station3;
     MoveJ [[1947.15,-1046.04,1111.32],[0.164581,-0.688201,0.687891,0.16155],[0,-1,-2,0],[425.015,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station3;
     !
-    rPutPartInStation 3,pStation_3, Wobj_Station3;
+   rPutPartInStation 3, wobj_BalkStation3;
     !
     MoveAbsJ pHomeJoint_Bu_3\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station3;
     !
@@ -122,7 +120,7 @@ PROC Station_4_In(\switch Safecheck)
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station4;
     MoveJ [[1947.15,-1046.04,1111.32],[0.164581,-0.688201,0.687891,0.16155],[0,-1,-2,0],[425.015,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station4;
     !
-    rPutPartInStation 4,pStation_4, Wobj_Station4; 
+    rPutPartInStation 4, wobj_BalkStation4; 
     !
     MoveAbsJ pHomeJoint_Bu_4\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station4;
     !
@@ -137,7 +135,7 @@ PROC Station_5_In(\switch Safecheck)
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station5;
     MoveJ [[1561.14,-1046.04,1111.32],[0.164584,-0.688201,0.687891,0.161549],[0,-1,-2,0],[425.016,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station5;
     !
-    rPutPartInStation 5,pStation_5, Wobj_Station5;
+    rPutPartInStation 5, wobj_BalkStation5;
     !
     MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station5;
     ! 
@@ -152,7 +150,7 @@ PROC Station_1_Uit()
     !
     MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station1;
     !
-    rGetPartInStation 1,pStation_1, Wobj_Station1;
+    rGetPartInStation 1,wobj_BalkStation1;
     !
     MoveL [[1947.16,-1046.04,1111.32],[0.161998,-0.688802,0.688503,0.15897],[0,-1,-2,0],[164.998,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Station1;
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z200, tGripper\WObj:=Wobj_Station1;
@@ -169,7 +167,7 @@ PROC Station_2_Uit()
     !
     MoveAbsJ pHomeJoint_Bu_2\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station2;
     !
-    rGetPartInStation 2,pStation_2, Wobj_Station2;  
+     rGetPartInStation 2,wobj_BalkStation2;  
     !
     MoveL [[1947.16,-1046.04,1111.32],[0.161998,-0.688802,0.688503,0.15897],[0,-1,-2,0],[164.998,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station2;
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station2;
@@ -186,7 +184,7 @@ PROC Station_3_Uit()
     !
     MoveAbsJ pHomeJoint_Bu_3\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station3;
     !
-    rGetPartInStation 3,pStation_3, Wobj_Station3;
+    rGetPartInStation 3,wobj_BalkStation3;
     !
     MoveL [[1947.16,-1046.04,1111.32],[0.161998,-0.688802,0.688503,0.15897],[0,-1,-2,0],[170,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station3;
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station3;
@@ -203,7 +201,7 @@ PROC Station_4_Uit()
     !
     MoveAbsJ pHomeJoint_Bu_4\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station4;
     !
-    rGetPartInStation 4,pStation_4, Wobj_Station4;
+    rGetPartInStation 4,wobj_BalkStation4;
     !
     MoveL [[1947.16,-1046.04,1111.32],[0.161998,-0.688802,0.688503,0.15897],[0,-1,-2,0],[164.998,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station4;
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station4;
@@ -220,7 +218,7 @@ PROC Station_5_Uit()
     ! 
     MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v1000, z50, tGripper\WObj:=Wobj_Station5;
     !
-    rGetPartInStation 5,pStation_5, Wobj_Station5;
+    rGetPartInStation 5,wobj_BalkStation5;
     !
     MoveL [[1947.16,-1046.04,1111.32],[0.161998,-0.688802,0.688503,0.15897],[0,-1,-2,0],[164.998,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station5;
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station5;

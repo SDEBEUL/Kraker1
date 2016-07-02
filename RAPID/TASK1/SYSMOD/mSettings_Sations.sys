@@ -335,7 +335,6 @@ TEST nStation
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
-       Stop;
     CASE part.Balk332:
        !mag niet in dit station liggen
        Stop;
@@ -349,7 +348,6 @@ TEST nStation
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
-       Stop;
      CASE part.Balk332:
        !mag niet in dit station
     ENDTEST
@@ -362,7 +360,6 @@ TEST nStation
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
-       Stop;
      CASE part.Balk332:
        !mag niet in dit station
        Stop;
@@ -376,7 +373,6 @@ TEST nStation
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
-       Stop;
      CASE part.Balk332:
        !mag niet in dit station
        Stop;
@@ -385,10 +381,10 @@ TEST nStation
    CASE 5:  !station 5
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
-         !mag niet in dit station
+         !mag niet in dit station liggen
          Stop;
      CASE part.Balk331:
-         !mag niet in dit station
+         !mag niet in dit station liggens
          Stop;
      CASE part.Balk332:
       !SAFETY CHECK!!!! station 6 mag niet geladen zijn ! CRASH GEVAAR!

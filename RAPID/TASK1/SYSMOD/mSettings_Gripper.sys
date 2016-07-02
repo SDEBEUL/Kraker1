@@ -76,7 +76,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
         VAR btnres nAnswer; 
         lbl_retry:
-              
+        CheckInput di_Changer_Tool_Aanwezig,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Tool_Aanwezig 1 ";
         IF TestDI(di_Changer_Tool_Aanwezig) THEN
           nAnswer := UIMessageBox(\Header:="Grijper fout"\MsgArray:=["Tool zo los moeten zijn!","ga manueel en los op"],\BtnArray:=["","","","","OK"]); 
           GOTO lbl_retry;

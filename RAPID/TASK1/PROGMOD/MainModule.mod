@@ -58,7 +58,7 @@ PROC Main()
         CASE 2:
           GOTO lbl_end;
         CASE 3:
-         go_home\Armfirst;
+         go_home \Armonly; 
          GOTO lbl_begin;
         CASE 4:
           !leeg
