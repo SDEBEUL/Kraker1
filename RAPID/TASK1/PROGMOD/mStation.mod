@@ -37,9 +37,7 @@ PROC rPutPartInStation(Num nStation, Wobjdata WobjStation)
     rSetSationClamps nStation,\close;
     MoveL reltool(pStation_x,-250,0,0),v1000,z50,tGripper\WObj:=wobj_Active;
     !
-    FOR i FROM 1 TO 3 DO 
-      rMeasureStationOffset nStation, WobjStation;
-    endfor
+    rMeasureStationOffset nStation, WobjStation;
     !
 ENDPROC
 

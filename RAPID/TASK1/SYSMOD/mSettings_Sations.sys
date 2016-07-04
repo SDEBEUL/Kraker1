@@ -243,10 +243,10 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330(wobj_BalkStation1);
+        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation1;
      CASE part.Balk331:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331(wobj_BalkStation1);
+        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation1;
         Station{nStation}.lading := part.Balk331;
     CASE part.Balk332:
        !mag niet in dit station liggen
@@ -257,10 +257,10 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330(wobj_BalkStation2);
+        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation2;
      CASE part.Balk331:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331(wobj_BalkStation2);
+        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation2;
         Station{nStation}.lading := part.Balk331;
      CASE part.Balk332:
        !mag niet in dit station
@@ -270,10 +270,10 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330(wobj_BalkStation3);
+        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation3;
      CASE part.Balk331:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331(wobj_BalkStation3);
+        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation3;
         Station{nStation}.lading := part.Balk331;
      CASE part.Balk332:
        !mag niet in dit station
@@ -284,10 +284,10 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330(wobj_BalkStation4);
+        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation4;
      CASE part.Balk331:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331(wobj_BalkStation4);
+        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation4;
         Station{nStation}.lading := part.Balk331;
      CASE part.Balk332:
        !mag niet in dit station
@@ -331,7 +331,7 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330(wobj_BalkStation1);
+        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation1;
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
@@ -344,7 +344,7 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330(wobj_BalkStation2);
+        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation2;
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
@@ -356,7 +356,7 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330(wobj_BalkStation3);
+        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation3;
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station
@@ -369,7 +369,7 @@ TEST nStation
     TEST Station{nStation}.Opdracht
      CASE part.Balk330:
         Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330(wobj_BalkStation4);
+        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation4;
         Station{nStation}.lading := part.balk330;
      CASE part.Balk331:
        !mag niet in dit station

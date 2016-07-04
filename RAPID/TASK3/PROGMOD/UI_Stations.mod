@@ -4,7 +4,14 @@ MODULE UI_Stations
         VAR btnres nAnswer;
       lbl_begin:
         nAnswer:=UIMessageBox(\Header:="Stations"
-        \MsgArray:=["Dit zijn de stations waar de nieuwe balken gemaakt worden","selecteer een station om het status te veranderen"],
+        \MsgArray:=[
+        "Dit zijn de stations waar de nieuwe balken gemaakt worden",  
+        " 1  | " + sBooltoString(Station{1}.InDienst) +" | " + sPartTypetoString(Station{1}.Lading)   + " | " + sPartTypetoString(Station{1}.opdracht), 
+        " 2  | " + sBooltoString(Station{2}.InDienst) +" | " + sPartTypetoString(Station{2}.Lading)   + " | " + sPartTypetoString(Station{2}.opdracht), 
+        " 3  | " + sBooltoString(Station{3}.InDienst) +" | " + sPartTypetoString(Station{3}.Lading)   + " | " + sPartTypetoString(Station{3}.opdracht), 
+        " 4  | " + sBooltoString(Station{4}.InDienst) +" | " + sPartTypetoString(Station{4}.Lading)   + " | " + sPartTypetoString(Station{4}.opdracht), 
+        " 5  | " + sBooltoString(Station{5}.InDienst) +" | " + sPartTypetoString(Station{5}.Lading)   + " | " + sPartTypetoString(Station{5}.opdracht),                     
+            "selecteer een station om het status te veranderen"],
         \BtnArray:=["Station1","Station2","Station3","meer","Terug"]);
         TEST nAnswer
         CASE 1:
@@ -18,7 +25,14 @@ MODULE UI_Stations
          GOTO lbl_begin;
         CASE 4:
         nAnswer:=UIMessageBox(\Header:="Stations"
-        \MsgArray:=["Dit zijn de stations waar de nieuwe balken gemaakt worden","selecteer een station om het status te veranderen"],
+        \MsgArray:=[
+        "Dit zijn de stations waar de nieuwe balken gemaakt worden",  
+        " 1  | " + sBooltoString(Station{1}.InDienst) +" | " + sPartTypetoString(Station{1}.Lading)   + " | " + sPartTypetoString(Station{1}.opdracht), 
+        " 2  | " + sBooltoString(Station{2}.InDienst) +" | " + sPartTypetoString(Station{2}.Lading)   + " | " + sPartTypetoString(Station{2}.opdracht), 
+        " 3  | " + sBooltoString(Station{3}.InDienst) +" | " + sPartTypetoString(Station{3}.Lading)   + " | " + sPartTypetoString(Station{3}.opdracht), 
+        " 4  | " + sBooltoString(Station{4}.InDienst) +" | " + sPartTypetoString(Station{4}.Lading)   + " | " + sPartTypetoString(Station{4}.opdracht), 
+        " 5  | " + sBooltoString(Station{5}.InDienst) +" | " + sPartTypetoString(Station{5}.Lading)   + " | " + sPartTypetoString(Station{5}.opdracht),                     
+            "selecteer een station om het status te veranderen"],
         \BtnArray:=["Station4","Station5","","meer","Terug"]);
         TEST nAnswer
         CASE 1:
