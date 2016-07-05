@@ -25,10 +25,10 @@ MODULE mDwarsbalk
     CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     !stations uitlijning
-    PERS robtarget pMeasurePos1Start:=[[-761.645,20.0849,50.2279],[0.00303584,-0.707937,0.706265,-0.00245748],[-1,0,-3,0],[800.053,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget pMeasurePos2Start:=[[1680.56,21.3614,50.5337],[0.00305126,-0.708139,0.706063,-0.00249027],[-1,0,-3,0],[2494.52,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS num off_Sensor1_Q1_In:= 0;
-    PERS num off_Sensor2_Q1_In:= 0;
+    PERS robtarget pMeasurePos1Start:=[[-773.781,19.6871,50.3873],[0.003076,-0.707976,0.706226,-0.00242728],[-1,0,-3,0],[800.104,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos2Start:=[[791.643,29.5882,54.9482],[0.00307183,-0.70809,0.706111,-0.00243086],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS num off_Sensor1_Q1_In:= -773.885;
+    PERS num off_Sensor2_Q1_In:= 791.797;
     
     !jointagerts
     CONST jointtarget pHomeJoint_StationXboor11:=[[-171.694,-8.62571,38.3752,13.4122,-43.8158,68.7807],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -354,7 +354,7 @@ MODULE mDwarsbalk
         Set_Tool Boor_11m;
         !
         wobj_Active:=WobjActiveStation;
-        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x + nStationOffset(nStation);
+        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x - nStationOffset(nStation);
         trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
         !
         EOffsSet [trackshift,0,0,0,0,0];
@@ -419,7 +419,7 @@ MODULE mDwarsbalk
         Set_Tool Boor_11m;
         !
         wobj_Active:=WobjActiveStation;
-        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x + nStationOffset(nStation);
+        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x - nStationOffset(nStation);
         trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
         !
         EOffsSet [trackshift,0,0,0,0,0];
@@ -479,7 +479,7 @@ MODULE mDwarsbalk
         Set_Tool Boor_11m;
         !
         wobj_Active:=wobj_BalkStation5;
-        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x + nStationOffset(5);
+        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x - nStationOffset(5);
         EOffsSet [0,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_Station5boor11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_Station5boor11,v1000,z50,tool0; 
@@ -515,7 +515,7 @@ MODULE mDwarsbalk
         Set_Tool Frees;
         !
         wobj_Active:=wobj_BalkStation5;
-        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x + nStationOffset(5);
+        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x - nStationOffset(5);
         EOffsSet [0,0,0,0,0,0];
         MoveAbsJ fArm_only(pHomeJoint_Station5Frees11),v1000,z50,tool0; 
         MoveAbsJ pHomeJoint_Station5Frees11,v1000,z50,tool0; 
@@ -534,7 +534,7 @@ MODULE mDwarsbalk
         Set_Tool Frees;
         !
         wobj_Active:=WobjActiveStation;
-        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x + nStationOffset(nStation);
+        wobj_Active.uframe.trans.x :=  wobj_Active.uframe.trans.x - nStationOffset(nStation);
         trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
         !
         EOffsSet [trackshift,0,0,0,0,0];
@@ -682,10 +682,10 @@ PROC rUitlijnen_Stationx(
     MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457527,-0.512372,0.496563],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station1;
     MoveJ [[1041.14,-1141.82,1905.77],[0.00246873,-0.706909,0.7073,-0.000500827],[0,-1,-2,0],[0.00013392,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station1;
     MoveJ [[1947.15,-1046.04,1111.32],[0.164581,-0.688201,0.687891,0.16155],[0,-1,-2,0],[425.015,9E+09,9E+09,9E+09,9E+09,9E+09]], v1000, z50, tGripper\WObj:=Wobj_Station1;
-     WHILE TRUE DO 
-        rMeasureStationOffset 1, wobj_BalkStation1 \SensorSetup;
-        Stop;
-     ENDWHILE
+    rMeasureStationOffset 1, wobj_BalkStation1 \SensorSetup;
+    Stop;
+    rMeasureStationOffset 1, wobj_BalkStation1;
+    Stop;
      !
     ENDPROC
     
@@ -706,8 +706,8 @@ PROC rUitlijnen_Stationx(
       VAR robtarget TriggPos1;
       VAR robtarget TriggPos2;
       VAR robtarget PosDummy;
-      VAR speeddata Vsearch := v20; !zoeksnelheid 
-      VAR num nSearchlength := 20; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
+      VAR speeddata Vsearch := [2.5,500,5000,1000]; !zoeksnelheid 
+      VAR num nSearchlength := 40; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
       CONST num nBeamlength := 2440; !de nominale lengte van een balk
       VAR num XoffsetPos1;
       VAR num XoffsetPos2;
@@ -719,15 +719,17 @@ PROC rUitlijnen_Stationx(
       !******************************************************************************************************************************************
       !naar start pos links 
       MoveL RelTool(pMeasurePos1Start,-140,0,0), v1000, z50, tGripper\WObj:=wobj_Active;
-      MoveL Reltool(pMeasurePos1Start,0,-nSearchlength/2,0), v1000, fine, tGripper\WObj:=wobj_Active;
+
       !teach only Positie met de laser OP de balk. (in teach mode word deze nog verschoven naar het riggerpunt)
       !MoveL pMeasurePos1Start, v1000, fine, tGripper\WObj:=wobj_Active;
       !
+      PosDummy := RelTool(pMeasurePos1Start,0,-nSearchlength/2,0);
+      MoveL PosDummy, v1000, fine, tGripper\WObj:=wobj_Active;
       !meet links
+      WaitTime \InPos, 1; 
       WaitRob \ZeroSpeed;
       CheckInput di_Sensor1_Q1_In,1, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor1_Q1_In not 1";
-      PosDummy := pMeasurePos1Start;
-      SearchL\Stop, di_Sensor1_Q1_In, PosDummy, Reltool(pMeasurePos1Start,0,nSearchlength/2,0), Vsearch, tGripper\WObj:=wobj_Active;
+      SearchL\Stop, di_Sensor1_Q1_In \negflank , PosDummy, Reltool(pMeasurePos1Start,0,nSearchlength/2,0), Vsearch, tGripper\WObj:=wobj_Active;
       !
       IF Present(SensorSetup) THEN pMeasurePos1Start := PosDummy; ENDIF
       TriggPos1 := CRobT(\Tool:=tGripper,\WObj:=wobj_Active);
@@ -736,20 +738,36 @@ PROC rUitlijnen_Stationx(
       !naar start pos rechts
       MoveL RelTool(pMeasurePos1Start,-140,10,0), v1000, z10, tGripper\WObj:=wobj_Active;
       MoveL RelTool(pMeasurePos2Start,-140,0,0), v1000, z10, tGripper\WObj:=wobj_Active;
-      MoveL  Reltool(pMeasurePos2Start,0,nSearchlength/2,0), v1000, fine, tGripper\WObj:=wobj_Active;
       !teach only Positie met de laser OP de balk. (in teach mode word deze nog verschoven naar het riggerpunt)
       !MoveL pMeasurePos2Start, v1000, fine, tGripper\WObj:=wobj_Active;
       !
+      PosDummy := RelTool(pMeasurePos2Start,0,+nSearchlength/2,0);
+      MoveL PosDummy, v1000, fine, tGripper\WObj:=wobj_Active;
       !meet rechts
+      WaitTime \InPos, 1; 
       WaitRob \ZeroSpeed;
       CheckInput di_Sensor2_Q1_In,1, \Skip, \CheckTimeOut:=3,"Grijper sensor fout di_Sensor2_Q1_In not 1";
-      PosDummy := pMeasurePos2Start;
-      SearchL\Stop, di_Sensor2_Q1_In, PosDummy, RelTool(pMeasurePos2Start,0,-nSearchlength/2,0), Vsearch, tGripper\WObj:=wobj_Active;
+      SearchL\Stop, di_Sensor2_Q1_In \negflank, PosDummy, RelTool(pMeasurePos2Start,0,-nSearchlength/2,0), Vsearch, tGripper\WObj:=wobj_Active;
       IF Present(SensorSetup) THEN pMeasurePos2Start := PosDummy; ENDIF
       TriggPos2:=CRobT(\Tool:=tGripper,\WObj:=wobj_Active); 
       !
       MoveL RelTool(pMeasurePos2Start,-140,-10,0), v1000, z10, tGripper\WObj:=wobj_Active;
+      !gripper sensor offset calbiratie 
+      IF Present(SensorSetup) THEN
+          off_Sensor1_Q1_In := TriggPos1.trans.x;
+          off_Sensor2_Q1_In := TriggPos2.trans.x;
+      ENDIF
+      !****************************************************************************************************************************************** 
+      !bereken beam offset 
+      XoffsetPos1 := (off_Sensor1_Q1_In - TriggPos1.trans.x)/2;
+      XoffsetPos2 := (off_Sensor2_Q1_In - TriggPos2.trans.x)/2;
+      XoffsetAvg := (XoffsetPos1+XoffsetPos2)/2;
+      !gebruik het gemiddelde om de offset te bepalen.
+      Station{nStation}.xOffset := XoffsetAvg ;
       !
+      TPWrite ("off:"+NumToStr(nStation,0)+" D=" + numtostr(XoffsetAvg,2) +  " x=" + numtostr(Station{nStation}.xOffset,2) + " P1=" + numtostr(TriggPos1.trans.x,2) + " P2=" + numtostr(TriggPos2.trans.x,2));
+      LoggProc "Offset",31,"off:"+NumToStr(nStation,0)+" D=" + numtostr(XoffsetAvg,2) +  " x=" + numtostr(Station{nStation}.xOffset,2) + " P1=" + numtostr(TriggPos1.trans.x,2) + " P2=" + numtostr(TriggPos2.trans.x,2);
+      !Stop;
       !******************************************************************************************************************************************   
       !error handeler (zoek functie)
       ERROR
@@ -766,21 +784,6 @@ PROC rUitlijnen_Stationx(
                 Stop;
          ENDTEST
       !******************************************************************************************************************************************   
-      !gripper sensor offset calbiratie 
-      IF Present(SensorSetup) THEN
-          off_Sensor1_Q1_In := TriggPos1.trans.x;
-          off_Sensor2_Q1_In := TriggPos2.trans.x;
-      ENDIF
-      !****************************************************************************************************************************************** 
-      !bereken beam offset 
-      XoffsetPos1 := off_Sensor1_Q1_In - TriggPos1.trans.x;
-      XoffsetPos2 := off_Sensor2_Q1_In - TriggPos2.trans.x;
-      XoffsetAvg := (XoffsetPos1+XoffsetPos2)/2;
-      !gebruik het gemiddelde om de offset te bepalen.
-      Station{nStation}.xOffset := wobj_Active.uframe.trans.x + XoffsetAvg ;
-      !
-      TPWrite ("offset voor sation:"+NumToStr(nStation,0)+ " x=" + numtostr(Station{nStation}.xOffset,2) + " Pos1=" + numtostr(TriggPos1.trans.x,2) + " Pos2=" + numtostr(TriggPos2.trans.x,2));
-      LoggProc "Offset",31,"offset voor sation:"+NumToStr(nStation,0)+ " x=" + numtostr(Station{nStation}.xOffset,2) + " Pos1=" + numtostr(TriggPos1.trans.x,2) + " Pos2=" + numtostr(TriggPos2.trans.x,2);
       Stop;
       !
 ENDPROC 

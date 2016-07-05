@@ -343,7 +343,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
      WaitRob \InPos;
      WaitTime 2;
-     IF ai_Sensor2_Q2_in > 17000 THEN
+     IF (ai_Sensor2_Q2_in > 17000) AND TestDI(di_Sensor1_Q1_In) = false AND TestDI(di_Sensor2_Q1_In) = false  THEN
         RETURN TRUE; 
      ENDIF
       RETURN FALSE;
