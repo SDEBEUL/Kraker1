@@ -139,8 +139,7 @@ PROC rloadStations()
                !haal stuk uit buffer
                Getnextpart;
                !als er geen stuk in de grijper zit was het rek leeg 
-               IF not fCheckGripperPart() THEN
-                   Stop;
+               IF not fCheckGripperPart(\nExpection:= 1) THEN
                   GOTO lblNextRek;
                ENDIF
                !laad stuk in station
@@ -455,5 +454,44 @@ PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime)
     !
 ENDPROC
 
+ FUNC num nStationOffset(num nStation\switch Positive \switch Negeative)
+    !***************************************	    
+    ! FUNC: nStationOffset
+    ! Description: safety function for frame offset
+    !***************************************
+        VAR num nNum;
+        !
+        IF Present(Positive) THEN
+          nNum :=Station{nStation}.pOffset;
+              IF abs(nNum) > 25 THEN
+                WHILE TRUE DO 
+                 Stop;
+                ENDwhile
+                RETURN 0;
+            ENDIF 
+            RETURN Station{nStation}.pOffset;  
+        ENDIF
+        !
+        IF Present(Negeative) THEN
+          nNum :=Station{nStation}.nOffset;
+              IF abs(nNum) > 25 THEN
+                WHILE TRUE DO 
+                 Stop;
+                ENDwhile
+                RETURN 0;
+            ENDIF 
+            RETURN Station{nStation}.nOffset;  
+        ENDIF
+        !
+        nNum :=Station{nStation}.xOffset;
+        IF abs(nNum) > 25 THEN
+            WHILE TRUE DO 
+             Stop;
+            ENDwhile
+            RETURN 0;
+        ENDIF 
+        RETURN Station{nStation}.xOffset;
+        !
+    ENDFUNC 
 
 ENDMODULE

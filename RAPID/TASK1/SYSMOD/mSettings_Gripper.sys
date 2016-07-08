@@ -311,30 +311,26 @@ MODULE mSettings_Gripper(SYSMODULE)
     !
   ENDPROC  
   
-  FUNC bool fCheckGripperPart()
+  FUNC bool fCheckGripperPart(\dionum  nExpection)
     !***************************************	    
     ! FUNC: f_checkPart
     ! Description: check if part present
     ! Handel sensor fault or ligial pos
     !***************************************
     VAR btnres nAnswer;
-    lbl_retry: 
-    !fast
+    VAR bool bTimeout;
     WaitRob \inpos;
-    WaitTime 1;
+    IF Present(nExpection) THEN
+        WaitDI di_Sensor1_Q1_In,nExpection\MaxTime:=3\TimeFlag:=bTimeout;
+        WaitDI di_Sensor2_Q1_In,nExpection\MaxTime:=3\TimeFlag:=bTimeout;  
+    Else    
+        WaitTime 2;
+    ENDIF
+  lbl_retry: 
     IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
       RETURN TRUE;  
     ENDIF
-    
-    IF TestDI(di_Sensor1_Q1_In) = false AND TestDi(di_Sensor2_Q1_In) = false THEN
-     RETURN FALSE;
-    ENDIF
-    !slow
-    WaitTime \inpos, 2;
-    IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
-      RETURN TRUE;  
-    ENDIF
-    
+  
     IF TestDI(di_Sensor1_Q1_In) = false AND TestDi(di_Sensor2_Q1_In) = false THEN
      RETURN FALSE;
     ENDIF
@@ -352,7 +348,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Description: check if part is not  in range of sensors
     !***************************************
      WaitRob \InPos;
-     WaitTime 1;
+     WaitTime 0.5;
      IF (ai_Sensor2_Q2_in > 2500) AND TestDI(di_Sensor1_Q1_In) = false AND TestDI(di_Sensor2_Q1_In) = false  THEN
         RETURN TRUE; 
      ENDIF

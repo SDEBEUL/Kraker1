@@ -24,7 +24,9 @@ MODULE L_support(SYSMODULE)
    num  Lading; !wat voor een stuk er monteel in het station ligt. (parttype)
    num  Bewerkingsstap; !nog niet gebruikt ... voor auto repair toepassing
    num  Opdracht; !wat voor een stuk er in het station gemaakt moet worden (parttype)
-   num  xOffset; !nog niet gebruikt ... voor offset functie zoeken met grijper. 
+   num  xOffset; !offset tov midden
+   num  pOffset; !offset langs positieve kant 
+   num  nOffset; !offset langs negatieve kant 
   ENDRECORD
     
   RECORD UitvoerBufferType 
@@ -75,12 +77,12 @@ MODULE L_support(SYSMODULE)
   !station 1-5 zijn de automatische station 6 is het manuele station gebruikt voor onderranden en bovenranden
   PERS StationType Station{6} := 
   [
-  [TRUE,1,0,0,-5.57336],
-  [TRUE,1,0,0,-7.8873],
-  [FALSE,0,0,0,-0.614273],
-  [FALSE,0,0,0,-0.629639],
-  [FALSE,1,0,0,-1.85416],
-  [TRUE,7,0,7,0]
+  [TRUE,1,0,0,-5.57336,0,0],
+  [TRUE,1,0,0,-7.8873,0,0],
+  [FALSE,0,0,0,-0.614273,0,0],
+  [FALSE,0,0,0,-0.629639,0,0],
+  [FALSE,1,2.64965E-31,3.92364E-44,1.4013E-45,1.05938E-42,1.05938E-42],
+  [TRUE,1.4013E-45,2.64554E-31,1.4013E-45,8.40779E-45,2.66006E-31,2.8026E-45]
   ];
   PERS UitvoerBufferType UitvoerBuffer{6} :=
   [

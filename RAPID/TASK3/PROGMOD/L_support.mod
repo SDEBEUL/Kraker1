@@ -14,13 +14,15 @@ MODULE L_support
      num BovenrandRechts;
      num Inbewerking;
   Endrecord
-
+  
   RECORD StationType
-   bool InDienst;
-   num  Lading;
-   num  Bewerkingsstap;
-   num  Opdracht;
-   num  xOffset;
+   bool InDienst; !station in dienst 
+   num  Lading; !wat voor een stuk er monteel in het station ligt. (parttype)
+   num  Bewerkingsstap; !nog niet gebruikt ... voor auto repair toepassing
+   num  Opdracht; !wat voor een stuk er in het station gemaakt moet worden (parttype)
+   num  xOffset; !offset tov midden
+   num  pOffset; !offset langs positieve kant 
+   num  nOffset; !offset langs negatieve kant 
   ENDRECORD
   
   RECORD UitvoerBufferType 

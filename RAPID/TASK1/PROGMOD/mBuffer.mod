@@ -48,8 +48,7 @@ MODULE mBuffer
     LOCAL pers num Shift_y := 0;
     LOCAL pers num Shift_z := 0;
  
-  
-
+ 
  PROC BUFFER_UIT(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
      !
      IF NOT InvoerBuffer{nBuffernum}.Veilig THEN
@@ -80,7 +79,7 @@ MODULE mBuffer
    MoveL Offs(Pbuffer,0,-145,-150), v2000, fine, tGripper\WObj:=wobj_Active;   
    WaitRob \ZeroSpeed;
    WaitTime 2;
-    IF NOT fCheckGripperPart() THEN
+    IF NOT fCheckGripperPart(\nExpection:= 1) THEN
        !NO RACK
         LoggProc "mBuffer",30,"Actieve uitvoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
         nAnswer := UIMessageBox(\Header:="REK NIET GEVONDEN!"\MsgArray:=["","Hier zou een rek moeten staan?","Druk OK om opnieuw te controlleren","Druk Cancel als dit rek is verwijderd"]
@@ -147,14 +146,14 @@ MODULE mBuffer
     !
         MoveL Offs(Pbuffer,0,-75,0),v4000,z50,tGripper\WObj:=wobj_Active;
         MoveL Pbuffer, v100, fine, tGripper\WObj:=wobj_Active;
-        IF fCheckGripperPart() THEN
+        IF fCheckGripperPart(\nExpection:= 1) THEN
           rGripper_Close;
           rDecrInvoerbuffer nBuffernum;
         ELSE !part not in expected pos 
          !beweeg 1cm verder en kijk of het stuk er dan is 
           MoveL Offs(Pbuffer,0,10,0),v50,z10,tGripper\WObj:=wobj_Active;
           waitrob \InPos;
-          IF fCheckGripperPart() THEN
+          IF fCheckGripperPart(\nExpection:= 1) THEN
            rGripper_Close;
            rDecrInvoerbuffer nBuffernum;
           ELSE !stuk nog steeds niet aanwezig = volgende stuk 
@@ -373,7 +372,7 @@ ENDPROC
    !postie waar de sensoren het rek zien.
    MoveL Offs(Pbuffer,0,-145,-150), v4000, fine, tGripper\WObj:=wobj_Active; 
    WaitTime 2;
-    IF NOT fCheckGripperPart() THEN
+    IF NOT fCheckGripperPart(\nExpection:= 1) THEN
        !NO RACK
         LoggProc "mBuffer",30,"Actieve uitvoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
         nAnswer := UIMessageBox(\Header:="REK NIET GEVONDEN!"\MsgArray:=["","Hier zou een rek moeten staan?","Druk OK om opnieuw te controlleren","Druk Cancel als dit rek is verwijderd"]

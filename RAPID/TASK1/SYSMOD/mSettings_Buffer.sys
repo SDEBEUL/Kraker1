@@ -158,12 +158,15 @@ LOCAL PROC rUpdateUitvoerbuffer(num nBuffer, num nPartType)
    AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
     IF nPartType = part.Balk330 THEN
         Incr AantalPartsAanwezig.Balk330;
+        UitvoerBuffer{nBuffer}.leeg := false;
     ENDIF
     IF nPartType = part.Balk331 THEN
         Incr AantalPartsAanwezig.Balk331;
+        UitvoerBuffer{nBuffer}.leeg := false;
     ENDIF
     IF nPartType = part.Balk332 THEN
         Incr AantalPartsAanwezig.Balk332;
+        UitvoerBuffer{nBuffer}.leeg := false;
     ENDIF
     UitvoerBuffer{nBuffer}.AantalPartsAanwezig := AantalPartsAanwezig;
     !kijk of gewenst aantal stukken is berijkt
@@ -197,10 +200,12 @@ PROC rDecrInvoerbuffer(num nBuffer)
     !veiligeid voor slechte tellers veilige situatie is LEEG
     IF (InvoerBuffer{nBuffer}.ActiefStuk > 8) OR (InvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
       InvoerBuffer{nBuffer}.leeg := true;
+      InvoerBuffer{nBuffer}.vol := false;
       LoggProc "mBuffer",7,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     IF (InvoerBuffer{nBuffer}.Actievelaag > 5) OR (InvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
       InvoerBuffer{nBuffer}.leeg := true;
+      InvoerBuffer{nBuffer}.vol := false;
       LoggProc "mBuffer",8,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     !
@@ -222,10 +227,12 @@ PROC rIncrUitvoerbuffer(num nBuffer)
     !veiligeid voor slechte tellers veilige situatie is VOl 
     IF UitvoerBuffer{nBuffer}.ActiefStuk > 8 THEN 
      UitvoerBuffer{nBuffer}.vol := true;
+     UitvoerBuffer{nBuffer}.leeg:= false;
      LoggProc "mBuffer",9,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
     ENDIF
     IF UitvoerBuffer{nBuffer}.Actievelaag < 1 THEN
      UitvoerBuffer{nBuffer}.vol := true;
+     UitvoerBuffer{nBuffer}.leeg:= false;
      LoggProc "mBuffer",10,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
     ENDIF
     !
@@ -246,12 +253,14 @@ PROC rDecrUitvoerbuffer(num nBuffer)
     !veiligeid voor slechte tellers veilige situatie is LEEG
     IF (UitvoerBuffer{nBuffer}.ActiefStuk > 8) OR (UitvoerBuffer{nBuffer}.ActiefStuk  < 1) THEN
       UitvoerBuffer{nBuffer}.leeg := true;
+      UitvoerBuffer{nBuffer}.vol := false;
       UitvoerBuffer{nBuffer}.Actievelaag := 1;
       UitvoerBuffer{nBuffer}.ActiefStuk := 8;
       LoggProc "mBuffer",17,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
     IF (UitvoerBuffer{nBuffer}.Actievelaag > 5) OR (UitvoerBuffer{nBuffer}.Actievelaag  < 1) THEN
       UitvoerBuffer{nBuffer}.leeg := true;
+      UitvoerBuffer{nBuffer}.vol := false;
       UitvoerBuffer{nBuffer}.Actievelaag := 1;
       UitvoerBuffer{nBuffer}.ActiefStuk := 8;
       LoggProc "mBuffer",18,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
