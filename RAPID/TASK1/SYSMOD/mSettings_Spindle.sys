@@ -7,7 +7,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
-    local PERS bool  bActiveTool{6} := [TRUE,FALSE,FALSE,FALSE,FALSE,FALSE];
+    local PERS bool  bActiveTool{6} := [FALSE,FALSE,TRUE,FALSE,FALSE,FALSE];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-113.098,-15.104,3.1224,84.2322,-67.5896,-85.4401],[500.018,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
@@ -26,9 +26,9 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Speedata
     PERS speeddata vBoren_11_190:=[2.5,500,5000,1000];
-    PERS speeddata vBoren_aanzet:=[85,500,5000,1000];
+    PERS speeddata vBoren_aanzet:=[100,500,5000,1000];
     
-    PERS speeddata vFrezen:=[1.2,500,5000,1000]; 
+    PERS speeddata vFrezen:=[1,500,5000,1000]; 
     PERS speeddata vBorenMetFrees:=[4,500,5000,1000];
     PERS speeddata vFrees_aanzet:=[10,500,5000,1000];
 
@@ -157,15 +157,15 @@ MODULE mSettings_Spindle(SYSMODULE)
         Set_Gripper(DummyTool);
         !
         IF NOT nActieve_Tool = nTool THEN
-          MoveAbsJ fArm_only(pHomeJoint_spindel)\NoEOffs, v1000, z50, tSpindle;
-          MoveAbsJ pHomeJoint_spindel\NoEOffs, v1000, z50, tSpindle;
+          MoveAbsJ fArm_only(pHomeJoint_spindel)\NoEOffs, v4000, z50, tSpindle;
+          MoveAbsJ pHomeJoint_spindel\NoEOffs, v4000, z50, tSpindle;
           IF NOT nActieve_Tool = 0 THEN
            rDetach_tool nActieve_Tool;
           ENDIF
           IF NOT nTool = 0 THEN 
            rAttach__tool nTool;
           ENDIF
-          MoveAbsJ pHomeJoint_spindel\NoEOffs, v1000, z50, tSpindle;
+          MoveAbsJ pHomeJoint_spindel\NoEOffs, v4000, z50, tSpindle;
         ENDIF
         !
     ENDPROC

@@ -75,17 +75,17 @@ MODULE L_support(SYSMODULE)
   !station 1-5 zijn de automatische station 6 is het manuele station gebruikt voor onderranden en bovenranden
   PERS StationType Station{6} := 
   [
-  [TRUE,11,0,5,-1.86966],
-  [TRUE,1,0,5,-1.87657],
-  [TRUE,1,0,5,-0.614273],
-  [TRUE,1,0,5,-0.629639],
-  [TRUE,1,0,0,-1.85416],
-  [TRUE,11,0,8,0]
+  [TRUE,1,0,0,-5.57336],
+  [TRUE,1,0,0,-7.8873],
+  [FALSE,0,0,0,-0.614273],
+  [FALSE,0,0,0,-0.629639],
+  [FALSE,1,0,0,-1.85416],
+  [TRUE,7,0,7,0]
   ];
   PERS UitvoerBufferType UitvoerBuffer{6} :=
   [
-  [TRUE,FALSE,FALSE,TRUE,FALSE,5,8,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,8,0,0,0,0,0,0]],
-  [FALSE,FALSE,TRUE,TRUE,TRUE,5,3,[0,0,0,0,0,4,0,0,0,0,0,0],[0,0,0,0,0,4,0,0,0,0,0,0]],
+  [FALSE,FALSE,FALSE,TRUE,TRUE,2,4,[0,0,0,0,0,3,0,0,0,0,0,0],[0,0,0,0,0,8,0,0,0,0,0,0]],
+  [FALSE,FALSE,TRUE,TRUE,FALSE,5,8,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,4,0,0,0,0,0,0]],
   [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
   [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
   [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
@@ -93,8 +93,8 @@ MODULE L_support(SYSMODULE)
   ];
   PERS InvoerBufferType InvoerBuffer{6} :=
   [
-  [FALSE,FALSE,TRUE,FALSE,TRUE,4,7],
-  [TRUE,FALSE,TRUE,FALSE,TRUE,2,6],
+  [FALSE,FALSE,TRUE,TRUE,FALSE,6,1],
+  [TRUE,FALSE,TRUE,FALSE,TRUE,3,5],
   [FALSE,FALSE,FALSE,FALSE,FALSE,0,0],
   [FALSE,FALSE,FALSE,FALSE,FALSE,0,0],
   [FALSE,FALSE,FALSE,FALSE,FALSE,0,0],
@@ -103,8 +103,8 @@ MODULE L_support(SYSMODULE)
   PERS ProcuctionType Production := [TRUE,TRUE,FALSE];
   PERS SpindeltoolType Spindeltool{6} := 
   [
-  ["Boor 11",4000,[2.5,500,5000,1000],[10,500,5000,1000],[85,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
-  ["Frees 11",6000,[4,500,5000,1000],[1.2,500,5000,1000],[10,500,5000,1000],[10,500,5000,1000],0,0,"",1000,1000],
+  ["Boor 11",2750,[2.5,500,5000,1000],[10,500,5000,1000],[100,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
+  ["Frees 11",3500,[4,500,5000,1000],[1,500,5000,1000],[10,500,5000,1000],[10,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
@@ -115,9 +115,9 @@ MODULE L_support(SYSMODULE)
   !******************************************************************************
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[1928.77,-1043.5,510.5],[0.707107,0.707107,0,0]],[[1202.5,27.5,0],[1,0,0,0]]];
-  PERS tooldata TempTool:=[TRUE,[[0,220.75,942],[0.5,0.5,-0.5,0.5]],[50,[0,175,400],[1,0,0,0],0,0,0]];
-  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[8992,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[4934.19,-1043.5,507],[0.707107,0.707107,0,0]],[[-100,27.5,0],[1,0,0,0]]];
+  PERS tooldata TempTool:=[TRUE,[[0,0,0],[1,0,0,0]],[0.001,[0,0,0.001],[1,0,0,0],0,0,0]];
+  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
   !interupts
   VAR intnum Int1SprvSpindel := 1;
   VAR intnum Int2SprvPart := 2;
@@ -125,7 +125,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=1000;
-  LOCAL PERS num logCounterErrDisp:=199;
+  LOCAL PERS num logCounterErrDisp:=802;
   LOCAL VAR iodev file;
    
   PROC SyncPos()
@@ -133,7 +133,7 @@ MODULE L_support(SYSMODULE)
     ! Proc: SyncPos
     ! Description: move to syncpos
     !***************************************
-    MoveAbsJ Sync_Position, v1000, z50, tool0\WObj:=wobj0;
+    MoveAbsJ Sync_Position, v4000, z50, tool0\WObj:=wobj0;
   ENDPROC
   
   PROC ManHomePosCheck()
@@ -142,22 +142,22 @@ MODULE L_support(SYSMODULE)
     ! Description: ter controle verschillende homeposities
     !***************************************
     !with track 
-    MoveAbsJ pHomeJoint_Grijper\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ pHomeJoint_Grijper\NoEOffs,v4000,z50,tool0; 
     Stop;
-    MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z50,tool0; 
     Stop;
-    MoveAbsJ pHomeJoint_spindel\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ pHomeJoint_spindel\NoEOffs,v4000,z50,tool0; 
     Stop;
-    MoveAbsJ pHomeJoint_StationXboor11\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ pHomeJoint_StationXboor11\NoEOffs,v4000,z50,tool0; 
     Stop;
     !armonly
-    MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v4000,z50,tool0; 
     Stop;
-    MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,z50,tool0; 
     Stop;
-    MoveAbsJ fArm_only(pHomeJoint_spindel)\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ fArm_only(pHomeJoint_spindel)\NoEOffs,v4000,z50,tool0; 
     Stop;
-    MoveAbsJ fArm_only(pHomeJoint_StationXboor11)\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ fArm_only(pHomeJoint_StationXboor11)\NoEOffs,v4000,z50,tool0; 
     Stop;
   ENDPROC
   
@@ -193,17 +193,17 @@ MODULE L_support(SYSMODULE)
     ENDIF
       
     IF Present(Armonly) THEN
-      MoveAbsJ fArm_only(tempJnt)\NoEOffs,v1000,z50,tool0;   
+      MoveAbsJ fArm_only(tempJnt)\NoEOffs,v4000,fine,tool0;   
       RETURN;
     ENDIF
     
     IF Present(Armfirst) THEN
-      MoveAbsJ fArm_only(tempJnt)\NoEOffs,v1000,z50,tool0;  
-      MoveAbsJ tempJnt\NoEOffs,v1000,z50,tool0;  
+      MoveAbsJ fArm_only(tempJnt)\NoEOffs,v4000,fine,tool0;  
+      MoveAbsJ tempJnt\NoEOffs,v4000,fine,tool0;  
       RETURN;
     ENDIF
     
-    MoveAbsJ tempJnt\NoEOffs,v1000,z50,tool0; 
+    MoveAbsJ tempJnt\NoEOffs,v4000,fine,tool0; 
     !
     ENDPROC
     

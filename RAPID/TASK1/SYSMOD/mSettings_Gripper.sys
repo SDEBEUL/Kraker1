@@ -190,76 +190,75 @@ MODULE mSettings_Gripper(SYSMODULE)
 
     LOCAL PROC rAttach_Dummy()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v1000,z50,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0;     
-        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
-        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,fine,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,fine,tool0;     
+        MoveL reltool(pDummy,0,0,-500),v4000,z50,tool0;
+        MoveL reltool(pDummy,0,0,-50),v1000,fine,tool0;
         rToolchanger_Open;   
-        MoveL pDummy,v100,fine,tool0;
+        MoveL pDummy,v500,fine,tool0;
         rToolchanger_close \NoLockcheck;
         nActive_Gripper := DummyTool;
         Reset so_Changer_Open;
         Reset do_Gripper_Open;
-        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
-        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0;
+        MoveL reltool(pDummy,0,0,-50),v500,fine,tool0;
+        MoveL reltool(pDummy,0,0,-500),v4000,z50,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z50,tool0;
         !
     ENDPROC
 
     LOCAL PROC rDetach_Dummy()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v1000,z50,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0;
-        MoveJ reltool(pDummy,0,0,-500),v1000,z50,tool0;
-        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,fine,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,fine,tool0;
+        MoveJ reltool(pDummy,0,0,-500),v4000,z50,tool0;
+        MoveL reltool(pDummy,0,0,-50),v1000,fine,tool0;
         MoveL pDummy,v10,fine,tool0;
         rToolchanger_Open;
-        MoveL reltool(pDummy,0,0,-10),v100,fine,tool0;
+        MoveL reltool(pDummy,0,0,-10),v500,fine,tool0;
         WaitRob \InPos;
         Check_Notool;
-        MoveL reltool(pDummy,0,0,-50),v100,fine,tool0;
+        MoveL reltool(pDummy,0,0,-50),v500,fine,tool0;
         rReset_Grijper_WZ;
         WaitDI di_Changer_Tool_Aanwezig, 0;
-        MoveL reltool(pDummy,0,0,-500),v1000,z50,tool0;
+        MoveL reltool(pDummy,0,0,-500),v4000,z50,tool0;
         Reset so_Changer_Open;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z50,tool0;
         !
     ENDPROC 
 
     LOCAL PROC rAttach_Gripper()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v1000,z50,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0;
-        MoveL RelTool(pGripper,0,0,-500),v1000,z50,tool0;
-        MoveL RelTool(pGripper,0,0,-50),v100,fine,tool0;
+        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,z50,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z50,tool0;
+        MoveL RelTool(pGripper,0,0,-500),v4000,z50,tool0;
+        MoveL RelTool(pGripper,0,0,-50),v1000,fine,tool0;
         rToolchanger_Open;
-        MoveL pGripper,v10,fine,tool0;
+        MoveL pGripper,v50,fine,tool0;
         rToolchanger_close;
         rGripper_Open;
         nActive_Gripper := GrijperTool;
         Check_gripper(GrijperTool);
-        MoveL RelTool(pGripper,0,-250,0),v200,fine,tool0;
-        MoveL RelTool(pGripper,0,-250,-850),v200,fine,tool0;
-        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v1000,fine,tool0;
+        MoveL RelTool(pGripper,0,-250,0),v500,fine,tool0;
+        MoveL RelTool(pGripper,0,-250,-850),v2000,fine,tool0;
+        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v4000,fine,tool0;
         !
     ENDPROC
     
     
     LOCAL PROC rDetach_Gripper()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v1000,fine,tool0;
-        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v1000,fine,tool0;
-        MoveJ RelTool(pGripper,0,-250,-850),V1000,fine,tool0;
-        MoveL RelTool(pGripper,0,-250,0),v200,fine,tool0;
-        MoveL pGripper,v50,fine,tool0;
+        MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v2000,fine,tool0;
+        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v2000,fine,tool0;
+        MoveJ RelTool(pGripper,0,-250,-850),v2000,fine,tool0;
+        MoveL RelTool(pGripper,0,-250,0),v1000,fine,tool0;
+        MoveL pGripper,v500,fine,tool0;
         rToolchanger_Open;
         MoveL RelTool(pGripper,0,0,0-5),v50,fine,tool0;
         Check_Notool;
-        MoveL RelTool(pGripper,0,0,-30),v100,z1,tool0;
+        MoveL RelTool(pGripper,0,0,-70),v500,fine,tool0;
         rReset_Grijper_WZ;
-        MoveL RelTool(pGripper,0,0,-50),v100,z1,tool0;
-        MoveL RelTool(pGripper,0,0,-500),v1000,z50,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v1000,z50,tool0;
+        MoveL RelTool(pGripper,0,0,-500),v4000,z50,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z50,tool0;
         !
     ENDPROC
     
@@ -320,7 +319,18 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
     VAR btnres nAnswer;
     lbl_retry: 
-    WaitTime \inpos, 0.5;
+    !fast
+    WaitRob \inpos;
+    WaitTime 1;
+    IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
+      RETURN TRUE;  
+    ENDIF
+    
+    IF TestDI(di_Sensor1_Q1_In) = false AND TestDi(di_Sensor2_Q1_In) = false THEN
+     RETURN FALSE;
+    ENDIF
+    !slow
+    WaitTime \inpos, 2;
     IF TestDI(di_Sensor1_Q1_In) = true AND TestDi(di_Sensor2_Q1_In) = true THEN
       RETURN TRUE;  
     ENDIF
@@ -342,8 +352,8 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Description: check if part is not  in range of sensors
     !***************************************
      WaitRob \InPos;
-     WaitTime 2;
-     IF (ai_Sensor2_Q2_in > 17000) AND TestDI(di_Sensor1_Q1_In) = false AND TestDI(di_Sensor2_Q1_In) = false  THEN
+     WaitTime 1;
+     IF (ai_Sensor2_Q2_in > 2500) AND TestDI(di_Sensor1_Q1_In) = false AND TestDI(di_Sensor2_Q1_In) = false  THEN
         RETURN TRUE; 
      ENDIF
       RETURN FALSE;

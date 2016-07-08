@@ -241,6 +241,7 @@ LOCAL PROC rResetUitvoerbuffer(num nBuffer)
    VAR PartType AantalPartsAanwezig; 
    AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
    UitvoerBuffer{nBuffer}.leeg := true;
+   UitvoerBuffer{nBuffer}.vol := false;
    AantalPartsAanwezig.Balk330 := 0;
    AantalPartsAanwezig.Balk331 := 0;
    AantalPartsAanwezig.Balk332 := 0;

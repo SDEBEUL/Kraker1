@@ -178,7 +178,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Frees;
         !
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         !
         rFrezen_10mm_Uitsp_635x45_L 2445-1.2,0,0,0;
         !
@@ -187,7 +187,7 @@ MODULE mOnderRanden
         rFrezen_10mm_Uitsp_635x45_L 5065-2.5,0,0,0;
         !
         rStop_Spindle;
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         go_home \Armonly;
         !
     ENDPROC
@@ -199,7 +199,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Frees;
         !
-        MoveAbsJ [[-90,0,10,0,-10,0],[14000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+        MoveAbsJ [[-90,0,10,0,-10,0],[14000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         !
         rFrezen_10mm_Uitsp_635x45_R 2445-1.5,0,0,0;
         !
@@ -208,7 +208,7 @@ MODULE mOnderRanden
         rFrezen_10mm_Uitsp_635x45_R 5065-2,0,0,0;
         !
         rStop_Spindle;
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,tFrees_10\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         go_home \Armonly;
         !
     ENDPROC
@@ -220,7 +220,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Boor_11m;
         !
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
         !7mm correctie op volle lengte voor krimp 
         rBoren_11mm_Onderrand_Dubbel_L 15-1,2,0,0;
         !
@@ -432,7 +432,7 @@ MODULE mOnderRanden
         rBoren_11mm_Onderrand_Dubbel_L 13215-6+3.15,1.4,0,0;
         !
         rStop_Spindle;
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
         go_home \Armonly;
         !
     ENDPROC
@@ -444,7 +444,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Boor_11m;
         !
-        MoveAbsJ [[-90,0,0,-90,90,90],[14400,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,-90,90,90],[14400,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
         !
         rBoren_11mm_Onderrand_NUL_R 0,0,0,0;
         !7mm correctie op volle lengte voor krimp 
@@ -658,7 +658,7 @@ MODULE mOnderRanden
         rBoren_11mm_Onderrand_Dubbel_R 13215-6+3.1,0,0,0;
         !
         rStop_Spindle;
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v1000,z50,boor_11mm_L190\WObj:=wobj0;
+        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
         go_home \Armonly;
         !
     ENDPROC

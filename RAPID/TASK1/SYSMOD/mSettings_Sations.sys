@@ -132,11 +132,17 @@ PROC rloadStations()
     VAR btnres nAnswer; 
     VAR num buffernummer;
     FOR i FROM 1 TO 5 STEP 1 DO
-         IF Station{i}.inDienst AND (Station{i}.lading = part.Geen)THEN 
+       lblNextRek:
+        IF Station{i}.inDienst AND (Station{i}.lading = part.Geen)THEN 
            buffernummer := nGetInvoerbuffer();
            IF buffernummer <> 0 THEN !er zijn stukken beschikbaar
                !haal stuk uit buffer
                Getnextpart;
+               !als er geen stuk in de grijper zit was het rek leeg 
+               IF not fCheckGripperPart() THEN
+                   Stop;
+                  GOTO lblNextRek;
+               ENDIF
                !laad stuk in station
                rloadStation i;
            ELSE
@@ -214,7 +220,7 @@ PROC rWorkStations()
     !ga eerst op ale stations die in klaar zijn voor werk gaan boren 
      FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg en nieuwe balk
-       IF Station{i}.InDienst AND Station{i}.Lading = part.OnbewerkteBalk THEN
+       IF Station{i}.InDienst AND Station{i}.Lading = part.OnbewerkteBalk AND Station{i}.Opdracht <> part.geen  THEN
          LoggProc "mStations",14,"Sation:"+NumToStr(i,0)+" StartBoren Type:"+NumToStr(Station{i}.Opdracht,0);
          rWorkStationBoren(i);
          LoggProc "mStations",15,"Sation:"+NumToStr(i,0)+" EindeBoren Type:"+NumToStr(Station{i}.Opdracht,0);
@@ -223,7 +229,7 @@ PROC rWorkStations()
      !ga nu op al de stations die in dienst staan gaan boren
       FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg zou hier eigenlijk een beter check voor moeten maken 
-       IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen THEN
+       IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen AND Station{i}.Opdracht <> part.geen THEN
            LoggProc "mStations",16,"Sation:"+NumToStr(i,0)+" StartFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
            rWorkStationFrezen(i);
            LoggProc "mStations",17,"Sation:"+NumToStr(i,0)+" EindeFrezen Type:"+NumToStr(Station{i}.Opdracht,0);

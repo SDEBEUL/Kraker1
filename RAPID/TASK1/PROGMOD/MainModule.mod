@@ -1,17 +1,18 @@
 MODULE MainModule
 
 PROC Main()
-        VelSet 100, 800;
-        AccSet 50,50;
+        !VelSet 100, 3000;
+        !AccSet 50,50;
      LoggProc "Main",18,"PP to main";
      !in manueel onderhouds beschikbaar stellen  
      IF OpMode() <> OP_AUTO THEN
        rMainui;
      ENDIF
+     rResetBufferSafe;
      !check part in gripper
      
      !check home 
-     check_home \Armonly ;
+     check_home \Armonly ; 
      !
      WHILE TRUE do
      IF bDwarbalkenGewenst() = TRUE THEN
