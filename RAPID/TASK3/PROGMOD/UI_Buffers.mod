@@ -227,6 +227,7 @@ LOCAL PROC rResetInvoerbuffer(num nBuffer)
     ! Description: set het status vol van inbuffer
     !***************************************  
     InvoerBuffer{nBuffer}.vol := true;
+    InvoerBuffer{nBuffer}.leeg := FALSE;
     InvoerBuffer{nBuffer}.Actiefstuk := 1; !vol rek = part1 rij1  
     InvoerBuffer{nBuffer}.Actievelaag := 1; !vol rek = part1 rij1  
     InvoerBuffer{nBuffer}.veilig := FALSE;

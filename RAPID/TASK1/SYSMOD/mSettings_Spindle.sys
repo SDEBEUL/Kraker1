@@ -7,9 +7,9 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
-    local PERS bool  bActiveTool{6} := [FALSE,FALSE,TRUE,FALSE,FALSE,FALSE];
+    local PERS bool  bActiveTool{6} := [TRUE,FALSE,FALSE,FALSE,FALSE,FALSE];
     !joint targets
-    CONST jointtarget pHomeJoint_spindel:=[[-113.098,-15.104,3.1224,84.2322,-67.5896,-85.4401],[500.018,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_spindel:=[[-114.954,-13.8901,3.19333,84.0191,-65.7533,-33.8858],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
     local CONST robtarget Magazijn_Pos1:=[[-460.63,-1000.68,235.99],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos2:=[[-310.78,-1003.15,242.39],[0.00365054,-0.999993,0.000240162,-0.000632287],[-2,0,-1,0],[500.006,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -388,18 +388,20 @@ MODULE mSettings_Spindle(SYSMODULE)
            nPulses := 3;
        ENDIF
        FOR i FROM 1 TO nPulses DO
-           WaitDI diSpindle_No_Rotation, nFlipstate \MaxTime:=3000 \Timeflag := bTimeout;
-           IF bTimeout THEN
-             Stop;
-             nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);  
-             GOTO lblreset;
-           ENDIF
-           !
-           IF nFlipstate = 1 THEN
-              nFlipstate:= 0; 
-           ELSE
-              nFlipstate :=1;
-           ENDIF
+           IF DOutput(so_Boren_aan) = 1 then
+               WaitDI diSpindle_No_Rotation, nFlipstate \MaxTime:=3000 \Timeflag := bTimeout;
+               IF bTimeout THEN
+                 Stop;
+                 nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);  
+                 GOTO lblreset;
+               ENDIF
+               !
+               IF nFlipstate = 1 THEN
+                  nFlipstate:= 0; 
+               ELSE
+                  nFlipstate :=1;
+               ENDIF
+           ENDIF 
        ENDFOR
   ENDPROC
 ENDMODULE

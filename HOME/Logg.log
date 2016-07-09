@@ -800,4 +800,93 @@
 2016-07-07, 16:04:12, Offset ,Code , 31 ,Info , off:1 D=14.25 x=14.25 n=-1.26 P1=-785.83 P2=778.09 
 2016-07-07, 16:09:59, Offset ,Code , 31 ,Info , off:1 D=-5.57 x=-5.57 n=0.93 P1=-766.17 P2=798.08 
 2016-07-07, 16:18:51, Offset ,Code , 31 ,Info , off:2 D=9.45 x=9.45 n=-0.23 P1=-781.54 P2=783.41 
-2016-07-07, 16:22:28, Offset ,Code , 31 ,Info , off:2 D=-7.89 x=-7.89 n=0.45 P1=-764.10 P2=800.64
+2016-07-07, 16:22:28, Offset ,Code , 31 ,Info , off:2 D=-7.89 x=-7.89 n=0.45 P1=-764.10 P2=800.64 
+2016-07-08, 08:13:51, Offset ,Code , 31 ,Info , off:1 x=-0.50 n=-0.88 p=-0.11 P1=-771.33 P2=793.08 
+2016-07-08, 08:19:20, Offset ,Code , 31 ,Info , off:1 x=7.21 n=7.00 p=7.41 P1=-779.21 P2=785.56 
+2016-07-08, 08:22:43, Offset ,Code , 31 ,Info , off:1 x=-6.44 n=-7.77 p=-5.12 P1=-764.44 P2=798.09 
+2016-07-08, 08:25:50, Offset ,Code , 31 ,Info , off:1 x=-1.46 n=-0.30 p=-2.63 P1=-771.91 P2=795.60 
+2016-07-08, 08:29:15, Offset ,Code , 31 ,Info , off:1 x=1.05 n=4.67 p=-2.57 P1=-776.88 P2=795.55 
+2016-07-08, 08:35:31, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 08:37:19, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 08:39:40, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 08:42:08, Offset ,Code , 31 ,Info , off:1 x=-2.93 n=-3.25 p=-2.61 P1=-768.97 P2=795.58 
+2016-07-08, 08:42:09, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:5 
+2016-07-08, 09:15:47, Offset ,Code , 31 ,Info , off:1 x=0.00 n=0.00 p=0.00 P1=-770.95 P2=793.06 
+2016-07-08, 09:16:20, Offset ,Code , 31 ,Info , off:1 x=0.76 n=1.61 p=-0.10 P1=-772.56 P2=793.16 
+2016-07-08, 09:16:53, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 09:19:20, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 09:22:16, Offset ,Code , 31 ,Info , off:1 x=-1.81 n=-1.04 p=-2.58 P1=-769.91 P2=795.64 
+2016-07-08, 09:22:17, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:5 
+2016-07-08, 09:28:09, mStations ,Code , 15 ,Info , Sation:1 EindeBoren Type:5 
+2016-07-08, 09:28:09, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 09:28:09, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 09:30:41, Offset ,Code , 31 ,Info , off:1 x=-0.55 n=-1.04 p=-0.06 P1=-769.91 P2=793.12 
+2016-07-08, 09:31:36, Offset ,Code , 31 ,Info , off:2 x=-0.61 n=-1.04 p=-0.19 P1=-769.91 P2=793.25 
+2016-07-08, 09:32:30, Offset ,Code , 31 ,Info , off:3 x=-0.61 n=-1.05 p=-0.18 P1=-769.90 P2=793.24 
+2016-07-08, 09:32:31, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:5 
+2016-07-08, 09:37:11, mStations ,Code , 15 ,Info , Sation:1 EindeBoren Type:5 
+2016-07-08, 09:37:11, mStations ,Code , 14 ,Info , Sation:2 StartBoren Type:5 
+2016-07-08, 09:41:22, mStations ,Code , 15 ,Info , Sation:2 EindeBoren Type:5 
+2016-07-08, 09:41:22, mStations ,Code , 14 ,Info , Sation:3 StartBoren Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 15 ,Info , Sation:3 EindeBoren Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:5 
+2016-07-08, 09:45:31, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:5 
+2016-07-08, 09:49:53, Offset ,Code , 31 ,Info , off:1 x=16.77 n=16.10 p=17.43 P1=-787.05 P2=775.63 
+2016-07-08, 09:49:53, Offset ,Code , 31 ,Info , hermeeting 
+2016-07-08, 09:50:42, Offset ,Code , 31 ,Info , off:1 x=0.51 n=1.09 p=-0.08 P1=-772.03 P2=793.14 
+2016-07-08, 09:51:37, Offset ,Code , 31 ,Info , off:2 x=9.38 n=8.99 p=9.77 P1=-779.93 P2=783.29 
+2016-07-08, 09:52:31, Offset ,Code , 31 ,Info , off:3 x=1.88 n=1.47 p=2.29 P1=-772.41 P2=790.77 
+2016-07-08, 09:52:32, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:5 
+2016-07-08, 09:57:13, mStations ,Code , 15 ,Info , Sation:1 EindeBoren Type:5 
+2016-07-08, 09:57:13, mStations ,Code , 14 ,Info , Sation:2 StartBoren Type:5 
+2016-07-08, 10:03:06, mStations ,Code , 15 ,Info , Sation:2 EindeBoren Type:5 
+2016-07-08, 10:03:06, mStations ,Code , 14 ,Info , Sation:3 StartBoren Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 15 ,Info , Sation:3 EindeBoren Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:5 
+2016-07-08, 10:07:23, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:5 
+2016-07-08, 10:07:57, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 10:29:40, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 10:30:37, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 10:30:37, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 10:30:37, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:5 
+2016-07-08, 10:30:37, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:5 
+2016-07-08, 10:30:37, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:5 
+2016-07-08, 10:30:37, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:5 
+2016-07-08, 10:30:42, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 10:30:42, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 10:30:42, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:5 
+2016-07-08, 10:30:42, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:5 
+2016-07-08, 10:30:42, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:5 
+2016-07-08, 10:30:42, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:5 
+2016-07-08, 10:30:47, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 10:30:47, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 10:30:47, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:5 
+2016-07-08, 10:30:47, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:5 
+2016-07-08, 10:30:47, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:5 
+2016-07-08, 10:30:47, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:5 
+2016-07-08, 10:30:54, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:5 
+2016-07-08, 10:30:54, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:5 
+2016-07-08, 10:30:54, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:5 
+2016-07-08, 10:30:54, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:5 
+2016-07-08, 10:30:54, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:5 
+2016-07-08, 10:30:54, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:5 
+2016-07-08, 10:36:57, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 10:40:42, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 10:45:36, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 10:47:33, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 10:57:36, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 11:25:39, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 11:58:59, Main ,Code , 18 ,Info , PP to main 
+2016-07-08, 12:18:56, Offset ,Code , 31 ,Info , off:1 x=-0.55 n=-1.04 p=-0.07 P1=-769.91 P2=793.12 
+2016-07-08, 12:20:18, Offset ,Code , 31 ,Info , off:2 x=1.88 n=1.47 p=2.29 P1=-772.41 P2=790.76 
+2016-07-08, 12:21:13, Offset ,Code , 31 ,Info , off:3 x=3.16 n=3.97 p=2.36 P1=-774.91 P2=790.70 
+2016-07-08, 12:21:14, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:5 
+2016-07-08, 12:21:59, Main ,Code , 18 ,Info , PP to main

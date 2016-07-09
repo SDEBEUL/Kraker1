@@ -25,10 +25,10 @@ MODULE mDwarsbalk
     CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     !stations uitlijning
-    PERS robtarget pMeasurePos1Start:=[[-772.112,14.0288,50.1119],[0.00307192,-0.707991,0.706211,-0.0024237],[-1,0,-3,0],[800.105,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget pMeasurePos2Start:=[[792.878,14.0292,50.0659],[0.0030727,-0.708094,0.706107,-0.00242517],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS num off_Sensor1_Q1_In:= -772.211;
-    PERS num off_Sensor2_Q1_In:= 792.974;
+    PERS robtarget pMeasurePos1Start:=[[-770.859,14.0374,50.1224],[0.00307183,-0.707994,0.706208,-0.00242505],[-1,0,-3,0],[800.105,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos2Start:=[[792.961,14.0294,50.0748],[0.00307723,-0.708096,0.706105,-0.00242739],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS num off_Sensor1_Q1_In:= -770.945;
+    PERS num off_Sensor2_Q1_In:= 793.06;
     
     !jointagerts
     CONST jointtarget pHomeJoint_StationXboor11:=[[-171.694,-8.62571,38.3752,13.4122,-43.8158,68.7807],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -123,9 +123,9 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_331,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_331,0,0,-150),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
-        MoveL RelTool(pGat11_331,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,-5),v2000,z5,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,85),vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -133,7 +133,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
-        MoveL RelTool(pGat11_330,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_330,0,0,-150),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -468,14 +468,14 @@ MODULE mDwarsbalk
      
         !
         !offsets to positive 
-        wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation \positive);
+        wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation\positive);
         rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,-27.5,0,trackshift;
         !
         rStop_Spindle;
         !
-        EOffsSet [trackshift+1300,0,0,0,0,0];
+        EOffsSet [trackshift+2000,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v4000,z50,tool0; 
         !
     ENDPROC

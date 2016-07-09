@@ -409,6 +409,13 @@ ENDPROC
        MoveL Offs(Pbuffer,0,-80+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
        IF (fCheckGripperNotInrange() = FALSE) OR (stuk = 8) THEN
           nStuk := stuk;
+          !CRASH CRASH 
+          !als stuk = 8 EERST naar achter. anders in geval van volle rij crash 
+          IF stuk = 8 THEN 
+           MoveL Offs(Pbuffer,0,-80+nYposPart(1),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;  
+           nStuk := 1;
+           incr nLaag;
+          ENDIF 
           GOTO Lbl_stukgevonden;
        ENDIF
      ENDFOR

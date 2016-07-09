@@ -419,12 +419,17 @@ ENDTEST
 !
 ENDPROC
 
-PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime)
+PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime\switch Check)
     !***************************************	    
     ! Proc: rSetSationClamps
     ! Description: open of sluit klemmen 
     !***************************************
     VAR num nState;
+    VAR num nBitOpen;
+    VAR num nBitClose;
+    VAR num checkbit;
+    VAR bool timeout;
+ lbl_retry:
     IF Present(close) THEN
         nState := 0;
     endif
@@ -437,20 +442,42 @@ PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime)
     TEST nStation
           CASE 1:
               SetDO doKP_1_Ventiel,nState;
+              nBitOpen := 23;
+              nBitClose := 24;
           CASE 2:
               SetDO doKP_2_Ventiel,nState;
+              nBitOpen := 25;
+              nBitClose := 26;
           CASE 3:
               SetDO doKP_3_Ventiel,nState;
+              nBitOpen := 27;
+              nBitClose := 28;
           CASE 4:
               SetDO doKP_4_Ventiel,nState;
+              nBitOpen := 29;
+              nBitClose := 30;
           CASE 5:
-              SetDO doKP_5_Ventiel,nState;   
+              SetDO doKP_5_Ventiel,nState;
+              nBitOpen := 31;
+              nBitClose := 32;
     ENDTEST   
     IF Present(nWaittime) THEN
       WaitTime nWaittime;
     ELSE
        WaitTime 3;
     ENDIF
+    
+    !need to test and verify the bits 
+    IF Present(Check) THEN
+       IF Present(open) THEN checkbit := nBitOpen; ENDIF
+       IF Present(close) THEN checkbit := nBitClose; ENDIF
+       WaitUntil BitCheckDnum(GInputDnum (giPLC_1),checkbit) = true \MaxTime := 4 \TimeFlag := timeout \PollRate:= 0.5;
+        IF timeout THEN
+          TPWrite "station clamps not in expected state";
+          GOTO lbl_retry;
+        ENDIF
+    ENDIF 
+    
     !
 ENDPROC
 
