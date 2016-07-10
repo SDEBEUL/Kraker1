@@ -32,7 +32,8 @@ MODULE UI_Buffers
         VAR btnres nAnswer;
       lbl_begin:
         nAnswer:=UIMessageBox(\Header:="Dwarsbalken INVOERBUFFER"
-        \MsgArray:=["Dit zijn de buffers waar de nieuwe balken uit genomen worden","selecteer een buffer om het status te veranderen"],
+        \MsgArray:=["Dit zijn de buffers waar de nieuwe balken uit genomen worden"
+        ,"selecteer een buffer om het status te veranderen"],
         \BtnArray:=["Buffer1","Buffer2","Buffer3","meer","Terug"]);
         TEST nAnswer
         CASE 1:

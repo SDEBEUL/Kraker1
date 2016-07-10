@@ -27,7 +27,6 @@ MODULE L_support
   
   RECORD UitvoerBufferType 
     bool InDienst;
-    bool InGebruik;
     bool Vol;
     bool Leeg;
     bool Veilig;
@@ -39,7 +38,6 @@ MODULE L_support
   
   RECORD InvoerBufferType 
     bool InDienst;
-    bool InGebruik;
     bool Vol;
     bool Leeg;
     bool Veilig;

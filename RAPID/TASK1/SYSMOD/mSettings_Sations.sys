@@ -464,20 +464,15 @@ PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime\sw
     IF Present(nWaittime) THEN
       WaitTime nWaittime;
     ELSE
-       WaitTime 3;
+      WaitTime 3;
     ENDIF
     
     !need to test and verify the bits 
     IF Present(Check) THEN
        IF Present(open) THEN checkbit := nBitOpen; ENDIF
        IF Present(close) THEN checkbit := nBitClose; ENDIF
-       WaitUntil BitCheckDnum(GInputDnum (giPLC_1),checkbit) = true \MaxTime := 4 \TimeFlag := timeout \PollRate:= 0.5;
-        IF timeout THEN
-          TPWrite "station clamps not in expected state";
-          GOTO lbl_retry;
-        ENDIF
+       CheckGroupbit giPLC_1,checkbit,true,  \CheckTimeOut:=3,"Station: " + NumToStr(nStation,0) + " not in expected state";
     ENDIF 
-    
     !
 ENDPROC
 

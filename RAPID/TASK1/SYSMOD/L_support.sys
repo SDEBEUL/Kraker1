@@ -30,25 +30,23 @@ MODULE L_support(SYSMODULE)
   ENDRECORD
     
   RECORD UitvoerBufferType 
-    bool InDienst;
-    bool InGebruik;
-    bool Vol;
-    bool Leeg;
-    bool Veilig;
-    num ActieveLaag;
-    num ActiefStuk;
-    PartType AantalPartsAanwezig;
-    PartType AantalPartsGewenst;
+    bool InDienst; !staat in dienst 
+    bool Vol; ! is vol  (max stukken of aantalgewenste stukken bereikt)
+    bool Leeg;! is leeg 
+    bool Veilig;! is veilig = gescand door robot of actieve laag en stuk klopt. (reset door safety)
+    num ActieveLaag;!actieve laag in het rek
+    num ActiefStuk; !actief stuk in de actieve laag 
+    PartType AantalPartsAanwezig;!lijst van aantal stukken per type dat in het rek zitten 
+    PartType AantalPartsGewenst; !lijst van aantal stukken per type dat het rek wenst 
   ENDRECORD 
   
   RECORD InvoerBufferType 
-    bool InDienst;
-    bool InGebruik;
-    bool Vol;
-    bool Leeg;
-    bool Veilig;
-    num ActieveLaag;
-    num ActiefStuk;
+    bool InDienst; !staat in dienst 
+    bool Vol; ! is vol  (max stukken of aantalgewenste stukken bereikt)
+    bool Leeg;! is leeg 
+    bool Veilig;! is veilig = gescand door robot of actieve laag en stuk klopt. (reset door safety)
+    num ActieveLaag;!actieve laag in het rek
+    num ActiefStuk; !actief stuk in de actieve laag 
   ENDRECORD 
   
   RECORD ProcuctionType
@@ -86,21 +84,21 @@ MODULE L_support(SYSMODULE)
   ];
   PERS UitvoerBufferType UitvoerBuffer{6} :=
   [
-  [FALSE,FALSE,FALSE,FALSE,FALSE,5,8,[0,0,0,0,0,7,0,0,0,0,0,0],[0,0,0,0,0,8,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,4,7,[0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,4,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]]
+  [FALSE,FALSE,FALSE,FALSE,5,8,[0,0,0,0,0,7,0,0,0,0,0,0],[0,0,0,0,0,8,0,0,0,0,0,0]],
+  [FALSE,FALSE,FALSE,FALSE,4,7,[0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,4,0,0,0,0,0,0]],
+  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
+  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
+  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
+  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]]
   ];
   PERS InvoerBufferType InvoerBuffer{6} :=
   [
-  [FALSE,FALSE,TRUE,TRUE,FALSE,1,1],
-  [FALSE,FALSE,TRUE,FALSE,TRUE,4,7],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0],
-  [FALSE,FALSE,FALSE,FALSE,FALSE,0,0]
+  [FALSE,TRUE,TRUE,FALSE,1,1],
+  [FALSE,TRUE,FALSE,TRUE,4,7],
+  [FALSE,FALSE,FALSE,FALSE,0,0],
+  [FALSE,FALSE,FALSE,FALSE,0,0],
+  [FALSE,FALSE,FALSE,FALSE,0,0],
+  [FALSE,FALSE,FALSE,FALSE,0,0]
   ];
   PERS ProcuctionType Production := [FALSE,TRUE,FALSE];
   PERS SpindeltoolType Spindeltool{6} := 
@@ -123,6 +121,7 @@ MODULE L_support(SYSMODULE)
   !interupts
   VAR intnum Int1SprvSpindel := 1;
   VAR intnum Int2SprvPart := 2;
+  VAR intnum Int3Sprvlichtbeam := 3;
   !loffile
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
@@ -265,7 +264,7 @@ MODULE L_support(SYSMODULE)
     !***************************************
     ResetAlarm:=FALSE;
     exequtedOnce:=TRUE;
-    WaitDI signal,value\MaxTime:=1\TimeFlag:=timeout;
+    WaitDI signal,value\MaxTime:=0.1\TimeFlag:=timeout;
     WHILE signal<>value DO
       TPErase;
       TPWrite text_msg;
@@ -357,6 +356,124 @@ MODULE L_support(SYSMODULE)
   ENDPROC
   
  
+    
+  PROC CheckGroupbit(
+    VAR signalgi signal,
+    VAR num bit,
+    bool value
+    \switch Skip
+    \num CheckTimeOut,
+    \num AlarmTimeOut,
+    string text_msg)
+    VAR num key_in;
+    VAR num maxWaitTime:=0.1;
+    VAR bool repeat:=TRUE;
+    VAR clock wait_clock;    
+    VAR bool timeout;
+    VAR errnum errvar;
+    VAR bool ResetAlarm;
+    VAR bool exequtedOnce:=TRUE;
+    !***************************************
+    ! Routine: CheckGroupbit(
+    ! Description: Check specified bit of Groupinput FOR
+    ! specified status
+    !***************************************
+    ResetAlarm:=FALSE;
+    exequtedOnce:=TRUE;
+    WaitUntil BitCheckDnum(GInputDnum (signal),bit) = value \MaxTime := 3 \TimeFlag := timeout \PollRate:= 0.5;
+    WHILE BitCheckDnum(GInputDnum (signal),bit)<>value DO
+      TPErase;
+      TPWrite text_msg;
+      WaitTime 0.1;
+      IF Present(CheckTimeOut) THEN
+      	clkreset wait_clock;
+        repeat:=TRUE;
+        IF  BitCheckDnum(GInputDnum (signal),bit)<>value THEN	
+          WHILE BitCheckDnum(GInputDnum (signal),bit)<>value AND repeat DO
+            clkstart wait_clock;	
+            IF ClkRead(wait_clock)>CheckTimeOut repeat:=FALSE;
+            WaitTime 0.01;
+          ENDWHILE
+          clkStop wait_clock;
+          clkreset wait_clock;
+        ENDIF  
+        IF Present(Skip) THEN
+          TPErase;
+          IF  BitCheckDnum(GInputDnum (signal),bit)<>value THEN
+            TPReadFK key_in,text_msg,"","","","SKIP","RETRY"\BreakFlag:=errvar;
+          ENDIF
+          TPErase;
+          TEST key_in
+          CASE 4:
+            RETURN;
+          CASE 5:   
+            ResetAlarm:=TRUE;
+          ENDTEST
+        ELSE
+          TPErase;
+          IF  BitCheckDnum(GInputDnum (signal),bit)<>value THEN
+            ErrWrite\W,"CheckGroupbit:",text_msg;
+            TPReadFK key_in,text_msg,"","","","","RETRY"\BreakFlag:=errvar;
+            ResetAlarm:=TRUE;
+          ENDIF  
+        ENDIF
+      ENDIF
+      IF (OpMode()<>OP_AUTO OR (Present(Skip) AND (NOT Present(CheckTimeOut)))) AND  BitCheckDnum(GInputDnum (signal),bit)<>value THEN
+        TPErase;
+        ErrWrite\W,"CheckGroupbit:",text_msg;
+        TPErase;
+        TPReadFK key_in,text_msg,"","","","SKIP","RETRY"\BreakFlag:=errvar;
+        TPErase;
+        TEST key_in
+          CASE 4:
+            RETURN;
+          CASE 5:   
+            ResetAlarm:=TRUE;
+        ENDTEST
+      ENDIF
+      IF (NOT Present(CheckTimeOut)) THEN
+        IF Present(AlarmTimeOut) THEN
+          repeat:=TRUE;
+          IF  BitCheckDnum(GInputDnum (signal),bit)<>value THEN
+            clkreset wait_clock;
+            WHILE  BitCheckDnum(GInputDnum (signal),bit)<>value AND repeat DO
+              clkstart wait_clock;	
+              IF ClkRead(wait_clock)>AlarmTimeOut repeat:=FALSE;
+              WaitTime 0.01;
+            ENDWHILE
+            clkStop wait_clock;
+            clkreset wait_clock;
+          ENDIF  
+        ELSE
+          repeat:=TRUE;
+          IF BitCheckDnum(GInputDnum (signal),bit)<>value THEN
+            clkreset wait_clock;	
+            WHILE  BitCheckDnum(GInputDnum (signal),bit)<>value AND repeat DO
+              clkstart wait_clock;	
+              IF ClkRead(wait_clock)>maxWaitTime repeat:=FALSE;
+              WaitTime 0.01;
+            ENDWHILE
+            clkStop wait_clock;
+            clkreset wait_clock;
+          ENDIF          	
+        ENDIF
+        IF (NOT repeat)  THEN
+          ErrWrite\W,"CheckGroupbit:",text_msg;
+          ResetAlarm:=TRUE;
+          exequtedOnce:=FALSE;
+        ENDIF
+      ENDIF
+    ENDWHILE
+    TPErase;
+  ERROR
+    IF ERRNO=ERR_REFUNKPRC THEN
+      TRYNEXT;
+    ENDIF
+  ENDPROC
+  
+  
+  
+  
  PROC CheckE6Ax(
     jointtarget ExpectJoint
     \switch ArmOnly)

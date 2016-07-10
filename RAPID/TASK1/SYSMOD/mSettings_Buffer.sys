@@ -1,5 +1,5 @@
  MODULE mSettings_buffer(SYSMODULE)
-    
+      
 FUNC num nGetInvoerbuffer()
     !***************************************	    
     ! Func: nGetInvoerbuffer
@@ -13,14 +13,14 @@ FUNC num nGetInvoerbuffer()
    lblRetry:
     FOR i FROM 1 TO 6 STEP 1 DO
         !niet uit dienst of niet leeg
-       IF InvoerBuffer{i}.indienst = true AND InvoerBuffer{i}.leeg = false THEN
+       IF InvoerBuffer{i}.indienst = true AND InvoerBuffer{i}.leeg = false AND bLichtbeamOK(i) = TRUE THEN
            !Als buffer al in gebruik is neem dan onmiddelijk die
            IF InvoerBuffer{i}.vol = False THEN
              nBuffernummer := i;
              RETURN nBuffernummer;
            ENDIF
            !Als buffer vol is onthoud en nog geen buffer gevonden. 
-           IF InvoerBuffer{i}.vol = true  AND (nBuffernummer = 0) THEN
+           IF InvoerBuffer{i}.vol = true  AND (nBuffernummer = 0) AND bLichtbeamOK(i) = TRUE THEN
              nBuffernummer := i;
            ENDIF
        ENDIF   
@@ -87,7 +87,7 @@ FUNC num nGetUitvoerbuffer(Num nPartType)
    IF nPartType = part.Balk330 OR nPartType = part.Balk331 OR nPartType = part.Balk332  THEN
     FOR i FROM 1 TO 6 STEP 1 DO
         !niet uit dienst of niet vol
-       IF UitvoerBuffer{i}.indienst AND UitvoerBuffer{i}.vol = false THEN
+       IF UitvoerBuffer{i}.indienst AND UitvoerBuffer{i}.vol = false AND bLichtbeamOK(i) = TRUE THEN
            !kijk of het rek nog een stuk van dit type wil 
            IF bUitvoerbufferPartNeeded(i,nPartType) THEN
                nBuffernummer := i;
@@ -192,6 +192,7 @@ PROC rDecrInvoerbuffer(num nBuffer)
     !***************************************  
     !tel 1 stuk bij de rij 
     Incr InvoerBuffer{nBuffer}.ActiefStuk;
+    InvoerBuffer{nBuffer}.vol := false;
     !als rij meer dan 8 is volgende 
     IF InvoerBuffer{nBuffer}.ActiefStuk > 8 THEN
         InvoerBuffer{nBuffer}.ActiefStuk := 1;
@@ -218,6 +219,7 @@ PROC rIncrUitvoerbuffer(num nBuffer)
     !***************************************  
     !trek 1 stuk van de rij 
     Decr UitvoerBuffer{nBuffer}.ActiefStuk;
+    UitvoerBuffer{nBuffer}.leeg:= false;
     !als rij minder dan 1 is volgende 
     IF  UitvoerBuffer{nBuffer}.ActiefStuk < 1 THEN
         UitvoerBuffer{nBuffer}.ActiefStuk := 8;
@@ -269,6 +271,7 @@ PROC rDecrUitvoerbuffer(num nBuffer)
 ENDPROC
 
  PROC Getpart(Num nBuffernummer)
+     !
       Set_Gripper(GrijperTool);
       TEST nBuffernummer
        CASE 1:
@@ -288,6 +291,7 @@ ENDPROC
   ENDPROC
     
   PROC Putpart(Num nBuffernummer \switch Safecheck)
+     !
      Set_Gripper GrijperTool;
       TEST nBuffernummer
        CASE 1:
@@ -352,11 +356,102 @@ RETURN nZpos;
 !
 ENDFUNC 
 
-PROC rResetBufferSafe()
- FOR i FROM 1 TO 6 DO 
+PROC rResetBufferSafe( \switch leftside \switch rightside)  
+  !***************************************	    
+  ! PROC: rResetBufferSafe
+  ! Description:reset safe state on buffers
+  ! can selecte single sied of buffer
+  !*************************************** 
+ IF Present(rightside) THEN   
+     FOR i FROM 1 TO 3 DO 
+         UitvoerBuffer{i}.Veilig := FALSE;
+         InvoerBuffer{i}.veilig  := FALSE;
+     ENDFOR
+ RETURN;
+ ENDIF 
+ 
+ IF Present(leftside) THEN 
+  FOR i FROM 4 TO 6 DO 
      UitvoerBuffer{i}.Veilig := FALSE;
      InvoerBuffer{i}.veilig  := FALSE;
+  ENDFOR
+ RETURN;
+ ENDIF
+ 
+ FOR i FROM 1 TO 6 DO 
+   UitvoerBuffer{i}.Veilig := FALSE;
+   InvoerBuffer{i}.veilig  := FALSE;
  ENDFOR
+ RETURN;
+ 
 ENDPROC
+
+FUNC bool bLichtbeamOK(num nBuffer)
+    !***************************************	    
+    ! Func: bLichtbeamOK
+    ! Description: kijk of safety (lichtscherm);
+    ! voor een bepaalde buffer oke is.
+    !***************************************   
+     VAR signalgi safetyGi;
+     VAR num SafetyBitLeft;
+     VAR num SafetyBitright;
+     safetyGi := giPLC_1;  
+     SafetyBitLeft := 1;
+     SafetyBitRight := 2;
+    IF nbuffer <= 3 THEN 
+      !buffers 1 tem 3 (in en uitvoer)
+      
+      !gegokt dat ik safety bit van plc ga kunnen lezen...
+      !wachten op robwelding foor feeback
+      !RETURN BitCheckDnum(GInputDnum (safetyGi),SafetyBitLeft);
+    ELSE 
+      !buffer 3 tem 6 (in en uitvoer)   
+        
+      !gegokt dat ik safety bit van plc ga kunnen lezen...
+      !wachten op robwelding foor feeback
+      !RETURN BitCheckDnum(GInputDnum (safetyGi),SafetyBitRight);
+    endif
+    !REMOVE IN FINAL REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !voorlopig altijd veilig nog geen buffer safety! 
+    RETURN TRUE;
+ENDFUNC 
+
+PROC rMonitorSafety()
+  !***************************************	    
+  ! Func: rMonitorSafety
+  ! Description: kijkt of 1 van de lichtschermen gebroken is
+  ! indien nodig word buffer veilig van die kant gereset 
+  !***************************************  
+     VAR signalgi safetyGi;
+     safetyGi := giPLC_1;
+     !
+     IDelete Int3Sprvlichtbeam;  
+     CONNECT Int3Sprvlichtbeam WITH tResetbuffersafety;
+     !watch for changes on the complete GI wil scan in the trap for the correct bit 
+     ISignalGI safetyGi,Int3Sprvlichtbeam;
+     IWatch Int3Sprvlichtbeam;
+ENDPROC 
+
+TRAP tResetbuffersafety
+    !***************************************	    
+    ! Trap: tResetbuffersafety
+    ! Description: reset buffer veilig als lichtscherm is gebroken  
+    ! Connected in rMonitorSafety
+    !***************************************
+    !
+    ISleep Int3Sprvlichtbeam;
+    if  bLichtbeamOK(1) = FALSE THEN 
+        rResetBufferSafe \leftside;
+        LoggProc "mBuffer",40,"Safety reset on Left side!";
+    ENDIF 
+    
+    if  bLichtbeamOK(4) = FALSE THEN 
+        rResetBufferSafe \rightside;
+        LoggProc "mBuffer",41,"Safety reset on Right side!";
+    ENDIF 
+    IWatch Int3Sprvlichtbeam;
+
+  ENDTRAP
+  
  
 ENDMODULE

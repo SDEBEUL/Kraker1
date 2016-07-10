@@ -1,20 +1,25 @@
 MODULE MainModule
 
 PROC Main()
-        !VelSet 100, 3000;
-        !AccSet 50,50;
      LoggProc "Main",18,"PP to main";
+     !speed and ACC overrides 
+     VelSet 100, 800;
+     AccSet 50,50;
      !in manueel onderhouds beschikbaar stellen  
      IF OpMode() <> OP_AUTO THEN
        rMainui;
      ENDIF
+     !Reset safestate on all buffers
      rResetBufferSafe;
+     !Monitor for sombody entering one of the beams
+     rMonitorSafety;
      !check part in gripper
-     
+     rGripper_CheckPart FALSE;
      !check home 
      check_home \Armonly ; 
-     !
+     !enter production mode 
      WHILE TRUE do
+     !check prodcution dwarsbalken
      IF bDwarbalkenGewenst() = TRUE THEN
             !unload stations als er dan nog bewerkte stukken zouden liggen zijn die eerst weg
             rUnloadStations;
@@ -28,12 +33,10 @@ PROC Main()
             rUnloadStations;
             IF NOT bDwarbalkenBeschikbaar() THEN
                 TPWrite "Geen nieuwe balken beschikbaar";
-                TPErase;
                 WaitTime 5;  
             ENDIF
         ELSE
              TPWrite "Geen uitvoer of geen opdrachten";
-             TPErase;
              WaitTime 5;  
              !controleert of er in station 6 een manuele opdracht is geplaats 
              !(in het geval dat dwarsbalk productie stil ligt).

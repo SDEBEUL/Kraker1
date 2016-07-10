@@ -14,7 +14,6 @@ MODULE mSettings_Gripper(SYSMODULE)
     CONST robtarget pDummy:=[[15227.80,-607.60,468.05],[0.00432513,-0.999965,0.00716432,0.000383958],[-1,0,-3,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGripper:=[[16029.73,-561.80,452.31],[0.00457466,0.999965,-0.00576448,-0.00404656],[-1,-1,-3,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !joint targets
-    !CONST jointtarget pHomeJoint_Grijper:=[[0,0,0,0,0,-90],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_Grijper:=[[-10.0764,7.09903,-3.16348,0.234242,90.0265,-186.888],[14350.6,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_Dummy:=[[-2.34978,-3.94306,2.59534,0.396952,1.07741,-88.065],[14350.5,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !vars voor safemove
@@ -77,6 +76,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         VAR btnres nAnswer; 
         lbl_retry:
         CheckInput di_Changer_Tool_Aanwezig,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Tool_Aanwezig 1 ";
+        !extra safety just ... because 
         IF TestDI(di_Changer_Tool_Aanwezig) THEN
           nAnswer := UIMessageBox(\Header:="Grijper fout"\MsgArray:=["Tool zo los moeten zijn!","ga manueel en los op"],\BtnArray:=["","","","","OK"]); 
           GOTO lbl_retry;
@@ -95,8 +95,10 @@ MODULE mSettings_Gripper(SYSMODULE)
         !check if gripper io state matches selected gripper
         Check_gripper(nActive_Gripper);
         IF NOT nGripper = nActive_Gripper THEN
+           go_home\Armfirst;
            rDetach_tool(nActive_Gripper);
            rAttach_tool(nGripper);
+           go_home\Armfirst;
         ENDIF
         Check_gripper(nGripper);
         !
@@ -125,9 +127,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     RETURN ntool;
     ENDFUNC
     
-     LOCAL PROC rDetach_tool(    
-        num Toolnum
-        )
+     LOCAL PROC rDetach_tool(num Toolnum)
     !***************************************	    
     ! Proc: rDetach_tool
     ! Description: drop tool on stand
@@ -143,9 +143,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         !     
     ENDPROC
     
-   LOCAL PROC rAttach_tool(    
-        num Toolnum
-        )
+   LOCAL PROC rAttach_tool(num Toolnum)
     !***************************************	    
     ! Proc: rAttach_tool
     ! Description: drop tool on stand
@@ -189,9 +187,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     ENDPROC
 
     LOCAL PROC rAttach_Dummy()
-        !
-        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,z200,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z200,tool0;     
+        !   
         MoveL reltool(pDummy,0,0,-500),v4000,z200,tool0;
         MoveL reltool(pDummy,0,0,-50),v1000,fine,tool0;
         rToolchanger_Open;   
@@ -222,14 +218,11 @@ MODULE mSettings_Gripper(SYSMODULE)
         WaitDI di_Changer_Tool_Aanwezig, 0;
         MoveL reltool(pDummy,0,0,-500),v4000,z200,tool0;
         Reset so_Changer_Open;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z200,tool0;
         !
     ENDPROC 
 
     LOCAL PROC rAttach_Gripper()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,z200,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z200,tool0;
         MoveL RelTool(pGripper,0,0,-500),v4000,z200,tool0;
         MoveL RelTool(pGripper,0,0,-50),v1000,fine,tool0;
         rToolchanger_Open;
@@ -258,7 +251,6 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveL RelTool(pGripper,0,0,-70),v500,z200,tool0;
         rReset_Grijper_WZ;
         MoveL RelTool(pGripper,0,0,-500),v4000,z200,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z200,tool0;
         !
     ENDPROC
     
@@ -402,7 +394,5 @@ MODULE mSettings_Gripper(SYSMODULE)
    StartMove;
    rWait_Spindel;
   ENDTRAP
-  
-  
-
+ 
 ENDMODULE

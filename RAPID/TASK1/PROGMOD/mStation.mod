@@ -66,9 +66,8 @@ lbl_measure:
           MoveL reltool(pStation_x,-250,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
           GOTO lbl_measure;
       ELSE
-         !ask part out 
          Station{nStation}.InDienst := FALSE;
-         LoggProc "Offset",31,"hermeeting NOK OUT OF USE";
+         LoggProc "Offset",31,"meeting NOK reposition failed station:" + NumToStr(nStation,0) + " OUT OF USE";
          WHILE TRUE DO 
           Stop;
          ENDWHILE 
@@ -113,24 +112,23 @@ ENDPROC
       VAR speeddata Vsearchfast := [10,500,5000,1000]; !zoeksnelheid 
       VAR speeddata Vsearch := [2,500,5000,1000]; !zoeksnelheid 
       VAR num nSearchlength := 60; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
+      VAR num nSearchReturnlength := 3; !hoeveel mm weg bewegen voor slow search
       CONST num nBeamlength := 2440; !de nominale lengte van een balk
       VAR num XoffsetPos1;
       VAR num XoffsetPos2;
       VAR num XoffsetAvg;
       VAR string sLog;
-      
+      VAR num nRetry; 
       !
       wobj_Active:=WobjActiveStation;
       trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
       EOffsSet [trackshift,0,0,0,0,0];
       !******************************************************************************************************************************************
       !naar start pos links 
-      MoveL RelTool(pMeasurePos1Start,-140,0,0), v4000, z50, tGripper\WObj:=wobj_Active;
-
+      MoveL RelTool(pMeasurePos1Start,-140,0,0), v2000, z100, tGripper\WObj:=wobj_Active;
       !teach only Positie met de laser OP de balk. (in teach mode word deze nog verschoven naar het riggerpunt)
       !MoveL pMeasurePos1Start, v4000, fine, tGripper\WObj:=wobj_Active;
       !
-      !PosDummy :=  RelTool(pMeasurePos1Start,0,-nSearchlength/2,0);
       PosDummy :=  Offs(pMeasurePos1Start,+nSearchlength/2,0,0);
       MoveL PosDummy, v4000, fine, tGripper\WObj:=wobj_Active;
       !meet links
@@ -139,11 +137,12 @@ ENDPROC
       !zoek eerst snel naar het triggerpunt 
       SearchL\SStop, di_Sensor1_Q1_In \negflank , PosDummy,Offs(pMeasurePos1Start,-nSearchlength/2,0,0), Vsearchfast, tGripper\WObj:=wobj_Active;
       !zoek nu HEEL traag in de andere richting 
-      PosDummy := Offs(pMeasurePos1Start,+nSearchlength/2,0,0); 
-      SearchL\Stop, di_Sensor1_Q1_In \posflank ,PosDummy, CRobT(), Vsearch, tGripper\WObj:=wobj_Active;
+      PosDummy := Offs(PosDummy,-nSearchReturnlength,0,0); 
+      MoveL PosDummy, v50, fine, tGripper\WObj:=wobj_Active;
+      SearchL\Stop, di_Sensor1_Q1_In \posflank, PosDummy,Offs(pMeasurePos1Start,+nSearchlength/2,0,0), Vsearch, tGripper\WObj:=wobj_Active;
       !
       IF Present(SensorSetup) THEN pMeasurePos1Start := PosDummy; ENDIF
-      TriggPos1 := CRobT(\Tool:=tGripper,\WObj:=wobj_Active);
+      TriggPos1 :=PosDummy;
       !
       !******************************************************************************************************************************************
       !naar start pos rechts
@@ -160,12 +159,13 @@ ENDPROC
       !zoek eerst snel naar het triggerpunt
       SearchL\SStop, di_Sensor2_Q1_In \negflank, PosDummy, Offs(pMeasurePos2Start,+nSearchlength/2,0,0), Vsearchfast, tGripper\WObj:=wobj_Active;
       !zoek nu HEEL traag in de andere richting 
-      PosDummy := Offs(pMeasurePos2Start,-nSearchlength/2,0,0);
-      SearchL\Stop, di_Sensor2_Q1_In \posflank,PosDummy, CRobT(), Vsearch, tGripper\WObj:=wobj_Active;
+      PosDummy := Offs(PosDummy,+nSearchReturnlength,0,0);
+      MoveL PosDummy, v50, fine, tGripper\WObj:=wobj_Active;
+      SearchL\Stop, di_Sensor2_Q1_In \posflank, PosDummy, Offs(pMeasurePos2Start,-nSearchlength/2,0,0), Vsearch, tGripper\WObj:=wobj_Active;
       IF Present(SensorSetup) THEN pMeasurePos2Start := PosDummy; ENDIF
-      TriggPos2:=CRobT(\Tool:=tGripper,\WObj:=wobj_Active); 
+      TriggPos2:=PosDummy;
       !
-      MoveL RelTool(pMeasurePos2Start,-140,-10,0), v4000, z10, tGripper\WObj:=wobj_Active;
+      MoveL RelTool(pMeasurePos2Start,-140,-10,0), v4000, z100, tGripper\WObj:=wobj_Active;
       !gripper sensor offset calbiratie 
       IF Present(SensorSetup) THEN
           off_Sensor1_Q1_In := TriggPos1.trans.x;
@@ -191,15 +191,28 @@ ENDPROC
       ERROR
          TEST ERRNO 
             CASE ERR_WHLSEARCH:
-            StorePath;
-            MoveL  PosDummy, v100, fine, tGripper\WObj:=wobj_Active;
-            RestoPath;
-            ClearPath;
-            StartMove;
-            RETRY;
+            Incr nRetry;
+            IF nRetry < 3 THEN
+                StorePath;
+                MoveL  PosDummy, v100, fine, tGripper\WObj:=wobj_Active;
+                RestoPath;
+                ClearPath;
+                StartMove;
+                RETRY;
+            ELSE
+              WHILE TRUE DO 
+               Stop;
+              ENDWHILE
+              Station{nStation}.InDienst := FALSE;
+              LoggProc "Offset",31,"meeting NOK max retry station:" + NumToStr(nStation,0) + " OUT OF USE";
+              MoveL  PosDummy, v100, fine, tGripper\WObj:=wobj_Active; 
+              MoveL RelTool(PosDummy,-140,-10,0), v100, z100, tGripper\WObj:=wobj_Active;
+            ENDIF 
             !
            DEFAULT:
-                Stop;
+              WHILE TRUE DO 
+               Stop;
+              ENDWHILE
          ENDTEST
       !******************************************************************************************************************************************   
       Stop;
