@@ -24,16 +24,16 @@ PROC rPutPartInStation(Num nStation, Wobjdata WobjStation)
     !
     EOffsSet [trackshift,0,0,0,0,0];
     !
-    MoveL reltool(pStation_x,-250,0,50),v4000,z50,tGripper\WObj:=wobj_Active;
-    MoveL pStation_x, v4000, fine, tGripper\WObj:=wobj_Active;
+    MoveL reltool(pStation_x,-250,0,50),v4000,z200,tGripper\WObj:=wobj_Active;
+    MoveL pStation_x, v800, fine, tGripper\WObj:=wobj_Active;
     !
     rGripper_PartSupervisionOff;
     rGripper_Open;
     !
-    MoveL reltool(pStation_x,-100,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
+    MoveL reltool(pStation_x,-100,0,0),v800,fine,tGripper\WObj:=wobj_Active;
     rGripper_CheckPart FALSE;
     rSetSationClamps nStation,\close;
-    MoveL reltool(pStation_x,-250,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
+    MoveL reltool(pStation_x,-250,0,0),v4000,z200,tGripper\WObj:=wobj_Active;
     !
 lbl_measure:
     rMeasureStationOffset nStation, WobjStation;
@@ -52,15 +52,16 @@ lbl_measure:
           EOffsSet [trackshift,0,0,0,0,0];
           !
           MoveL reltool(pStation_x,-250,0,50),v4000,z50,tGripper\WObj:=wobj_Active;
-          MoveL pStation_x, v4000, fine, tGripper\WObj:=wobj_Active;
+          MoveL pStation_x, v800, fine, tGripper\WObj:=wobj_Active;
           !
           rGripper_CheckPart TRUE;
           rGripper_close;
-          MoveL reltool(pStation_x,-10,0,0),v100,fine,tGripper\WObj:=wobj_Active;
+          MoveL reltool(pStation_x,-10,0,0),v100,z10,tGripper\WObj:=wobj_Active;
           MoveL reltool(pStation_x,-10,-Station{nStation}.xOffset,0),v100,fine,tGripper\WObj:=wobj_Active;
+          MoveL reltool(pStation_x,0,-Station{nStation}.xOffset,0),v100,fine,tGripper\WObj:=wobj_Active;
           rGripper_Open;
           !
-          MoveL reltool(pStation_x,-100,-Station{nStation}.xOffset,0),v100,fine,tGripper\WObj:=wobj_Active;
+          MoveL reltool(pStation_x,-100,-Station{nStation}.xOffset,0),v800,fine,tGripper\WObj:=wobj_Active;
           rGripper_CheckPart FALSE;
           rSetSationClamps nStation,\close;
           MoveL reltool(pStation_x,-250,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
@@ -87,13 +88,13 @@ PROC rGetPartInStation(Num nStation, Wobjdata WobjStation)
     rGripper_Open;
     rSetSationClamps nStation, \open;
     MoveJ reltool(pStation_x,-250,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
-    MoveL pStation_x, v4000, fine, tGripper\WObj:=wobj_Active;
+    MoveL pStation_x, v800, fine, tGripper\WObj:=wobj_Active;
     !
     rGripper_CheckPart TRUE;
     rGripper_Close;
     rGripper_CheckPart TRUE, \Supervision;
     !
-    MoveL reltool(pStation_x,-250,0,50),v4000,fine,tGripper\WObj:=wobj_Active;
+    MoveL reltool(pStation_x,-250,0,50),v800,fine,tGripper\WObj:=wobj_Active;
     !
     rSetSationClamps nStation, \close, \nWaittime :=0;
     !
@@ -109,7 +110,7 @@ ENDPROC
       VAR robtarget TriggPos1;
       VAR robtarget TriggPos2;
       VAR robtarget PosDummy;
-      VAR speeddata Vsearchfast := [10,500,5000,1000]; !zoeksnelheid 
+      VAR speeddata Vsearchfast := [20,500,5000,1000]; !zoeksnelheid 
       VAR speeddata Vsearch := [2,500,5000,1000]; !zoeksnelheid 
       VAR num nSearchlength := 60; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
       VAR num nSearchReturnlength := 3; !hoeveel mm weg bewegen voor slow search

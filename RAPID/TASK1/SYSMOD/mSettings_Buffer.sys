@@ -17,6 +17,7 @@ FUNC num nGetInvoerbuffer()
            !Als buffer al in gebruik is neem dan onmiddelijk die
            IF InvoerBuffer{i}.vol = False THEN
              nBuffernummer := i;
+             nLastInvoerbuffer := nBuffernummer; !for UI
              RETURN nBuffernummer;
            ENDIF
            !Als buffer vol is onthoud en nog geen buffer gevonden. 
@@ -26,6 +27,7 @@ FUNC num nGetInvoerbuffer()
        ENDIF   
      ENDFOR   
      !return de laagste buffer
+     nLastInvoerbuffer := nBuffernummer; !for UI
      RETURN nbuffernummer;
      !
 ENDFUNC
@@ -91,6 +93,7 @@ FUNC num nGetUitvoerbuffer(Num nPartType)
            !kijk of het rek nog een stuk van dit type wil 
            IF bUitvoerbufferPartNeeded(i,nPartType) THEN
                nBuffernummer := i;
+               nLastUitvoerbuffer := nBuffernummer; !for UI
                RETURN i;
            ENDIF
        ENDIF   
@@ -102,6 +105,7 @@ FUNC num nGetUitvoerbuffer(Num nPartType)
       ENDWHILE
    ENDIF
      !return de eerste buffer die het stuk kan ontvangen 0 wil zeggen stuk niet nodig
+     nLastUitvoerbuffer := nBuffernummer; !for UI
      RETURN nbuffernummer;
      !
 ENDFUNC

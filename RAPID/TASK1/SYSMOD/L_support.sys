@@ -110,7 +110,9 @@ MODULE L_support(SYSMODULE)
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000]
   ];
-   
+  !vars shared with the UI task for visulaisation
+  PERS num nLastInvoerbuffer := 1;
+  PERS num nLastUitvoerbuffer := 1;
   
   !******************************************************************************
   
@@ -126,7 +128,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=1000;
-  LOCAL PERS num logCounterErrDisp:=891;
+  LOCAL PERS num logCounterErrDisp:=894;
   LOCAL VAR iodev file;
    
   PROC SyncPos()

@@ -5,9 +5,9 @@ MODULE UI_Buffers
         lblBegin:
         nAnswer:=UIMessageBox(\Header:="Dwarsbalken"
         \MsgArray:=["CONTROLLER WELKE BUFFERS ACTIEF ZIJN!",
-        "BufferIn  => " + "" + "  actief (nieuwe balken) ",
-        "BufferUit => " + "" +" actief (afgewerkte balken)",
-        "Start => begin met procutie"],
+        "BufferIn  => Lastused:" + NumToStr(nLastInvoerbuffer,0) + "  (voor nieuwe balken) ",
+        "BufferUit => Lastused:" +  NumToStr(nLastUitvoerbuffer,0)  +"  (voor afgewerkte balken)",
+        "Start => begin met procutie (Huidige status: " + sBooltoString( Production.Dwarsbalken) +")"],
         \BtnArray:=["Start","Stop","SetBufferIn","SetBufferUit","Terug"]);
         TEST nAnswer
         CASE 1:
@@ -71,9 +71,32 @@ MODULE UI_Buffers
    
  LOCAL PROC rSetBufferOut()
         VAR btnres nAnswer;
+        VAR PartType AantalPartsGewenst;
+        VAR PartType AantalPartsAanwezig;
+        VAR string sPart{3} := ["","",""];
       lbl_begin:
+      IF nLastUitvoerbuffer <> 0 THEN
+        AantalPartsGewenst := UitvoerBuffer{nLastUitvoerbuffer}.AantalPartsGewenst;
+        AantalPartsAanwezig := UitvoerBuffer{nLastUitvoerbuffer}.AantalPartsAanwezig;
+        sPart := [
+        "Aantal Balk330= "+NumToStr(AantalPartsAanwezig.Balk330,0)+"/"+NumToStr(AantalPartsGewenst.Balk330,0),
+        "Aantal Balk331= "+NumToStr(AantalPartsAanwezig.Balk331,0)+"/"+NumToStr(AantalPartsGewenst.Balk331,0),
+        "Aantal Balk332= "+NumToStr(AantalPartsAanwezig.Balk332,0)+"/"+NumToStr(AantalPartsGewenst.Balk332,0)];
+      ELSE
+       sPart := ["geen buffer beschikbaar","",""];
+      ENDIF 
         nAnswer:=UIMessageBox(\Header:="Dwarsbalken UITVOERBUFFER"
-        \MsgArray:=["Dit zijn de buffers waar de afgewerkte balken naar toe moeten","selecteer een buffer om het status te veranderen"],
+        \MsgArray:=["Dit zijn de buffers waar de afgewerkte balken naar toe moeten",
+        "Last used buffer: " + NumToStr(nLastUitvoerbuffer,0),
+        "-----------------------------------",
+        sPart{1},
+        sPart{2},
+        sPart{3},
+        "",
+        "",
+        "",
+        "",
+        "selecteer een buffer om het status te veranderen"],
         \BtnArray:=["Buffer1","Buffer2","Buffer3","meer","Terug"]);
         TEST nAnswer
         CASE 1:
@@ -87,7 +110,17 @@ MODULE UI_Buffers
          GOTO lbl_begin;
         CASE 4:
              nAnswer:=UIMessageBox(\Header:="Dwarsbalken UITVOERBUFFER"
-            \MsgArray:=["Dit zijn de buffers waar de afgewerkte balken naar toe moeten","selecteer een buffer om het status te veranderen"],
+            \MsgArray:=["Dit zijn de buffers waar de afgewerkte balken naar toe moeten",
+            "Last used buffer: " + NumToStr(nLastUitvoerbuffer,0),
+            "-----------------------------------",
+            sPart{1},
+            sPart{2},
+            sPart{3},
+            "",
+            "",
+            "",
+            "",
+            "selecteer een buffer om het status te veranderen"],
             \BtnArray:=["Buffer4","Buffer5","","meer","Terug"]);
             TEST nAnswer
             CASE 1:
@@ -177,15 +210,22 @@ ENDPROC
 
 LOCAL PROC rSetRequest(Num nbuffer)
         VAR btnres nAnswer;
-        VAR PartType AantalPartsGewenst; 
+        VAR PartType AantalPartsGewenst;
+        VAR PartType AantalPartsAanwezig;
       lbl_begin:
         AantalPartsGewenst := UitvoerBuffer{nBuffer}.AantalPartsGewenst;
+        AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
         nAnswer:=UIMessageBox(\Header:="Aanvraag status voor buffer"+NumToStr(nBuffer,0)
         \MsgArray:=["Deze buffer ontvangt momenteel deze combinatie van stukken",
          "Aantal Balk330="+NumToStr(AantalPartsGewenst.Balk330,0),
          "Aantal Balk331="+NumToStr(AantalPartsGewenst.Balk331,0),
          "Aantal Balk332="+NumToStr(AantalPartsGewenst.Balk332,0),
          "--------------------",
+         "Dit zijn de balken die zich nu in de buffer bevinden",
+         "Aantal Balk330="+NumToStr(AantalPartsAanwezig.Balk330,0),
+         "Aantal Balk331="+NumToStr(AantalPartsAanwezig.Balk331,0),
+         "Aantal Balk332="+NumToStr(AantalPartsAanwezig.Balk332,0),
+         
          "Selecteer een type om het aantal aan te passen"],
          \BtnArray:=["Balk330","Balk331","Balk332","Set0","Terug"]);
         TEST nAnswer

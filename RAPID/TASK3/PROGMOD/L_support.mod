@@ -74,6 +74,11 @@ MODULE L_support
   PERS ProcuctionType Production;
   PERS SpindeltoolType Spindeltool{6};
   
+  !vars shared with the UI task for visulaisation
+  PERS num nLastInvoerbuffer;
+  PERS num nLastUitvoerbuffer;
+  
+  
   
   FUNC string sBooltoString(bool bBool)
      IF bBool THEN
