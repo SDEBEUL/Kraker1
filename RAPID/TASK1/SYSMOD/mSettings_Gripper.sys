@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=2;
+    PERS num nActive_Gripper:=3;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;
@@ -95,7 +95,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         !check if gripper io state matches selected gripper
         Check_gripper(nActive_Gripper);
         IF NOT nGripper = nActive_Gripper THEN
-           go_home\Armfirst;
+           go_home\Armonly;
            rDetach_tool(nActive_Gripper);
            rAttach_tool(nGripper);
            go_home\Armfirst;
@@ -248,7 +248,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         rToolchanger_Open;
         MoveL RelTool(pGripper,0,0,0-5),v50,fine,tool0;
         Check_Notool;
-        MoveL RelTool(pGripper,0,0,-70),v500,z200,tool0;
+        MoveL RelTool(pGripper,0,0,-70),v500,fine,tool0;
         rReset_Grijper_WZ;
         MoveL RelTool(pGripper,0,0,-500),v4000,z200,tool0;
         !

@@ -25,10 +25,10 @@ MODULE mDwarsbalk
     CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     !stations uitlijning
-    PERS robtarget pMeasurePos1Start:=[[-770.859,14.0374,50.1224],[0.00307183,-0.707994,0.706208,-0.00242505],[-1,0,-3,0],[800.105,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget pMeasurePos2Start:=[[792.961,14.0294,50.0748],[0.00307723,-0.708096,0.706105,-0.00242739],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS num off_Sensor1_Q1_In:= -770.945;
-    PERS num off_Sensor2_Q1_In:= 793.06;
+    PERS robtarget pMeasurePos1Start:=[[-767.642,14.0348,50.1192],[0.00308684,-0.708002,0.7062,-0.00242395],[-1,0,-3,0],[800.103,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos2Start:=[[788.437,14.0383,50.0944],[0.00308121,-0.708103,0.706098,-0.00242806],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS num off_Sensor1_Q1_In:= -767.642;
+    PERS num off_Sensor2_Q1_In:= 788.437;
     
     !jointagerts
     CONST jointtarget pHomeJoint_StationXboor11:=[[-171.694,-8.62571,38.3752,13.4122,-43.8158,68.7807],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -430,13 +430,13 @@ MODULE mDwarsbalk
         !rBoren_11mm_Dwarsbalk_331_Enkel 0,0,0,trackshift;
         !
         !offsets to negative 
-        wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation\Negeative);
+        !wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation\Negeative);
         rBoren_11mm_Dwarsbalk_331_Dubbel -1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Dubbel -1202.5,-27.5,0,trackshift;
         !
         !offsets back to center 
-        wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation);
+        !wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation);
         !
         rBoren_11mm_Dwarsbalk_331_Enkel -1150,20,0,trackshift;
         !
@@ -468,7 +468,7 @@ MODULE mDwarsbalk
      
         !
         !offsets to positive 
-        wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation\positive);
+        !wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation\positive);
         rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,-27.5,0,trackshift;

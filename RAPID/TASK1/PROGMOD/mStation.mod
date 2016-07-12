@@ -113,7 +113,7 @@ ENDPROC
       VAR speeddata Vsearchfast := [20,500,5000,1000]; !zoeksnelheid 
       VAR speeddata Vsearch := [2,500,5000,1000]; !zoeksnelheid 
       VAR num nSearchlength := 60; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
-      VAR num nSearchReturnlength := 3; !hoeveel mm weg bewegen voor slow search
+      VAR num nSearchReturnlength := 1; !hoeveel mm weg bewegen voor slow search
       CONST num nBeamlength := 2440; !de nominale lengte van een balk
       VAR num XoffsetPos1;
       VAR num XoffsetPos2;

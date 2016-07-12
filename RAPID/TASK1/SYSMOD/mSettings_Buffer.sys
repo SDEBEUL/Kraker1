@@ -396,12 +396,12 @@ FUNC bool bLichtbeamOK(num nBuffer)
     ! Description: kijk of safety (lichtscherm);
     ! voor een bepaalde buffer oke is.
     !***************************************   
-     VAR signalgi safetyGi;
-     VAR num SafetyBitLeft;
-     VAR num SafetyBitright;
-     safetyGi := giPLC_1;  
-     SafetyBitLeft := 1;
-     SafetyBitRight := 2;
+    ! VAR signalgi safetyGi;
+    ! VAR num SafetyBitLeft;
+    ! VAR num SafetyBitright;
+    ! safetyGi := giPLC_1;  
+    ! SafetyBitLeft := 1;
+    ! SafetyBitRight := 2;
     IF nbuffer <= 3 THEN 
       !buffers 1 tem 3 (in en uitvoer)
       

@@ -23,7 +23,7 @@ MODULE mBuffer
 
   !Robtargets  
 	CONST robtarget pBuffer_Onder_1:=[[30.3,0,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pBuffer_Onder_2:=[[34.3,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget pBuffer_Onder_2:=[[34.3,5,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_3:=[[33.5,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_4:=[[32.3,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_5:=[[33.6,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -167,9 +167,9 @@ MODULE mBuffer
         !stuk tegen aanslag en goed duwen 
           MoveL Offs(Pbuffer,10,0,0),v4000,fine,tGripper\WObj:=wobj_Active;
           rGripper_Open;
-          MoveL Offs(Pbuffer,10,-10,0),v4000,z50,tGripper\WObj:=wobj_Active;
-          MoveL Offs(Pbuffer,0,-10,0),v4000,z50,tGripper\WObj:=wobj_Active;
-          MoveL Pbuffer, v4000, fine, tGripper\WObj:=wobj_Active;
+          MoveL Offs(Pbuffer,10,-10,0),v800,z50,tGripper\WObj:=wobj_Active;
+          MoveL Offs(Pbuffer,0,-10,0),v800,z50,tGripper\WObj:=wobj_Active;
+          MoveL Pbuffer, v100, fine, tGripper\WObj:=wobj_Active;
           rGripper_CheckPart TRUE;
           rGripper_Close;
           rGripper_CheckPart TRUE \Supervision; 
@@ -448,7 +448,7 @@ lbl_nextpart:
           ELSE !stuk nog steeds niet aanwezig = volgende stuk of als laag 1 stuk 8 rek leeg 
               rDecrUitvoerbuffer(nBuffernum);
               TPWrite NumToStr(UitvoerBuffer{nBuffernum}.ActiefStuk,0) + " w " + NumToStr(UitvoerBuffer{nBuffernum}.Actievelaag,0);
-              IF UitvoerBuffer{nBuffernum}.leeg  THEN
+              IF UitvoerBuffer{nBuffernum}.ActiefStuk = 8 and UitvoerBuffer{nBuffernum}.Actievelaag = 5 THEN
                   rResetUitvoerbuffer nBuffernum;
                   UitvoerBuffer{nBuffernum}.veilig :=TRUE;
                   RETURN;
@@ -507,6 +507,13 @@ PROC Buffer_1_In(\switch Safecheck)
     MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer1;
     !
 ENDPROC
+
+PROC rTESTTEST()
+   Buffer_2_In \Safecheck; 
+    Stop;
+    
+ENDPROC 
+
 
 PROC Buffer_2_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer

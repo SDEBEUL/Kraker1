@@ -12,7 +12,7 @@ PROC Main()
      !Reset safestate on all buffers
      rResetBufferSafe;
      !Monitor for sombody entering one of the beams
-     rMonitorSafety;
+     !rMonitorSafety;
      !check part in gripper
      rGripper_CheckPart FALSE;
      !check home 
