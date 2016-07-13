@@ -508,13 +508,6 @@ PROC Buffer_1_In(\switch Safecheck)
     !
 ENDPROC
 
-PROC rTESTTEST()
-   Buffer_2_In \Safecheck; 
-    Stop;
-    
-ENDPROC 
-
-
 PROC Buffer_2_In(\switch Safecheck)
     ! Inleggen dwarsbalk bovenste buffer
     Shift_x:=0;
