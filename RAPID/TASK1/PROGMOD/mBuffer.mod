@@ -43,7 +43,7 @@ MODULE mBuffer
     CONST jointtarget pHomeJoint_Bu_5:=[[0,-20,0,0,0,0],[11604,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_Bu_6:=[[0,-20,0,0,0,0],[14500,9E+09,9E+09,9E+09,9E+09,9E+09]];
    
-    LOCAL pers num Shift_Track := 2895;
+    LOCAL pers num Shift_Track := 0;
     LOCAL pers num Shift_x := 0;
     LOCAL pers num Shift_y := 0;
     LOCAL pers num Shift_z := 0;

@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=2;
+    PERS num nActive_Gripper:=3;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;

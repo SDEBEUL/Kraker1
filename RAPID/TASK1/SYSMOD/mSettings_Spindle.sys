@@ -28,7 +28,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     PERS speeddata vBoren_11_190:=[2.5,500,5000,1000];
     PERS speeddata vBoren_aanzet:=[100,500,5000,1000];
     
-    PERS speeddata vFrezen:=[15,500,5000,1000]; 
+    PERS speeddata vFrezen:=[20,500,5000,1000]; 
     PERS speeddata vBorenMetFrees:=[4,500,5000,1000];
     PERS speeddata vFrees_aanzet:=[10,500,5000,1000];
 

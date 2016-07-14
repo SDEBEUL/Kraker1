@@ -68,7 +68,7 @@
       <PROP name="type" value="Output" />
       <PROP name="allowInAuto" value="No" />
       <PROP name="pressed" value="Toggle" />
-      <PROP name="target" value="doKP_5_Ventiel" />
+      <PROP name="target" value="doKP_1_Ventiel" />
     </DATA>
     <DATA id="Programmable Key_1">
       <PROP name="type" value="Output" />

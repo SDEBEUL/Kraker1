@@ -17,7 +17,7 @@ PROC rPutPartInStation(Num nStation, Wobjdata WobjStation)
     VAR bool rePos;
     rePos := FALSE;
     !
-    rSetSationClamps nStation, \open;
+    rSetSationClamps nStation, \open, \check;
     !
     wobj_Active:=WobjStation;
     trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjStation);
@@ -32,7 +32,7 @@ PROC rPutPartInStation(Num nStation, Wobjdata WobjStation)
     !
     MoveL reltool(pStation_x,-100,0,0),v800,fine,tGripper\WObj:=wobj_Active;
     rGripper_CheckPart FALSE;
-    rSetSationClamps nStation,\close;
+    rSetSationClamps nStation,\close, \check;
     MoveL reltool(pStation_x,-250,0,0),v4000,z200,tGripper\WObj:=wobj_Active;
     !
 lbl_measure:
@@ -43,7 +43,7 @@ lbl_measure:
           LoggProc "Offset",31,"hermeeting";
           rePos := TRUE;
           !
-          rSetSationClamps nStation, \open;
+          rSetSationClamps nStation, \open, \check;
           rGripper_Open;
           !
           wobj_Active:=WobjStation;
@@ -63,7 +63,7 @@ lbl_measure:
           !
           MoveL reltool(pStation_x,-100,-Station{nStation}.xOffset,0),v800,fine,tGripper\WObj:=wobj_Active;
           rGripper_CheckPart FALSE;
-          rSetSationClamps nStation,\close;
+          rSetSationClamps nStation,\close, \check;
           MoveL reltool(pStation_x,-250,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
           GOTO lbl_measure;
       ELSE
@@ -86,7 +86,7 @@ PROC rGetPartInStation(Num nStation, Wobjdata WobjStation)
     EOffsSet [trackshift,0,0,0,0,0];
     !
     rGripper_Open;
-    rSetSationClamps nStation, \open;
+    rSetSationClamps nStation, \open, \check;
     MoveJ reltool(pStation_x,-250,0,0),v4000,z50,tGripper\WObj:=wobj_Active;
     MoveL pStation_x, v800, fine, tGripper\WObj:=wobj_Active;
     !
@@ -96,7 +96,14 @@ PROC rGetPartInStation(Num nStation, Wobjdata WobjStation)
     !
     MoveL reltool(pStation_x,-250,0,50),v800,fine,tGripper\WObj:=wobj_Active;
     !
-    rSetSationClamps nStation, \close, \nWaittime :=0;
+    !dump the trash
+    MoveJ [[-155.14,583.66,139.06],[0.0234168,0.835344,-0.531305,0.139168],[-1,0,-3,0],[799.992,9E+09,9E+09,9E+09,9E+09,9E+09]], v800, z200, tGripper\WObj:=wobj_Active;
+    MoveJ [[264.65,761.95,161.76],[0.0375838,0.87971,-0.427259,0.205298],[-1,-1,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]], v800, z200, tGripper\WObj:=wobj_Active;
+    MoveL [[149.69,761.97,108.46],[0.0589028,0.919661,-0.332663,0.200224],[-1,0,-3,0],[799.985,9E+09,9E+09,9E+09,9E+09,9E+09]], v800, fine, tGripper\WObj:=wobj_Active;
+    WaitTime \InPos, 2;
+    MoveJ [[264.65,761.95,161.76],[0.0375838,0.87971,-0.427259,0.205298],[-1,-1,-3,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]], v800, z200, tGripper\WObj:=wobj_Active;
+    MoveJ [[265.23,761.98,-150.15],[0.151992,0.789291,-0.420285,0.421046],[0,-1,-2,0],[800,9E+09,9E+09,9E+09,9E+09,9E+09]], v800, z200, tGripper\WObj:=wobj_Active;
+    !do not close clamps !
     !
 ENDPROC
 
@@ -251,9 +258,9 @@ PROC rTestOffsets()
     wobjTemp :=  wobj_BalkStation1;
     !
     WHILE TRUE DO 
-        rSetSationClamps nStationTemp, \open;
+        rSetSationClamps nStationTemp, \open, \check;
         Stop;
-        rSetSationClamps nStationTemp, \close;
+        rSetSationClamps nStationTemp, \close, \check;
         Set_Gripper GrijperTool;
         rMeasureStationOffset nStationTemp, wobjTemp;
         Stop;    

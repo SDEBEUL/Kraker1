@@ -59,17 +59,31 @@ FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType)
     ! Description: kijk of een bepaalde buffer een bepaald stuktype wil
     !***************************************
    VAR PartType AantalPartsGewenst;
-   VAR PartType AantalPartsAanwezig; 
+   VAR PartType AantalPartsAanwezig;
+   VAR PartType AantalPartsBesteld;
    AantalPartsGewenst := UitvoerBuffer{nBuffer}.AantalPartsGewenst;
    AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
-   
-    IF (AantalPartsAanwezig.Balk330 < AantalPartsGewenst.Balk330) AND nPartType = part.Balk330 THEN
+   !tel hoeveel stukken er al geboekt zijn van een bepaald type 
+   FOR i FROM 1 TO 5 DO 
+       IF  Station{i}.inDienst AND (Station{i}.Opdracht <> part.Geen) THEN
+          TEST Station{i}.Opdracht
+            CASE part.Balk330:
+              Incr AantalPartsBesteld.Balk330;
+            CASE part.Balk331:
+              Incr AantalPartsBesteld.Balk331;
+           CASE part.Balk332:
+              Incr AantalPartsBesteld.Balk332;
+          endtest
+       ENDIF
+   ENDFOR 
+   !
+    IF ((AantalPartsAanwezig.Balk330 + AantalPartsBesteld.Balk330) < AantalPartsGewenst.Balk330) AND nPartType = part.Balk330 THEN
       RETURN TRUE;
     ENDIF
-    IF (AantalPartsAanwezig.Balk331 < AantalPartsGewenst.Balk331) AND nPartType = part.Balk331 THEN
+    IF ((AantalPartsAanwezig.Balk331 + AantalPartsBesteld.Balk331) < AantalPartsGewenst.Balk331) AND nPartType = part.Balk331 THEN
       RETURN TRUE;
     ENDIF
-    IF (AantalPartsAanwezig.Balk332 < AantalPartsGewenst.Balk332) AND nPartType = part.Balk332 THEN
+    IF ((AantalPartsAanwezig.Balk332 + AantalPartsBesteld.Balk332) < AantalPartsGewenst.Balk332) AND nPartType = part.Balk332 THEN
       RETURN TRUE;
     ENDIF     
    RETURN FALSE;

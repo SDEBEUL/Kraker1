@@ -82,7 +82,7 @@ MODULE L_support
   
   FUNC string sBooltoString(bool bBool)
      IF bBool THEN
-       return "TRUE"; 
+       return "TRUE "; 
      ELSE
        RETURN "FALSE";
      ENDIF
@@ -92,29 +92,29 @@ MODULE L_support
     VAR string sString;
      TEST nPartType
       CASE part.geen:
-         sString :=  "Geen";
+         sString :=  "Geen               ";
       CASE part.OnbewerkteBalk:
-         sString :=  "OnbewerkteBalk";
+         sString :=  "OnbewerkteBalk     ";
       CASE part.OnbewerkteOnderrand:
          sString :=  "OnbewerkteOnderrand";
       CASE part.OnbewerkteBovenrrand:
          sString :=  "OnbewerkteBovenrrand";
       CASE part.Balk330:
-         sString :=  "Balk330";
+         sString :=  "Balk330             ";
       CASE part.Balk331:
-         sString :=  "Balk331";
+         sString :=  "Balk331             ";
       CASE part.Balk332:
-         sString :=  "Balk332";
+         sString :=  "Balk332             ";
       CASE part.OnderrandLinks:
-         sString :=  "OnderrandLinks";
+         sString :=  "OnderrandLinks      ";
       CASE part.OnderrandRechts:
-         sString :=  "OnderrandRechts";
+         sString :=  "OnderrandRechts     ";
       CASE part.BovenrandLinks:
-         sString :=  "BovenrandLinks";
+         sString :=  "BovenrandLinks      ";
       CASE part.BovenrandRechts:
-         sString :=  "BovenrandRechts";
+         sString :=  "BovenrandRechts     ";
       CASE part.Inbewerking:
-         sString :=  "Inbewerking";
+         sString :=  "Inbewerking         ";
      ENDTEST
    RETURN sString;
   ENDFUNC

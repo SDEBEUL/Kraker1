@@ -158,6 +158,7 @@ PROC rUnloadStation(num nStation)
     ! Description: haal stuk uit een specfiek station
     !robot begint thuis en eindigd met stuk in wachtpos
     !***************************************
+    rSetSationClamps nStation, \Open, \nwaittime := 0;
     TEST nStation
       CASE 1:
        Station_1_Uit;
@@ -170,6 +171,7 @@ PROC rUnloadStation(num nStation)
       CASE 5:
        Station_5_Uit;   
     ENDTEST
+    rSetSationClamps nStation, \Close, \nwaittime := 0;
     !
 ENDPROC
 
@@ -179,6 +181,7 @@ PROC rLoadStation(num nStation)
     ! Description: laad een station
     !robot begint in wachtpos met stuk en eindigd ...
     !***************************************
+    rSetSationClamps nStation, \open, \nwaittime := 0;
     TEST nStation
       CASE 1:
        Station_1_In;
@@ -425,9 +428,6 @@ PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime\sw
     ! Description: open of sluit klemmen 
     !***************************************
     VAR num nState;
-    VAR num nBitOpen;
-    VAR num nBitClose;
-    VAR num checkbit;
     VAR bool timeout;
  lbl_retry:
     IF Present(close) THEN
@@ -442,38 +442,44 @@ PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime\sw
     TEST nStation
           CASE 1:
               SetDO doKP_1_Ventiel,nState;
-              nBitOpen := 23;
-              nBitClose := 24;
           CASE 2:
               SetDO doKP_2_Ventiel,nState;
-              nBitOpen := 25;
-              nBitClose := 26;
           CASE 3:
               SetDO doKP_3_Ventiel,nState;
-              nBitOpen := 27;
-              nBitClose := 28;
           CASE 4:
               SetDO doKP_4_Ventiel,nState;
-              nBitOpen := 29;
-              nBitClose := 30;
           CASE 5:
               SetDO doKP_5_Ventiel,nState;
-              nBitOpen := 31;
-              nBitClose := 32;
     ENDTEST   
-    IF Present(nWaittime) THEN
-      WaitTime nWaittime;
-    ELSE
-      WaitTime 3;
-    ENDIF
     
+    IF NOT Present(Check) THEN 
+        IF Present(nWaittime) THEN
+          WaitTime nWaittime;
+        ELSE
+          WaitTime 3;
+        ENDIF
+    ENDIF 
     !need to test and verify the bits 
     IF Present(Check) THEN
-       IF Present(open) THEN checkbit := nBitOpen; ENDIF
-       IF Present(close) THEN checkbit := nBitClose; ENDIF
-       CheckGroupbit giPLC_1,checkbit,true,  \CheckTimeOut:=3,"Station: " + NumToStr(nStation,0) + " not in expected state";
+       rCheckStationClamps nStation, nState;
     ENDIF 
     !
+ENDPROC
+
+PROC rCheckStationClamps(num nStation,num nState)
+    VAR signaldi alias_di;
+    VAR string sAlias;
+    FOR i FROM 1 TO 4 DO 
+       IF nState = 1 THEN
+         sAlias := "diKP_" + numtostr(nStation,0) + "_" + numtostr(i,0) + "Open";   
+       ELSE 
+         sAlias := "diKP_" + numtostr(nStation,0) + "_" + numtostr(i,0) + "Close";     
+       ENDIF
+
+       AliasIO sAlias, alias_di;
+       CheckInput alias_di,1, \CheckTimeOut:=3,"Station:"+NumToStr(nStation,0) + " Klem:"+NumToStr(i,0) + " NOK " + sAlias + " <> " + NumToStr(nState,0);
+    ENDFOR
+    
 ENDPROC
 
  FUNC num nStationOffset(num nStation\switch Positive \switch Negeative)
