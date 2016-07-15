@@ -188,74 +188,6 @@ MODULE mDwarsbalk
   !===============================================================================================================
   !frezen bewerking
   !===============================================================================================================
-     PROC OrFrezen_Gat_45mm_Dwarsbalk_330(
-        num nShift_x,
-        num nShift_y,
-        num nShift_z,
-        num Shift_Track)
-        !
-        PDispOff;
-        Shift_Track:=nShift_x;
-        !
-        EOffsSet [Shift_Track,0,0,0,0,0];
-        wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
-        !
-        MoveJ RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !MoveL pGatCenter_330,v50,fine,tFrees_10\WObj:=wobj_Active;
-        !
-        rStart_Spindle;
-        !
-        MoveL Offs(pGatCenter_330,18.65,10,0),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,18.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
-        !in stuk (stuk doorboren)
-        MoveL Offs(pGatCenter_330,18.65,-10,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
-        !gat frezen
-        MoveC Offs(pGatCenter_330,0,-10,18.65),Offs(pGatCenter_330,-18.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveC Offs(pGatCenter_330,0,-10,-18.65),Offs(pGatCenter_330,18.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,18.65,10,0),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
-        !weg van stuk 
-        MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_10\WObj:=wobj_Active;
-        !		
-        rStop_Spindle;
-        !
-        MoveL RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !		   
-    ENDPROC
-
-    PROC OFrezen_Gat_35mm_Dwarsbalk_330(
-        num nShift_x,
-        num nShift_y,
-        num nShift_z,
-        num Shift_Track)
-        !
-        PDispOff;
-        Shift_Track:=nShift_x;
-        !
-        EOffsSet [Shift_Track,0,0,0,0,0];
-        wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
-        !
-        MoveJ RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !MoveL pGatCenter_330,v50,fine,tFrees_10\WObj:=wobj_Active;
-        !
-        rStart_Spindle;
-        !
-        MoveL Offs(pGatCenter_330,13.65,10,0),v200,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,13.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
-        !in stuk (stuk doorboren)
-        MoveL Offs(pGatCenter_330,13.65,-10,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
-        !gat frezen
-        MoveC Offs(pGatCenter_330,0,-10,13.65),Offs(pGatCenter_330,-13.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveC Offs(pGatCenter_330,0,-10,-13.65),Offs(pGatCenter_330,13.65,-10,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,13.65,10,0),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
-        !weg van stuk 
-        MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_10\WObj:=wobj_Active;
-        !		
-        !rStop_Spindle;
-        !
-        MoveL RelTool(pGatCenter_330,0,0,-200),v200,fine,tFrees_10\WObj:=wobj_Active;
-        !	
-    ENDPROC
-
      PROC rFrezen_Gat_45mm_Dwarsbalk_330(
         num nShift_x,
         num nShift_y,
@@ -265,6 +197,7 @@ MODULE mDwarsbalk
         VAR num nMillDepth := -10;
         VAR num nRadius := 18.65;
         VAR num nPrecut := 0.2;
+        VAR num nCurrStep;
         !
         PDispOff;
         !
@@ -280,7 +213,7 @@ MODULE mDwarsbalk
         MoveL Offs(pGatCenter_330,18.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
         !voorbewerken
         FOR nCurrStep FROM -2 TO nMillDepth STEP nStep DO  
-            IF nCurrstep = nMillDepth THEN nPrecut := 0; ENDIF
+         IF nCurrstep >= nMillDepth THEN nPrecut := 0; ENDIF
             !in stuk (stuk doorboren)
             MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
             !gat frezen
@@ -305,6 +238,7 @@ MODULE mDwarsbalk
         VAR num nMillDepth := -10;
         VAR num nRadius := 13.65;
         VAR num nPrecut := 0.2;
+        VAR num nCurrStep;
         !
         PDispOff;
         !
@@ -321,7 +255,7 @@ MODULE mDwarsbalk
         
         !voorbewerken
         FOR nCurrStep FROM -2 TO nMillDepth STEP nStep DO  
-            IF nCurrstep = nMillDepth THEN nPrecut := 0; ENDIF
+         IF nCurrstep >= nMillDepth THEN nPrecut := 0; ENDIF
             !in stuk (stuk doorboren)
             MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
             !gat frezen
