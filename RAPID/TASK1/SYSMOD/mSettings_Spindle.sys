@@ -7,7 +7,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
-    local PERS bool  bActiveTool{6} := [FALSE,TRUE,FALSE,FALSE,FALSE,FALSE];
+    local PERS bool  bActiveTool{6} := [TRUE,FALSE,FALSE,FALSE,FALSE,FALSE];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-114.954,-13.8901,3.19333,84.0191,-65.7533,-33.8858],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
@@ -25,12 +25,12 @@ MODULE mSettings_Spindle(SYSMODULE)
     TASK PERS tooldata tFrees_10:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
 
     !Speedata
-    PERS speeddata vBoren_11_190:=[2.5,500,5000,1000];
+    PERS speeddata vBoren_11_190:=[4,500,5000,1000];
     PERS speeddata vBoren_aanzet:=[100,500,5000,1000];
     
-    PERS speeddata vFrezen:=[20,500,5000,1000]; 
+    PERS speeddata vFrezen:=[15,500,5000,1000]; 
     PERS speeddata vBorenMetFrees:=[4,500,5000,1000];
-    PERS speeddata vFrees_aanzet:=[10,500,5000,1000];
+    PERS speeddata vFrees_aanzet:=[80,500,5000,1000];
 
     
     
@@ -160,7 +160,8 @@ MODULE mSettings_Spindle(SYSMODULE)
           MoveAbsJ fArm_only(pHomeJoint_spindel)\NoEOffs, v4000, z50, tSpindle;
           MoveAbsJ pHomeJoint_spindel\NoEOffs, v4000, z50, tSpindle;
           IF NOT nActieve_Tool = 0 THEN
-           rDetach_tool nActieve_Tool;
+            rStop_Spindle;
+            rDetach_tool nActieve_Tool;
           ENDIF
           IF NOT nTool = 0 THEN 
            rAttach__tool nTool;
@@ -225,14 +226,14 @@ MODULE mSettings_Spindle(SYSMODULE)
         VAR robtarget Magpos;
         Magpos := fToolMagpos(Toolnum);
         !
-            MoveJ Offs(Magpos,0,0,200),v800,fine,tSpindle\WObj:=wobj_Magazijn;
-            MoveL Offs(Magpos,0,0,20),v100,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveJ Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,20),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Offs(Magpos,0,0,2),v50,fine,tSpindle\WObj:=wobj_Magazijn;
             rSpindle_Unlock;
             bActiveTool{Toolnum} :=FALSE;
-            MoveL Offs(Magpos,0,0,100),v50,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,100),v200,fine,tSpindle\WObj:=wobj_Magazijn;
             Reset doSpindle_Air_On;
-            MoveL Offs(Magpos,0,0,200),v800,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
         !     
     ENDPROC 
     
@@ -244,14 +245,14 @@ MODULE mSettings_Spindle(SYSMODULE)
         VAR robtarget Magpos;
         Magpos := fToolMagpos(Toolnum);
         !
-            MoveJ Offs(Magpos,0,0,200),v800,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveJ Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
             rSpindle_Unlock;
-            MoveL Offs(Magpos,0,0,100),v100,z0,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,100),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Magpos,v50,fine,tSpindle\WObj:=wobj_Magazijn;
             rSpindle_Lock;
             bActiveTool{Toolnum} :=TRUE;
-            MoveL Offs(Magpos,0,0,100),v50,fine,tSpindle\WObj:=wobj_Magazijn;
-            MoveL Offs(Magpos,0,0,200),v800,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,100),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
         !     
     ENDPROC
 

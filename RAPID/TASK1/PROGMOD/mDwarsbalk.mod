@@ -31,7 +31,7 @@ MODULE mDwarsbalk
     PERS num off_Sensor2_Q1_In:= 788.437;
     
     !jointagerts
-    CONST jointtarget pHomeJoint_StationXboor11:=[[-171.694,-8.62571,38.3752,13.4122,-43.8158,68.7807],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_StationXboor11:=[[-171.697,20.7673,73.6379,9.40827,-78.4414,76.6744],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_StationXFrees11:=[[-45.5974,-8.45157,22.3078,92.4167,-96.0155,-67.1399],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_Station5boor11:=[[-6.50445,-9.81998,33.3839,-11.7819,-34.0027,-58.9608],[12590.8,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST jointtarget pHomeJoint_Station5Frees11:=[[-45.5974,-8.45157,22.3078,92.4167,-96.0155,-67.1399],[12300,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -51,7 +51,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_330,0,0,-200),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_330,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_330,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_330,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -59,7 +59,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_330,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
-        MoveL RelTool(pGat11_330,0,0,-200),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_330,0,0,-100), v2000, z50, boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -74,7 +74,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_330,0,0,-200),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_330,0,0,-100),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_330,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_330,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -84,7 +84,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_330,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
-        MoveL RelTool(pGat11_330,0,0,-200),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_330,0,0,-100),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -99,7 +99,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_331,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_331,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_331,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -107,7 +107,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
-        MoveL RelTool(pGat11_331,0,0,-150),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_331,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
     
@@ -123,7 +123,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_331,0,0,-150),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_331,0,0,-100),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_331,0,0,-5),v2000,z5,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -133,7 +133,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_331,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
-        MoveL RelTool(pGat11_330,0,0,-150),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_330,0,0,-100),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -148,7 +148,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_332,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_332,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_332,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_332,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -156,7 +156,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_332,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         rStop_Spindle;
-        MoveL RelTool(pGat11_332,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -171,7 +171,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_332,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_332,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_332,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_332,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -181,7 +181,7 @@ MODULE mDwarsbalk
         MoveL RelTool(pGat11_332,0,0,-30),vBoren_aanzet,z5,boor_11mm_L190\WObj:=wobj_Active;
         !		
         rStop_Spindle;
-        MoveL RelTool(pGat11_332,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_332,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
     
@@ -425,8 +425,6 @@ MODULE mDwarsbalk
         !
         rBoren_11mm_Dwarsbalk_330_Dubbel 1202.5,-27.5,0,trackshift;
         !
-        rStop_Spindle;
-        !
         EOffsSet [trackshift+2000,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v4000,z50,tool0; 
         !
@@ -490,8 +488,6 @@ MODULE mDwarsbalk
         rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,27.5,0,trackshift;
         !
         rBoren_11mm_Dwarsbalk_331_Dubbel 1202.5,-27.5,0,trackshift;
-        !
-        rStop_Spindle;
         !
         EOffsSet [trackshift+2000,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXboor11,v4000,z50,tool0; 
@@ -575,8 +571,6 @@ MODULE mDwarsbalk
         rFrezen_Gat_35mm_Dwarsbalk_330 224,0,0,trackshift;
         !
         rFrezen_Gat_45mm_Dwarsbalk_330 665,0,0,trackshift;
-        !
-        rStop_Spindle;
         !
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXFrees11,v4000,z50,tool0; 

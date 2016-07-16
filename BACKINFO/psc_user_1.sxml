@@ -1,5 +1,40 @@
-<?xml version="1.0"?>
-<Seal CheckSum="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" CheckSumReadBack="255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255">
-  <SafetyControllerUserData>
+<Seal CheckSum="90 184 228 134 40 244 46 156 156 241 185 6 244 227 169 126" CheckSumReadBack="11 108 161 248 131 90 193 33 204 123 197 2 105 116 179 204">
+  <SafetyControllerUserData PSC_Type="Basic" PSC_HWVersion="1.0.0" PSC_ConfigVersion="1.1.0" Date="2016-07-16  14:33:02" ControllerID="" UserID="EPS" Pin="862204">
+    <Mechanical_Unit>
+      <Robot Name="ROB_1" NoOfAxis="6">
+        <Robot_Serial_Number Robot_Serial_Number_High_Part="66  " Robot_Serial_Number_Low_Part="60711" />
+      </Robot>
+      <Single Name="M7DM1">
+        <Joint JointID="7" Logical_Axis="7" Servo_Lag="10.1" Servo_Delay="2" Comm_Offset="1.5708">
+          <Measurement_Channel Measurement_Board_Type="DSQC313" Measurement_Node="7" Board_Position="1" />
+          <Transmission Transm_Joint="294.57" Rotating_Move="false" />
+        </Joint>
+      </Single>
+    </Mechanical_Unit>
+    <Monitoring>
+      <JointRange_Monitor>
+        <MValueSet ValueSetID="1" Output_ID="1" AllowInside="true">
+          <MJointRange JointID="1" LowerLimit="12" UpperLimit="180" AllowInside="true" />
+          <MJointRange JointID="7" LowerLimit="-100" UpperLimit="5594" AllowInside="true" />
+        </MValueSet>
+        <MValueSet ValueSetID="2" Output_ID="2" AllowInside="true">
+          <MJointRange JointID="1" LowerLimit="-180" UpperLimit="12" AllowInside="true" />
+          <MJointRange JointID="7" LowerLimit="7682" UpperLimit="14515" AllowInside="true" />
+        </MValueSet>
+        <MValueSet ValueSetID="3" Output_ID="0" AllowInside="true" />
+        <MValueSet ValueSetID="4" Output_ID="0" AllowInside="true" />
+        <MValueSet ValueSetID="5" Output_ID="0" AllowInside="true" />
+      </JointRange_Monitor>
+    </Monitoring>
+    <OSR_Definition />
+    <SyncCheck Cycle="0" WarningOnly="false" DualChannel="false" SwSynchronize="true">
+      <SyncPosition JointID="1" JointValue="0" />
+      <SyncPosition JointID="2" JointValue="0" />
+      <SyncPosition JointID="3" JointValue="0" />
+      <SyncPosition JointID="4" JointValue="0" />
+      <SyncPosition JointID="5" JointValue="0" />
+      <SyncPosition JointID="6" JointValue="0" />
+      <SyncPosition JointID="7" JointValue="0" />
+    </SyncCheck>
   </SafetyControllerUserData>
 </Seal>

@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=3;
+    PERS num nActive_Gripper:=2;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;
@@ -385,12 +385,12 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Connected in rGripper_CheckPart
     !***************************************	    
    VAR btnres nAnswer;
-   ISleep Int1SprvSpindel;
+   ISleep Int2SprvPart;
    StopMove;
    StorePath;
-   nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);
+   nAnswer := UIMessageBox(\Header:="Grijperfout"\MsgArray:=["stuk onverwachts uit grijper","controleer de positie van het stuk in de grijper"],\BtnArray:=["","","","","Reset"]);
    RestoPath;
-   IWatch Int1SprvSpindel;
+   IWatch Int2SprvPart;
    StartMove;
    rWait_Spindel;
   ENDTRAP

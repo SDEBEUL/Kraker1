@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<SafetyControllerUserData PSC_Type="Basic" PSC_HWVersion="1.0.0" PSC_ConfigVersion="1.1.0" Date="2016-07-16  14:05:15" ControllerID="" UserID="EPS" Pin="0">
+  <Mechanical_Unit>
+    <Robot Name="ROB_1" NoOfAxis="6" IndependentAxis="None">
+      <Robot_Serial_Number Robot_Serial_Number_High_Part="66  " Robot_Serial_Number_Low_Part="60711" />
+      <Joint_Limits>
+        <Joint_Limit JointID="1" Upper_Bound="3.14159" Lower_Bound="-3.14159" />
+        <Joint_Limit JointID="2" Upper_Bound="1.48353" Lower_Bound="-0.733039" />
+        <Joint_Limit JointID="3" Upper_Bound="2.10312" Lower_Bound="-0.349066" />
+        <Joint_Limit JointID="4" Upper_Bound="5.23599" Lower_Bound="-5.23599" />
+        <Joint_Limit JointID="5" Upper_Bound="2.0944" Lower_Bound="-2.0944" />
+        <Joint_Limit JointID="6" Upper_Bound="6.28319" Lower_Bound="-6.28319" />
+      </Joint_Limits>
+    </Robot>
+    <Single Name="M7DM1" Type="TRACK" NoOfAxis="1" IndependentAxis="None">
+      <Joint JointID="7" Logical_Axis="7" Servo_Lag="10.1" Servo_Delay="2" Comm_Offset="1.5708">
+        <Measurement_Channel Measurement_Board_Type="DSQC313" Measurement_Node="7" Measurement_Link="1" Board_Position="1" />
+        <Transmission Transm_Joint="294.57" Rotating_Move="false" />
+      </Joint>
+      <Joint_Limits>
+        <Joint_Limit JointID="7" Upper_Bound="14515" Lower_Bound="-100" />
+      </Joint_Limits>
+    </Single>
+  </Mechanical_Unit>
+  <Monitoring>
+    <JointRange_Monitor>
+      <MValueSet ValueSetID="1" Output_ID="1" AllowInside="true">
+        <MJointRange JointID="1" LowerLimit="12" UpperLimit="180" AllowInside="true" />
+        <MJointRange JointID="7" LowerLimit="-100" UpperLimit="5594" AllowInside="true" />
+      </MValueSet>
+      <MValueSet ValueSetID="2" Output_ID="2" AllowInside="true">
+        <MJointRange JointID="1" LowerLimit="-180" UpperLimit="12" AllowInside="true" />
+        <MJointRange JointID="7" LowerLimit="7682" UpperLimit="14515" AllowInside="true" />
+      </MValueSet>
+      <MValueSet ValueSetID="3" Output_ID="0" AllowInside="true" />
+      <MValueSet ValueSetID="4" Output_ID="0" AllowInside="true" />
+      <MValueSet ValueSetID="5" Output_ID="0" AllowInside="true" />
+    </JointRange_Monitor>
+  </Monitoring>
+  <OSR_Definition />
+  <SyncCheck Cycle="0" WarningOnly="false" DualChannel="false" SwSynchronize="true">
+    <SyncPosition JointID="1" JointValue="0" />
+    <SyncPosition JointID="2" JointValue="0" />
+    <SyncPosition JointID="3" JointValue="0" />
+    <SyncPosition JointID="4" JointValue="0" />
+    <SyncPosition JointID="5" JointValue="0" />
+    <SyncPosition JointID="6" JointValue="0" />
+    <SyncPosition JointID="7" JointValue="0" />
+  </SyncCheck>
+</SafetyControllerUserData>

@@ -53,7 +53,7 @@ PROC Getnextpart()
     !
 ENDPROC
 
-FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType)
+FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType,\switch IgnoreStations )
     !***************************************	    
     ! Func: bUitvoerbufferPartNeeded
     ! Description: kijk of een bepaalde buffer een bepaald stuktype wil
@@ -64,18 +64,20 @@ FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType)
    AantalPartsGewenst := UitvoerBuffer{nBuffer}.AantalPartsGewenst;
    AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
    !tel hoeveel stukken er al geboekt zijn van een bepaald type 
-   FOR i FROM 1 TO 5 DO 
-       IF  Station{i}.inDienst AND (Station{i}.Opdracht <> part.Geen) THEN
-          TEST Station{i}.Opdracht
-            CASE part.Balk330:
-              Incr AantalPartsBesteld.Balk330;
-            CASE part.Balk331:
-              Incr AantalPartsBesteld.Balk331;
-           CASE part.Balk332:
-              Incr AantalPartsBesteld.Balk332;
-          endtest
-       ENDIF
-   ENDFOR 
+   IF NOT present(IgnoreStations) THEN
+       FOR i FROM 1 TO 5 DO 
+           IF  Station{i}.inDienst AND (Station{i}.Opdracht <> part.Geen) THEN
+              TEST Station{i}.Opdracht
+                CASE part.Balk330:
+                  Incr AantalPartsBesteld.Balk330;
+                CASE part.Balk331:
+                  Incr AantalPartsBesteld.Balk331;
+               CASE part.Balk332:
+                  Incr AantalPartsBesteld.Balk332;
+              endtest
+           ENDIF
+       ENDFOR 
+   ENDIF
    !
     IF ((AantalPartsAanwezig.Balk330 + AantalPartsBesteld.Balk330) < AantalPartsGewenst.Balk330) AND nPartType = part.Balk330 THEN
       RETURN TRUE;
@@ -105,7 +107,7 @@ FUNC num nGetUitvoerbuffer(Num nPartType)
         !niet uit dienst of niet vol
        IF UitvoerBuffer{i}.indienst AND UitvoerBuffer{i}.vol = false AND bLichtbeamOK(i) = TRUE THEN
            !kijk of het rek nog een stuk van dit type wil 
-           IF bUitvoerbufferPartNeeded(i,nPartType) THEN
+           IF bUitvoerbufferPartNeeded(i,nPartType\IgnoreStations) THEN
                nBuffernummer := i;
                nLastUitvoerbuffer := nBuffernummer; !for UI
                RETURN i;

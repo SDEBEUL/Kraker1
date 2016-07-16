@@ -8,7 +8,7 @@ ENDPROC
   
    PROC rInterFaceHome()
         VAR btnres nAnswer;
-        nAnswer:=UIMessageBox(\Header:="Karker Trailers **K-FORCE**"
+        nAnswer:=UIMessageBox(\Header:="Kraker Trailers **K-FORCE**"
         \MsgArray:=["InterfaceHome",
             "OnderRanden => Instelling productie onderranden  Productie="+ sBooltoString(Production.Onderanden),
             "DwarsBalken => Instelling productie dwarsbalken  Productie="+ sBooltoString(Production.Dwarsbalken),

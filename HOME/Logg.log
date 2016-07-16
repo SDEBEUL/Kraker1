@@ -110,4 +110,83 @@
 2016-07-13, 11:10:59, Offset ,Code , 31 ,Info , off:1 x=0.99 n=1.39 p=0.59 P1=-769.03 P2=787.85 
 2016-07-13, 11:11:47, Offset ,Code , 31 ,Info , off:2 x=0.97 n=1.57 p=0.37 P1=-769.21 P2=788.07 
 2016-07-13, 11:12:40, Offset ,Code , 31 ,Info , off:3 x=2.90 n=3.42 p=2.38 P1=-771.07 P2=786.05 
-2016-07-13, 11:13:39, Offset ,Code , 31 ,Info , off:4 x=1.24 n=1.41 p=1.07 P1=-769.06 P2=787.37
+2016-07-13, 11:13:39, Offset ,Code , 31 ,Info , off:4 x=1.24 n=1.41 p=1.07 P1=-769.06 P2=787.37 
+2016-07-15, 08:32:05, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 09:07:51, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 09:29:42, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 09:29:57, mStations ,Code , 10 ,Info , Sation:6 StartBoren Type:8 
+2016-07-15, 09:37:31, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 09:37:50, mStations ,Code , 10 ,Info , Sation:6 StartBoren Type:8 
+2016-07-15, 09:41:22, mStations ,Code , 11 ,Info , Sation:6 EindBoren Type:8 
+2016-07-15, 09:41:22, mStations ,Code , 12 ,Info , Sation:6 StartFrezen Type:8 
+2016-07-15, 10:30:57, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 10:30:57, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4 
+2016-07-15, 10:36:25, mStations ,Code , 15 ,Info , Sation:1 EindeBoren Type:4 
+2016-07-15, 10:36:25, mStations ,Code , 14 ,Info , Sation:2 StartBoren Type:4 
+2016-07-15, 10:41:22, mStations ,Code , 15 ,Info , Sation:2 EindeBoren Type:4 
+2016-07-15, 10:41:22, mStations ,Code , 14 ,Info , Sation:3 StartBoren Type:4 
+2016-07-15, 10:46:17, mStations ,Code , 15 ,Info , Sation:3 EindeBoren Type:4 
+2016-07-15, 10:46:17, mStations ,Code , 14 ,Info , Sation:4 StartBoren Type:4 
+2016-07-15, 10:51:14, mStations ,Code , 15 ,Info , Sation:4 EindeBoren Type:4 
+2016-07-15, 10:51:14, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:4 
+2016-07-15, 10:56:32, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:4 
+2016-07-15, 10:56:32, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:4 
+2016-07-15, 11:01:40, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:4 
+2016-07-15, 11:01:40, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:4 
+2016-07-15, 11:06:49, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:4 
+2016-07-15, 11:06:49, mStations ,Code , 16 ,Info , Sation:4 StartFrezen Type:4 
+2016-07-15, 11:11:53, mStations ,Code , 17 ,Info , Sation:4 EindeFrezen Type:4 
+2016-07-15, 11:11:54, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:4 
+2016-07-15, 11:14:33, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:4 
+2016-07-15, 11:14:33, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:4 
+2016-07-15, 11:19:05, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 11:26:50, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 11:30:12, Offset ,Code , 31 ,Info , off:1 x=3.75 n=4.89 p=2.61 P1=-772.53 P2=785.82 
+2016-07-15, 11:31:20, Offset ,Code , 31 ,Info , off:2 x=2.99 n=2.96 p=3.01 P1=-770.60 P2=785.43 
+2016-07-15, 11:32:29, mBuffer ,Code , 8 ,Info , Buffer:2 leeg (rDecr) 
+2016-07-15, 11:33:17, Offset ,Code , 31 ,Info , off:3 x=2.98 n=3.07 p=2.89 P1=-770.71 P2=785.54 
+2016-07-15, 11:35:27, Offset ,Code , 31 ,Info , off:4 x=-0.13 n=0.91 p=-1.17 P1=-768.55 P2=789.61 
+2016-07-15, 11:35:28, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4 
+2016-07-15, 11:40:50, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 11:40:58, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4 
+2016-07-15, 11:43:30, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 11:43:43, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4 
+2016-07-15, 11:50:50, mStations ,Code , 15 ,Info , Sation:1 EindeBoren Type:4 
+2016-07-15, 11:50:50, mStations ,Code , 14 ,Info , Sation:2 StartBoren Type:5 
+2016-07-15, 11:54:15, mStations ,Code , 15 ,Info , Sation:2 EindeBoren Type:5 
+2016-07-15, 11:54:15, mStations ,Code , 14 ,Info , Sation:3 StartBoren Type:5 
+2016-07-15, 11:57:18, mStations ,Code , 15 ,Info , Sation:3 EindeBoren Type:5 
+2016-07-15, 11:57:18, mStations ,Code , 14 ,Info , Sation:4 StartBoren Type:5 
+2016-07-15, 12:00:51, mStations ,Code , 15 ,Info , Sation:4 EindeBoren Type:5 
+2016-07-15, 12:00:51, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:4 
+2016-07-15, 12:06:51, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:4 
+2016-07-15, 12:14:48, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 12:19:33, mBuffer ,Code , 5 ,Info , Buffer:2 Vol (target) 
+2016-07-15, 12:21:39, Offset ,Code , 31 ,Info , off:1 x=0.38 n=0.89 p=-0.14 P1=-768.53 P2=788.57 
+2016-07-15, 12:23:44, Offset ,Code , 31 ,Info , off:2 x=0.79 n=1.04 p=0.53 P1=-768.68 P2=787.90 
+2016-07-15, 12:24:47, Offset ,Code , 31 ,Info , off:3 x=1.00 n=1.17 p=0.83 P1=-768.81 P2=787.61 
+2016-07-15, 12:25:39, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 12:28:26, Offset ,Code , 31 ,Info , off:4 x=0.90 n=0.97 p=0.83 P1=-768.62 P2=787.61 
+2016-07-15, 12:29:08, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4 
+2016-07-15, 12:33:26, mStations ,Code , 15 ,Info , Sation:1 EindeBoren Type:4 
+2016-07-15, 12:33:26, mStations ,Code , 14 ,Info , Sation:2 StartBoren Type:4 
+2016-07-15, 12:36:46, mStations ,Code , 15 ,Info , Sation:2 EindeBoren Type:4 
+2016-07-15, 12:36:46, mStations ,Code , 14 ,Info , Sation:3 StartBoren Type:4 
+2016-07-15, 12:40:07, mStations ,Code , 15 ,Info , Sation:3 EindeBoren Type:4 
+2016-07-15, 12:40:07, mStations ,Code , 14 ,Info , Sation:4 StartBoren Type:4 
+2016-07-15, 12:43:27, mStations ,Code , 15 ,Info , Sation:4 EindeBoren Type:4 
+2016-07-15, 12:43:27, mStations ,Code , 16 ,Info , Sation:1 StartFrezen Type:4 
+2016-07-15, 12:50:00, mStations ,Code , 17 ,Info , Sation:1 EindeFrezen Type:4 
+2016-07-15, 12:50:00, mStations ,Code , 16 ,Info , Sation:2 StartFrezen Type:4 
+2016-07-15, 12:57:48, mStations ,Code , 17 ,Info , Sation:2 EindeFrezen Type:4 
+2016-07-15, 12:57:48, mStations ,Code , 16 ,Info , Sation:3 StartFrezen Type:4 
+2016-07-15, 13:06:02, mStations ,Code , 17 ,Info , Sation:3 EindeFrezen Type:4 
+2016-07-15, 13:06:02, mStations ,Code , 16 ,Info , Sation:4 StartFrezen Type:4 
+2016-07-15, 13:11:57, mStations ,Code , 17 ,Info , Sation:4 EindeFrezen Type:4 
+2016-07-15, 13:19:38, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 13:29:00, Main ,Code , 18 ,Info , PP to main 
+2016-07-15, 13:32:14, Offset ,Code , 31 ,Info , off:1 x=1.83 n=2.81 p=0.84 P1=-770.45 P2=787.60 
+2016-07-15, 13:33:12, Offset ,Code , 31 ,Info , off:2 x=1.69 n=3.04 p=0.34 P1=-770.68 P2=788.10 
+2016-07-15, 13:34:14, Offset ,Code , 31 ,Info , off:3 x=2.67 n=3.06 p=2.28 P1=-770.71 P2=786.16 
+2016-07-15, 13:35:29, Offset ,Code , 31 ,Info , off:4 x=0.48 n=0.35 p=0.61 P1=-767.99 P2=787.83 
+2016-07-15, 13:35:30, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4

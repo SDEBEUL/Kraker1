@@ -2,41 +2,38 @@
 <!--Comments: Settings for the FlexPendant.-->
 <FP>
   <USER name="">
-    <DATA id="IO View">
-      <PROP name="Configurations file" value="/hd0a/Kraker_Freesrobot/INTERNAL/FPConfigurations.xml" />
-      <PROP name="Signal view layout" value="Default" />
-    </DATA>
-    <DATA id="ViewInAuto">
-      <PROP name="text" value="PARAM_TXT_VIEWINAUTO" />
-      <PROP name="dll" value="TpsViewProductionWnd.dll" />
-      <PROP name="type" value="ABB.Robotics.Tps.Production.TpsViewProductionWnd" />
-    </DATA>
-    <DATA id="CtrlPnl Configuration">
-      <PROP name="LASTPATH" value="/hd0a/Kraker_Freesrobot/HOME/" />
-    </DATA>
-    <DATA id="UserSettings">
-      <PROP name="RapidEditorFontIndex" value="5" />
-    </DATA>
-    <DATA id="UASViewLevel">
-      <PROP name="text" value="PARAM_TXT_UASVIEWLEVEL" />
-      <PROP name="level" value="Msg" />
-      <PROP name="type" value="" />
-    </DATA>
-    <DATA id="Programmable Key_3">
-      <PROP name="type" value="None" />
-      <PROP name="allowInAuto" value="No" />
-      <PROP name="pressed" value="" />
-      <PROP name="target" value="" />
+    <DATA id="Joystick Values">
+      <PROP name="Pos" value="10,20,40,60,90,120,178,275,412,587,801,1055,1347,1678,2048" />
+      <PROP name="Neg" value="-10,-20,-40,-60,-90,-120,-178,-275,-412,-587,-801,-1055,-1347,-1678,-2048" />
     </DATA>
     <DATA id="ViewInManual">
       <PROP name="text" value="PARAM_TXT_VIEWINMANUAL" />
       <PROP name="dll" value="" />
       <PROP name="type" value="" />
     </DATA>
+    <DATA id="CtrlPnl Configuration">
+      <PROP name="LASTPATH" value="/hd0a/Kraker_Freesrobot/HOME/" />
+    </DATA>
     <DATA id="DefaultPath">
       <PROP name="BackupRestore" value="" />
       <PROP name="Configuration" value="" />
       <PROP name="RapidModules" value="" />
+    </DATA>
+    <DATA id="AdditionalTestView">
+      <PROP name="TestView" value="" />
+    </DATA>
+    <DATA id="UserSettings">
+      <PROP name="RapidEditorFontIndex" value="5" />
+    </DATA>
+    <DATA id="ViewInManFull">
+      <PROP name="text" value="PARAM_TXT_VIEWINMANFULL" />
+      <PROP name="dll" value="" />
+      <PROP name="type" value="" />
+    </DATA>
+    <DATA id="ViewInAuto">
+      <PROP name="text" value="PARAM_TXT_VIEWINAUTO" />
+      <PROP name="dll" value="TpsViewProductionWnd.dll" />
+      <PROP name="type" value="ABB.Robotics.Tps.Production.TpsViewProductionWnd" />
     </DATA>
     <DATA id="Programmable Key_2">
       <PROP name="type" value="None" />
@@ -44,26 +41,46 @@
       <PROP name="pressed" value="" />
       <PROP name="target" value="" />
     </DATA>
-    <DATA id="ChangeInstruction">
-      <PROP name="Last Assignment DataType" value="num" />
-    </DATA>
     <DATA id="Program Editor">
       <PROP name="HideDeclarations" value="True" />
       <PROP name="ShowOnlyServiceRoutines" value="False" />
       <PROP name="ModulePath" value="ctrl:/hd0a/Modules/" />
     </DATA>
-    <DATA id="QuickSet">
-      <PROP name="IncrementToggle" value="Small" />
-    </DATA>
-    <DATA id="Joystick Values">
-      <PROP name="Pos" value="10,20,40,60,90,120,178,275,412,587,801,1055,1347,1678,2048" />
-      <PROP name="Neg" value="-10,-20,-40,-60,-90,-120,-178,-275,-412,-587,-801,-1055,-1347,-1678,-2048" />
+    <DATA id="Programmable Key_3">
+      <PROP name="type" value="None" />
+      <PROP name="allowInAuto" value="No" />
+      <PROP name="pressed" value="" />
+      <PROP name="target" value="" />
     </DATA>
     <DATA id="Backup Restore">
       <PROP name="LastPath" value="ctrl:/hd0a/BACKUP/" />
     </DATA>
-    <DATA id="AdditionalTestView">
-      <PROP name="TestView" value="" />
+    <DATA id="UASViewLevel">
+      <PROP name="text" value="PARAM_TXT_UASVIEWLEVEL" />
+      <PROP name="level" value="Msg" />
+      <PROP name="type" value="" />
+    </DATA>
+    <DATA id="IO View">
+      <PROP name="Configurations file" value="/hd0a/Kraker_Freesrobot/INTERNAL/FPConfigurations.xml" />
+      <PROP name="Signal view layout" value="Default" />
+    </DATA>
+    <DATA id="Programmable Key_4">
+      <PROP name="type" value="Output" />
+      <PROP name="allowInAuto" value="No" />
+      <PROP name="pressed" value="Toggle" />
+      <PROP name="target" value="doKP_1_Ventiel" />
+    </DATA>
+    <DATA id="Programmable Key_1">
+      <PROP name="type" value="Output" />
+      <PROP name="allowInAuto" value="No" />
+      <PROP name="pressed" value="SetTo0" />
+      <PROP name="target" value="so_Boren_aan" />
+    </DATA>
+    <DATA id="ChangeInstruction">
+      <PROP name="Last Assignment DataType" value="num" />
+    </DATA>
+    <DATA id="QuickSet">
+      <PROP name="IncrementToggle" value="Small" />
     </DATA>
     <DATA id="IO Filter">
       <PROP name="IO Virtual filter" value="All" />
@@ -83,23 +100,6 @@
       <PROP name="Safety Signal Filter" value="" />
       <PROP name="Alias IO Filter" value="" />
       <PROP name="Simulated IO FIlter" value="" />
-    </DATA>
-    <DATA id="Programmable Key_1">
-      <PROP name="type" value="Output" />
-      <PROP name="allowInAuto" value="No" />
-      <PROP name="pressed" value="SetTo0" />
-      <PROP name="target" value="so_Boren_aan" />
-    </DATA>
-    <DATA id="Programmable Key_4">
-      <PROP name="type" value="Output" />
-      <PROP name="allowInAuto" value="No" />
-      <PROP name="pressed" value="Toggle" />
-      <PROP name="target" value="doKP_1_Ventiel" />
-    </DATA>
-    <DATA id="ViewInManFull">
-      <PROP name="text" value="PARAM_TXT_VIEWINMANFULL" />
-      <PROP name="dll" value="" />
-      <PROP name="type" value="" />
     </DATA>
   </USER>
 </FP>

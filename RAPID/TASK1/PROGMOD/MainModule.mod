@@ -3,8 +3,10 @@ MODULE MainModule
 PROC Main()
      LoggProc "Main",18,"PP to main";
      !speed and ACC overrides 
-     VelSet 100, 800;
+     !VelSet 100, 1500;
      AccSet 50,50;
+     !spindel off just in case
+     rStop_Spindle;
      !in manueel onderhouds beschikbaar stellen  
      IF OpMode() <> OP_AUTO THEN
        rMainui;
@@ -33,11 +35,11 @@ PROC Main()
             rUnloadStations;
             IF NOT bDwarbalkenBeschikbaar() THEN
                 TPWrite "Geen nieuwe balken beschikbaar";
-                WaitTime 5;  
+                WaitTime 1;  
             ENDIF
         ELSE
              TPWrite "Geen uitvoer of geen opdrachten";
-             WaitTime 5;  
+             WaitTime 1;  
              !controleert of er in station 6 een manuele opdracht is geplaats 
              !(in het geval dat dwarsbalk productie stil ligt).
              rWorkStations;

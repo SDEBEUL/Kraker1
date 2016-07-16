@@ -2,8 +2,8 @@ MODULE mOnderRanden
     
     TASK PERS wobjdata wobj_Onderrand_L:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[0,0,-6],[1,0,0,0]]];
     TASK PERS wobjdata wobj_Onderrand_Frees_L:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[0,0,-6],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_Onderrand_R:=[FALSE,TRUE,"",[[14550,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_Onderrand_Frees_R:=[FALSE,TRUE,"",[[14550,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_Onderrand_R:=[FALSE,TRUE,"",[[14493.5,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_Onderrand_Frees_R:=[FALSE,TRUE,"",[[14493.5,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
     
     CONST robtarget pGat11_R:=[[-0.77,-18.62,317.59],[0.0019007,0.999998,2.8729E-08,0.000697868],[-1,-1,0,0],[14172,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGat11_L:=[[-0.77,15.48,319.21],[0.000595015,-1,-9.43398E-06,-0.00058483],[-1,1,-1,0],[1000.01,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -111,7 +111,7 @@ MODULE mOnderRanden
         num Shift_Track)
         VAR num nStep := -1;
         VAR num nMillDepth := -11;
-        VAR num nPrecut := 0.2;
+        VAR num nPrecut := -0.7;
         VAR num nCurrStep;
         PDispOff;
         Shift_Track:=nShift_x;
@@ -119,28 +119,29 @@ MODULE mOnderRanden
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ Offs(pFrees_Onderrand_L,0,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ Offs(pFrees_Onderrand_L,0,0,100),v800,fine,tFrees_10\WObj:=wobj_Active;
         !
         rStart_Spindle;
         !in stuk
-        FOR nCurrStep FROM -2 TO nMillDepth STEP nStep DO  
-        IF nCurrstep >= nMillDepth THEN nPrecut := 0;  ENDIF
-            MoveL Offs(pFrees_Onderrand_L,-5,5,30),vFrees_aanzet,z0,tFrees_10\WObj:=wobj_Active;
+        FOR nCurrStep FROM -1 TO nMillDepth STEP nStep DO  
+        IF nCurrstep <= nMillDepth THEN nPrecut := 0;  ENDIF
+            MoveL Offs(pFrees_Onderrand_L,-5,5,15), v800, z0, tFrees_10\WObj:=wobj_Active;
             !instuk
-            MoveL Offs(pFrees_Onderrand_L,-5,5,nCurrstep),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_L,-5,5,nCurrstep),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
             !frees met center op aanzet van uitsparing
             !MoveL pFrees_Onderrand_L,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_L,0,0,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_L,78,-45,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_L,557,-45,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_L,635,0,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_L,0+nPrecut,0-nPrecut,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_L,78+nPrecut,-45-nPrecut,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_L,557-nPrecut,-45-nPrecut,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_L,635-nPrecut,0-nPrecut,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
             !Uit stuk 
             MoveL Offs(pFrees_Onderrand_L,635,5,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
             !uit stuk (return pos)
-            MoveL Offs(pFrees_Onderrand_L,635,5,30),vFrees_aanzet,z5,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_L,635,5,15),vFrees_aanzet,z5,tFrees_10\WObj:=wobj_Active;
+            !
         ENDFOR
         !		
-        MoveL Offs(pFrees_Onderrand_L,635,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pFrees_Onderrand_L,635,0,100),v800,fine,tFrees_10\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -151,35 +152,38 @@ MODULE mOnderRanden
         num Shift_Track)
         VAR num nStep := -1;
         VAR num nMillDepth := -11;
-        VAR num nPrecut := 0.2;
+        VAR num nPrecut := -0.7;
         VAR num nCurrStep;
         PDispOff;
-        Shift_Track:=nShift_x;
+        Shift_Track:=-nShift_x;
         !
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !frees met center op aanzet van uitsparing
         !MoveL pFrees_Onderrand_R,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pFrees_Onderrand_R,635,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ Offs(pFrees_Onderrand_R,635,0,200),v800,fine,tFrees_10\WObj:=wobj_Active;
         !
         rStart_Spindle;
         !in stuk
-        FOR nCurrStep FROM -2 TO nMillDepth STEP nStep DO  
+        FOR nCurrStep FROM -1 TO nMillDepth STEP nStep DO  
         IF nCurrstep >= nMillDepth THEN nPrecut := 0;  ENDIF
-            MoveL Offs(pFrees_Onderrand_R,635,-5,30),vFrees_aanzet,z5,tFrees_10\WObj:=wobj_Active;
-            !in stuk    
-            MoveL Offs(pFrees_Onderrand_R,635,-2,5),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_R,635,0,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_R,557,45,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_R,78,45,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            MoveL Offs(pFrees_Onderrand_R,0,0,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            !uit stuk 
-            MoveL Offs(pFrees_Onderrand_R,-5,-5,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
-            !uit stuk (return pos)
-            MoveL Offs(pFrees_Onderrand_R,-5,-5,30),vFrees_aanzet,z5,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pFrees_Onderrand_R,635,-5,15),v800,z5,tFrees_10\WObj:=wobj_Active;
+            !instuk
+            MoveL Offs(pFrees_Onderrand_R,635,-5,nCurrStep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+            !frees met center op aanzet van uitsparing
+            !MoveL pFrees_Onderrand_R,vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+           MoveL Offs(pFrees_Onderrand_R,635-nPrecut,0-nPrecut,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+           MoveL Offs(pFrees_Onderrand_R,557 - nPrecut,45 - nPrecut,nCurrStep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+           MoveL Offs(pFrees_Onderrand_R,78 + nPrecut,45 - nPrecut,nCurrStep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+           MoveL Offs(pFrees_Onderrand_R,0+nPrecut,0-nPrecut,nCurrstep),vFrezen,z5,tFrees_10\WObj:=wobj_Active;
+          !Uit stuk 
+          MoveL Offs(pFrees_Onderrand_R,-5,-5,nCurrStep),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
+          !uit stuk (return pos)s
+          MoveL Offs(pFrees_Onderrand_R,-5,-5,15), v800, z0, tFrees_10\WObj:=wobj_Active;
+          !
         ENDFOR
         !
-        MoveJ Offs(pFrees_Onderrand_R,0,0,200),v200,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ Offs(pFrees_Onderrand_R,0,0,200),v800,fine,tFrees_10\WObj:=wobj_Active;
         !
     ENDPROC
     
@@ -194,7 +198,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Frees;
         !
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
+        !MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         !
         rFrezen_10mm_Uitsp_635x45_L 2445-1.2,0,0,0;
         !
@@ -215,7 +219,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Frees;
         !
-        MoveAbsJ [[-90,0,10,0,-10,0],[14000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
+        !MoveAbsJ [[-90,0,10,0,-10,0],[14000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         !
         rFrezen_10mm_Uitsp_635x45_R 2445-1.5,0,0,0;
         !
@@ -224,7 +228,7 @@ MODULE mOnderRanden
         rFrezen_10mm_Uitsp_635x45_R 5065-2,0,0,0;
         !
         rStop_Spindle;
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
+        !MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,tFrees_10\WObj:=wobj0;
         go_home \Armonly;
         !
     ENDPROC
@@ -460,7 +464,7 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Boor_11m;
         !
-        MoveAbsJ [[-90,0,0,-90,90,90],[14400,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
+        !MoveAbsJ [[-90,0,0,-90,90,90],[14400,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
         !
         rBoren_11mm_Onderrand_NUL_R 0,0,0,0;
         !7mm correctie op volle lengte voor krimp 
@@ -674,7 +678,7 @@ MODULE mOnderRanden
         rBoren_11mm_Onderrand_Dubbel_R 13215-6+3.1,0,0,0;
         !
         rStop_Spindle;
-        MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
+        !MoveAbsJ [[-90,0,0,0,0,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
         go_home \Armonly;
         !
     ENDPROC

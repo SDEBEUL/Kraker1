@@ -215,11 +215,12 @@ PROC rWorkStations()
            LoggProc "mStations",12,"Sation:"+NumToStr(6,0)+" StartFrezen Type:"+NumToStr(Station{6}.Opdracht,0);
            rWorkStationFrezen(6);
            LoggProc "mStations",13,"Sation:"+NumToStr(6,0)+" EindeFrezen Type:"+NumToStr(Station{6}.Opdracht,0);
+           rStop_Spindle;
       ENDIF 
    ENDIF
     
     IF Production.Dwarsbalken THEN
-    !ga eerst op ale stations die in klaar zijn voor werk gaan boren 
+    !ga eerst op ale stations die in klaar zijn voor werk gaan boren  
      FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg en nieuwe balk
        IF Station{i}.InDienst AND Station{i}.Lading = part.OnbewerkteBalk AND Station{i}.Opdracht <> part.geen  THEN
@@ -228,15 +229,17 @@ PROC rWorkStations()
          LoggProc "mStations",15,"Sation:"+NumToStr(i,0)+" EindeBoren Type:"+NumToStr(Station{i}.Opdracht,0);
        ENDIF
      ENDFOR
-     !ga nu op al de stations die in dienst staan gaan boren
+     rStop_Spindle;
+     !ga nu op al de stations die in dienst staan gaan frezen
       FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg zou hier eigenlijk een beter check voor moeten maken 
-       IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen AND Station{i}.Opdracht <> part.geen THEN
+       IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen AND Station{i}.Opdracht <> part.geen AND Station{i}.Lading = part.inbewerking  THEN
            LoggProc "mStations",16,"Sation:"+NumToStr(i,0)+" StartFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
            rWorkStationFrezen(i);
            LoggProc "mStations",17,"Sation:"+NumToStr(i,0)+" EindeFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
        ENDIF
      ENDFOR
+     rStop_Spindle;
     ENDIF
      !
 ENDPROC

@@ -22,7 +22,7 @@ MODULE mBuffer
 	TASK PERS wobjdata Wobj_Buffer_Boven_6:=[FALSE,TRUE,"",[[15465,1096,1400],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
 
   !Robtargets  
-	CONST robtarget pBuffer_Onder_1:=[[30.3,0,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget pBuffer_Onder_1:=[[30.3,5,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_2:=[[34.3,5,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_3:=[[33.5,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_4:=[[32.3,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -36,12 +36,12 @@ MODULE mBuffer
 	CONST robtarget pBuffer_Boven_6:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
   !Jointtargets
-    CONST jointtarget pHomeJoint_Bu_1:=[[0,-20,0,-180,-20,-90],[0,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_2:=[[0,-20,0,0,0,0],[2895,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_3:=[[0,-20,0,0,0,0],[5950,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_4:=[[0,-20,0,0,0,0],[8700,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_5:=[[0,-20,0,0,0,0],[11604,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_6:=[[0,-20,0,0,0,0],[14500,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_1:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[2841.97,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_2:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[2895,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_3:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[5950,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_4:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[8700,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_5:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[11604,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_6:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[14500,9E+09,9E+09,9E+09,9E+09,9E+09]];
    
     LOCAL pers num Shift_Track := 0;
     LOCAL pers num Shift_x := 0;
@@ -146,14 +146,14 @@ MODULE mBuffer
     !
         MoveL Offs(Pbuffer,0,-75,0),v4000,z50,tGripper\WObj:=wobj_Active;
         MoveL Pbuffer, v100, fine, tGripper\WObj:=wobj_Active;
-        IF fCheckGripperPart(\nExpection:= 1) THEN
+        IF fCheckGripperPart() THEN
           rGripper_Close;
           rDecrInvoerbuffer nBuffernum;
         ELSE !part not in expected pos 
          !beweeg 1cm verder en kijk of het stuk er dan is 
           MoveL Offs(Pbuffer,0,10,0),v50,z10,tGripper\WObj:=wobj_Active;
           waitrob \InPos;
-          IF fCheckGripperPart(\nExpection:= 1) THEN
+          IF fCheckGripperPart() THEN
            rGripper_Close;
            rDecrInvoerbuffer nBuffernum;
           ELSE !stuk nog steeds niet aanwezig = volgende stuk 
