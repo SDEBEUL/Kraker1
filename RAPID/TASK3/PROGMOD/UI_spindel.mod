@@ -53,6 +53,8 @@ MODULE UI_spindel
         "VoedingFrezen       = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingFrezen),2) +" mm/s", 
         "VoedingAanzetBoren  = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingAanzetBoren),2) +" mm/s", 
         "VoedingAanzetFrezen = "+NumToStr(ftcpSpeed(Spindeltool{toolnum}.VoedingAanzetFrezen),2) +" mm/s", 
+        "FreesStap           = "+NumToStr(Spindeltool{toolnum}.nFreesStap,2) +" mm",
+        "VoorFreesStap       = "+NumToStr(Spindeltool{toolnum}.nFreesPrecut,2) +" mm",    
             ""]
         \BtnArray:=["Parameters","","","","Terug"]);
         TEST nAnswer
@@ -74,18 +76,14 @@ MODULE UI_spindel
        lblExit:
 ENDPROC
 
-FUNC num ftcpSpeed(speeddata speed)
-RETURN speed.v_tcp;
-ENDFUNC
-
 PROC rlistToolParams(Num toolnum)
-VAR listitem ParmList{5} := [["","Toerental"], ["","VoedingBoren"], ["","VoedingFrezen"], ["","VoedingAanzetBoren"], ["","VoedingAanzetFrezen"]];
+VAR listitem ParmList{7} := [["","Toerental"], ["","VoedingBoren"], ["","VoedingFrezen"], ["","VoedingAanzetBoren"], ["","VoedingAanzetFrezen"], ["","FreesStap"], ["","VoorFreesStap"]];
 VAR num list_item;
 VAR speeddata SpeedDummy;
 list_item := UIListView( \Header:="Selecteer de parameter die u wilt aanpassen",ParmList \Icon:=iconInfo);
     TEST list_item
       CASE 1:
-       Spindeltool{toolnum}.Toerental := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.Toerental,1800,24000);
+           Spindeltool{toolnum}.Toerental := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.Toerental,1800,24000);
       CASE 2:
           SpeedDummy := Spindeltool{toolnum}.VoedingBoren;
           SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
@@ -102,19 +100,29 @@ list_item := UIListView( \Header:="Selecteer de parameter die u wilt aanpassen",
           SpeedDummy := Spindeltool{toolnum}.VoedingAanzetFrezen;
           SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,100);
           Spindeltool{toolnum}.VoedingAanzetFrezen := SpeedDummy;
+      CASE 6:
+          Spindeltool{toolnum}.nFreesStap := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.nFreesStap,-5,0.1);
+      CASE 7:
+          Spindeltool{toolnum}.nFreesPrecut := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.nFreesPrecut,-2,0.1); 
     ENDTEST
 ENDPROC
 
 LOCAL FUNC num  nGetSetting(string sParm, num CurrentValue, num MinValue, num MaxValue)
-VAR num answer;
-answer := UINumEntry (\Header:= "Stel de parameter in tussen de toegelaten waarden"
-\Message:="Parameter: " + sParm \Icon:=iconInfo
-\InitValue:=CurrentValue \MinValue:=MinValue \MaxValue:=MaxValue);
-RETURN answer;
+    VAR num answer;
+    IF CurrentValue < minvalue OR CurrentValue > maxvalue THEN 
+        currentvalue := minvalue;
+    ENDIF
+    answer := UINumEntry (\Header:= "Stel de parameter in tussen de toegelaten waarden"
+    \Message:="Parameter: " + sParm \Icon:=iconInfo
+    \InitValue:=CurrentValue \MinValue:=MinValue \MaxValue:=MaxValue);
+    RETURN answer;
 ENDFUNC
 
+FUNC num ftcpSpeed(speeddata speed)
+    RETURN speed.v_tcp;
+ENDFUNC
 
-  PROC rSpindelManUnlock(bool bEnable \switch init)
+PROC rSpindelManUnlock(bool bEnable \switch init)
     !***************************************	    
     ! Trap: rSpindelManUnlock
     ! Description: supervision for spindle  

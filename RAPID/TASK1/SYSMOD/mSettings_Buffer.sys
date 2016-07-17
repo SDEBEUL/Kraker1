@@ -63,10 +63,13 @@ FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType,\switch IgnoreStat
    VAR PartType AantalPartsBesteld;
    AantalPartsGewenst := UitvoerBuffer{nBuffer}.AantalPartsGewenst;
    AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
+   AantalPartsBesteld.Balk330 := 0;
+   AantalPartsBesteld.Balk331 := 0;
+   AantalPartsBesteld.Balk332 := 0;
    !tel hoeveel stukken er al geboekt zijn van een bepaald type 
-   IF NOT present(IgnoreStations) THEN
+   IF not present(IgnoreStations) THEN
        FOR i FROM 1 TO 5 DO 
-           IF  Station{i}.inDienst AND (Station{i}.Opdracht <> part.Geen) THEN
+           IF  Station{i}.inDienst THEN
               TEST Station{i}.Opdracht
                 CASE part.Balk330:
                   Incr AantalPartsBesteld.Balk330;
@@ -74,6 +77,8 @@ FUNC bool bUitvoerbufferPartNeeded(num nBuffer, num nPartType,\switch IgnoreStat
                   Incr AantalPartsBesteld.Balk331;
                CASE part.Balk332:
                   Incr AantalPartsBesteld.Balk332;
+               DEFAULT:
+                 !do nothing
               endtest
            ENDIF
        ENDFOR 
@@ -164,6 +169,7 @@ LOCAL PROC rUpdateInvoerbuffer(num nBuffer)
     IF (InvoerBuffer{nBuffer}.actiefstuk * InvoerBuffer{nBuffer}.actievelaag) >= 40 THEN 
         InvoerBuffer{nBuffer}.vol := true;
     ENDIF
+    SetDO SO_UI_refresh, 1;
     !
 ENDPROC
 
@@ -201,6 +207,7 @@ LOCAL PROC rUpdateUitvoerbuffer(num nBuffer, num nPartType)
         UitvoerBuffer{nBuffer}.Vol := TRUE;
         LoggProc "mBuffer",6,"Buffer:"+NumToStr(nBuffer,0)+" Vol (Max)";
     ENDIF
+    SetDO SO_UI_refresh, 1;
     !
 ENDPROC
 
@@ -229,6 +236,7 @@ PROC rDecrInvoerbuffer(num nBuffer)
       InvoerBuffer{nBuffer}.vol := false;
       LoggProc "mBuffer",8,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
+    SetDO SO_UI_refresh, 1;
     !
 ENDPROC
 
@@ -257,6 +265,7 @@ PROC rIncrUitvoerbuffer(num nBuffer)
      UitvoerBuffer{nBuffer}.leeg:= false;
      LoggProc "mBuffer",10,"Buffer:"+NumToStr(nBuffer,0)+" vol (rIncr)";
     ENDIF
+    SetDO SO_UI_refresh, 1;
     !
 ENDPROC
 
@@ -287,6 +296,7 @@ PROC rDecrUitvoerbuffer(num nBuffer)
       UitvoerBuffer{nBuffer}.ActiefStuk := 8;
       LoggProc "mBuffer",18,"Buffer:"+NumToStr(nBuffer,0)+" leeg (rDecr)";
     ENDIF
+    SetDO SO_UI_refresh, 1;
     !
 ENDPROC
 
@@ -403,7 +413,7 @@ PROC rResetBufferSafe( \switch leftside \switch rightside)
    InvoerBuffer{i}.veilig  := FALSE;
  ENDFOR
  RETURN;
- 
+ SetDO SO_UI_refresh, 1;
 ENDPROC
 
 FUNC bool bLichtbeamOK(num nBuffer)

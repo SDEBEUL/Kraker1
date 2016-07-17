@@ -189,4 +189,14 @@
 2016-07-15, 13:33:12, Offset ,Code , 31 ,Info , off:2 x=1.69 n=3.04 p=0.34 P1=-770.68 P2=788.10 
 2016-07-15, 13:34:14, Offset ,Code , 31 ,Info , off:3 x=2.67 n=3.06 p=2.28 P1=-770.71 P2=786.16 
 2016-07-15, 13:35:29, Offset ,Code , 31 ,Info , off:4 x=0.48 n=0.35 p=0.61 P1=-767.99 P2=787.83 
-2016-07-15, 13:35:30, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4
+2016-07-15, 13:35:30, mStations ,Code , 14 ,Info , Sation:1 StartBoren Type:4 
+2016-07-17, 12:58:30, Main ,Code , 18 ,Info , PP to main 
+2016-07-17, 13:01:56, Main ,Code , 18 ,Info , PP to main 
+2016-07-17, 14:53:36, Main ,Code , 18 ,Info , PP to main 
+2016-07-17, 15:10:42, Main ,Code , 18 ,Info , PP to main 
+2016-07-17, 15:13:02, Main ,Code , 18 ,Info , PP to main 
+2016-07-17, 15:13:53, mSations ,Code , 1 ,Info , Onafgewerkt stuk in station:1 
+2016-07-17, 15:14:15, Main ,Code , 18 ,Info , PP to main 
+2016-07-17, 15:14:15, mSations ,Code , 1 ,Info , Onafgewerkt stuk in station:1 
+2016-07-17, 18:47:28, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:5.66 
+2016-07-17, 18:47:28, Main ,Code , 18 ,Info , PP to main

@@ -1,7 +1,7 @@
 MODULE MainModule
 
-PROC Main()
-     LoggProc "Main",18,"PP to main";
+PROC Main()   
+   LoggProc "Main",18,"PP to main";
      !speed and ACC overrides 
      !VelSet 100, 1500;
      AccSet 50,50;

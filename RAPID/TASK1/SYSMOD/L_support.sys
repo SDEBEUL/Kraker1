@@ -62,12 +62,15 @@ MODULE L_support(SYSMODULE)
       speeddata VoedingFrezen;
       speeddata VoedingAanzetBoren;
       speeddata VoedingAanzetFrezen;
+      num nFreesStap;
+      num nFreesPrecut;
       num nGatengeboord;
       num nMetergefreest;
       string sLaatsgewisseld;
       num nMaxaantalgaten;
       num nMaxMeterfrezen;
   ENDRECORD 
+  
     
  !gedeelde record over de verschillende taken.
  !pas hier nooit iets handmatig aan maar gebruik altijd de interface! 
@@ -93,7 +96,7 @@ MODULE L_support(SYSMODULE)
   ];
   PERS InvoerBufferType InvoerBuffer{6} :=
   [
-  [TRUE,FALSE,FALSE,TRUE,3,2],
+  [TRUE,FALSE,FALSE,FALSE,3,2],
   [TRUE,FALSE,TRUE,FALSE,6,1],
   [FALSE,FALSE,FALSE,FALSE,0,0],
   [FALSE,FALSE,FALSE,FALSE,0,0],
@@ -103,12 +106,12 @@ MODULE L_support(SYSMODULE)
   PERS ProcuctionType Production := [TRUE,FALSE,FALSE];
   PERS SpindeltoolType Spindeltool{6} := 
   [
-  ["Boor 11",3000,[4,500,5000,1000],[10,500,5000,1000],[100,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
-  ["Frees 11",6000,[4,500,5000,1000],[15,500,5000,1000],[10,500,5000,1000],[80,500,5000,1000],0,0,"",1000,1000],
-  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
-  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
-  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000],
-  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],0,0,"",1000,1000]
+  ["Boor 11",3000,[4,500,5000,1000],[10,500,5000,1000],[100,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
+  ["Frees 11",6000,[4,500,5000,1000],[15,500,5000,1000],[10,500,5000,1000],[80,500,5000,1000],-1,-0.5,0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
+  ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",0,0] 
   ];
   !vars shared with the UI task for visulaisation
   PERS num nLastInvoerbuffer := 1;
@@ -118,19 +121,43 @@ MODULE L_support(SYSMODULE)
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
   TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[1925.07,-1043.5,510.5],[0.707107,0.707107,0,0]],[[1150,20,0],[1,0,0,0]]];
-  PERS tooldata TempTool:=[TRUE,[[0,0,0],[1,0,0,0]],[0.001,[0,0,0.001],[1,0,0,0],0,0,0]];
-  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+  PERS tooldata TempTool:=[TRUE,[[0,220.75,942],[0.5,0.5,-0.5,0.5]],[50,[0,175,400],[1,0,0,0],0,0,0]];
+  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[1925.07,-1043.5,510.5],[0.707107,0.707107,0,0]],[[1150,20,0],[1,0,0,0]]];
   !interupts
   VAR intnum Int1SprvSpindel := 1;
   VAR intnum Int2SprvPart := 2;
   VAR intnum Int3Sprvlichtbeam := 3;
-  !loffile
+  !logfile
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=1000;
-  LOCAL PERS num logCounterErrDisp:=191;
+  LOCAL PERS num logCounterErrDisp:=201;
   LOCAL VAR iodev file;
-   
+  !CycleTime
+  VAR clock CTclock{6};
+  VAR string CTname{6};
+  
+  PROC r_ctMeas(num clockid,\string name, \switch Stop, \switch Start)
+     VAR num time;
+      IF clockid < 1 OR clockid > 6 THEN RETURN; ENDIF
+      IF Present(start) THEN 
+         ClkReset CTclock{clockid};
+         ClkStart CTclock{clockid};
+      ENDIF
+      
+      IF Present(name) THEN 
+         CTname{clockid} := name;
+      ENDIF 
+ 
+      IF Present(stop) THEN
+        time:=ClkRead(CTclock{clockid});
+        ClkStop CTclock{clockid};
+        TPWrite "Cycletime " +  CTname{clockid} + " |Time:"+ NumToStr(time,2);
+        LoggProc "Cycletime",99, CTname{clockid} + " |Time:"+ NumToStr(time,2);
+      ENDIF 
+      
+  ENDPROC
+  
   PROC SyncPos()
     !***************************************	    
     ! Proc: SyncPos
@@ -475,7 +502,6 @@ MODULE L_support(SYSMODULE)
   
   
   
-  
  PROC CheckE6Ax(
     jointtarget ExpectJoint
     \switch ArmOnly)
@@ -494,7 +520,7 @@ MODULE L_support(SYSMODULE)
       IF AxisDiff(CurrentJoint,ExpectJoint\ArmOnly?ArmOnly)<MaxJointDiff NoMoreLoop:=TRUE;
       IF AxisDiff(CurrentJoint,ExpectJoint\ArmOnly?ArmOnly)>MaxJointDiff THEN
         TPErase;
-        TPReadFK nNum,"ROBOT NOT IN HOME! Start beweging to home?","","","","YES","NO";
+        TPReadFK nNum,"ROBOT NOT IN HOME! Start beweging home?","","","","YES","NO";
         TPErase;
         TEST nNum
         CASE 4:

@@ -101,6 +101,7 @@ PROC rUnloadStations()
                 ENDIF
                 !moest de buffer nog niet veilig zijn na check dan next station
                 IF UitvoerBuffer{nUitvoerbuffer}.veilig THEN
+                    r_ctMeas 1, \Start;
                     !haal stuk uit station
                     rUnloadStation(i);
                     !overdracht van stuk 
@@ -109,6 +110,7 @@ PROC rUnloadStations()
                     Station{i}.Opdracht := part.Geen;
                     !Plaats stuk in buffer
                     PUTnextpart(nPartypeIngripper);
+                    r_ctMeas 1,\name:= "Ontlaad Station:"+NumToStr(i,0)+" naar buffer:"+NumToStr(nUitvoerbuffer,0),\Stop;  
                 ENDIF
               ENDIF 
            ELSE
@@ -136,7 +138,8 @@ PROC rloadStations()
         IF Station{i}.inDienst AND (Station{i}.lading = part.Geen)THEN 
            buffernummer := nGetInvoerbuffer();
            IF buffernummer <> 0 THEN !er zijn stukken beschikbaar
-               !haal stuk uit buffer
+              r_ctMeas 1, \Start;
+              !haal stuk uit buffer
                Getnextpart;
                !als er geen stuk in de grijper zit was het rek leeg 
                IF not fCheckGripperPart(\nExpection:= 1) THEN
@@ -144,6 +147,7 @@ PROC rloadStations()
                ENDIF
                !laad stuk in station
                rloadStation i;
+               r_ctMeas 1,\name:= "Laad Station:"+NumToStr(i,0)+" van Buffer:"+NumToStr(buffernummer,0),\Stop;            
            ELSE
              !geen nieuwe stukken meer 
            ENDIF
@@ -209,12 +213,12 @@ PROC rWorkStations()
     !***************************************
    IF Production.Onderanden THEN
       IF (Station{6}.InDienst AND Station{6}.Lading = part.OnbewerkteOnderrand) AND (Station{6}.Opdracht = part.OnderrandLinks OR Station{6}.Opdracht = part.OnderrandRechts) THEN
-           LoggProc "mStations",10,"Sation:"+NumToStr(6,0)+" StartBoren Type:"+NumToStr(Station{6}.Opdracht,0);
+           r_ctMeas 1, \Start;
            rWorkStationBoren(6);
-           LoggProc "mStations",11,"Sation:"+NumToStr(6,0)+" EindBoren Type:"+NumToStr(Station{6}.Opdracht,0);
-           LoggProc "mStations",12,"Sation:"+NumToStr(6,0)+" StartFrezen Type:"+NumToStr(Station{6}.Opdracht,0);
+           r_ctMeas 1,\name:= "Sation:"+NumToStr(6,0)+" Boren Type:"+NumToStr(Station{6}.Opdracht,0),\Stop;
+           r_ctMeas 1, \Start;
            rWorkStationFrezen(6);
-           LoggProc "mStations",13,"Sation:"+NumToStr(6,0)+" EindeFrezen Type:"+NumToStr(Station{6}.Opdracht,0);
+           r_ctMeas 1,\name:= "Sation:"+NumToStr(6,0)+" Frezen Type:"+NumToStr(Station{6}.Opdracht,0),\Stop;
            rStop_Spindle;
       ENDIF 
    ENDIF
@@ -224,9 +228,9 @@ PROC rWorkStations()
      FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg en nieuwe balk
        IF Station{i}.InDienst AND Station{i}.Lading = part.OnbewerkteBalk AND Station{i}.Opdracht <> part.geen  THEN
-         LoggProc "mStations",14,"Sation:"+NumToStr(i,0)+" StartBoren Type:"+NumToStr(Station{i}.Opdracht,0);
+         r_ctMeas 1, \Start;
          rWorkStationBoren(i);
-         LoggProc "mStations",15,"Sation:"+NumToStr(i,0)+" EindeBoren Type:"+NumToStr(Station{i}.Opdracht,0);
+         r_ctMeas 1,\name:= "Sation:"+NumToStr(i,0)+" Boren Type:"+NumToStr(Station{i}.Opdracht,0),\Stop;
        ENDIF
      ENDFOR
      rStop_Spindle;
@@ -234,9 +238,9 @@ PROC rWorkStations()
       FOR i FROM 1 TO 5 STEP 1 DO
         !niet uit dienst niet leeg zou hier eigenlijk een beter check voor moeten maken 
        IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen AND Station{i}.Opdracht <> part.geen AND Station{i}.Lading = part.inbewerking  THEN
-           LoggProc "mStations",16,"Sation:"+NumToStr(i,0)+" StartFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
+           r_ctMeas 1, \Start;
            rWorkStationFrezen(i);
-           LoggProc "mStations",17,"Sation:"+NumToStr(i,0)+" EindeFrezen Type:"+NumToStr(Station{i}.Opdracht,0);
+           r_ctMeas 1,\name:= "Sation:"+NumToStr(i,0)+" Frezen Type:"+NumToStr(Station{i}.Opdracht,0),\Stop;
        ENDIF
      ENDFOR
      rStop_Spindle;
@@ -329,6 +333,7 @@ TEST nStation
     ENDTEST
     
 ENDTEST
+    SetDO SO_UI_refresh, 1;
 !
 ENDPROC
 
@@ -422,6 +427,7 @@ TEST nStation
     ENDTEST
     
 ENDTEST
+  SetDO SO_UI_refresh, 1;
 !
 ENDPROC
 
