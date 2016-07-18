@@ -31,7 +31,7 @@ MODULE mBuffer
 	CONST robtarget pBuffer_Boven_1:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Boven_2:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Boven_3:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pBuffer_Boven_4:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget pBuffer_Boven_4:=[[29.32,-6.51,20],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Boven_5:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Boven_6:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
@@ -368,7 +368,7 @@ ENDPROC
    wobj_Active.oframe.trans:=[xPos,ypos,zpos];
    rGripper_Open;
   lbl_retry:
-   MoveL Offs(Pbuffer,0,-200,450),v4000,z50,tGripper\WObj:=wobj_Active;
+   MoveL Offs(Pbuffer,0,-200,430),v4000,z50,tGripper\WObj:=wobj_Active;
    !postie waar de sensoren het rek zien.
    MoveL Offs(Pbuffer,0,-145,-150), v4000, fine, tGripper\WObj:=wobj_Active; 
    WaitTime 2;
@@ -414,7 +414,13 @@ ENDPROC
           IF stuk = 8 THEN 
            MoveL Offs(Pbuffer,0,-80+nYposPart(1),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;  
            nStuk := 1;
-           incr nLaag;
+           IF nLaag = 5 THEN
+             rResetUitvoerbuffer nBuffernum;
+             UitvoerBuffer{nBuffernum}.veilig :=TRUE;
+             RETURN;
+           ELSE
+             incr nLaag;
+           endif
           ENDIF 
           GOTO Lbl_stukgevonden;
        ENDIF
@@ -474,13 +480,15 @@ lbl_nextpart:
     wobj_Active:=WobjBufferx;
     wobj_Active.oframe.trans:=[xPos,yPos,zPos];
     !
+    MoveL Offs(Pbuffer,0,0,120),v4000,z50,tGripper\WObj:=wobj_Active;
+    MoveL Offs(Pbuffer,0,-10,90),v4000,z50,tGripper\WObj:=wobj_Active;
     MoveL offs(Pbuffer,0,-15,5),v4000,z50,tGripper\WObj:=wobj_Active;
     MoveL Pbuffer, v50, fine, tGripper\WObj:=wobj_Active;
     rGripper_PartSupervisionOff;
     rGripper_Open;
-    MoveL offs(pBuffer_Boven_1,0,-90,0), v50, fine, tGripper\WObj:=wobj_Active;
+    MoveL Offs(pBuffer_Boven_1,0,-90,10), v50, fine, tGripper\WObj:=wobj_Active;
     rGripper_CheckPart FALSE;
-    MoveL offs(pBuffer_Boven_1,0,-120,0), v50, fine, tGripper\WObj:=wobj_Active;
+    MoveL Offs(pBuffer_Boven_1,0,-120,10), v50, fine, tGripper\WObj:=wobj_Active;
    ! check part off  ? 
    rIncrUitvoerbuffer nBuffernum;
    !

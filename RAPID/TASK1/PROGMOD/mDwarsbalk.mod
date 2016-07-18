@@ -22,7 +22,9 @@ MODULE mDwarsbalk
     CONST robtarget pFrees_332_1L:=[[-765.82,-23.60,50.95],[0.266016,-0.405177,-0.826184,0.287207],[-1,2,-3,0],[12677.9,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_332_1R:=[[755.51,-37.45,60.11],[0.415157,0.702633,0.571256,0.087292],[-1,1,-1,0],[12300,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Y is midden van de balk Z de hoogte 
-    CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    !pos met eensnijderd 
+    !CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGatCenter_330:=[[0.01,-76.82,59.49],[0.67481,0.674814,0.211286,-0.211228],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
     !stations uitlijning
     PERS robtarget pMeasurePos1Start:=[[-767.642,14.0348,50.1192],[0.00308684,-0.708002,0.7062,-0.00242395],[-1,0,-3,0],[800.103,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -74,7 +76,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_330,0,0,-100),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_330,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_330,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_330,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -123,7 +125,7 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_331,0,0,-100),v2000,z50,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_331,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         MoveL RelTool(pGat11_331,0,0,-5),v2000,z5,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -193,10 +195,10 @@ MODULE mDwarsbalk
         num nShift_y,
         num nShift_z,
         num Shift_Track)
-        VAR num nStep := -1;
-        VAR num nMillDepth := -10;
-        VAR num nRadius := 18.65;
-        VAR num nPrecut := 0.2;
+        VAR num nStep := -2;
+        VAR num nMillDepth := -8.5;
+        VAR num nRadius := 16.15;
+        VAR num nPrecut := 0;
         VAR num nCurrStep;
         !
         PDispOff;
@@ -204,28 +206,27 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_10\WObj:=wobj_Active;
-        !MoveL pGatCenter_330,v50,fine,tFrees_10\WObj:=wobj_Active;
-        !
+        MoveJ RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_13\WObj:=wobj_Active;
+        !MoveL pGatCenter_330,v50,fine,tFrees_13\WObj:=wobj_Active;
         rStart_Spindle;
         !
-        MoveL Offs(pGatCenter_330,18.65,10,0),v2000,z50,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,18.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,nRadius,10,0), v2000, fine, tFrees_13\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,nRadius,3,0),v150,fine,tFrees_13\WObj:=wobj_Active;
         !voorbewerken
-        FOR nCurrStep FROM -2 TO nMillDepth STEP nStep DO  
-         IF nCurrstep >= nMillDepth THEN nPrecut := 0; ENDIF
+        FOR nCurrStep FROM -1 TO nMillDepth STEP nStep DO  
+         IF nCurrstep <= nMillDepth THEN nPrecut := 0; stop; ENDIF
             !in stuk (stuk doorboren)
-            MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_13\WObj:=wobj_Active;
             !gat frezen
-            MoveC Offs(pGatCenter_330,0,nCurrStep,nRadius-nPrecut),Offs(pGatCenter_330,-nRadius-nPrecut,nCurrStep,0),vFrezen,z0,tFrees_10\WObj:=wobj_Active;
-            MoveC Offs(pGatCenter_330,0,nCurrStep,-nRadius-nPrecut),Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,nRadius-nPrecut),Offs(pGatCenter_330,-nRadius-nPrecut,nCurrStep,0),vFrezen,z0,tFrees_13\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,-nRadius-nPrecut),Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vFrezen,fine,tFrees_13\WObj:=wobj_Active;
         ENDFOR
        !weg van stuk 
-       MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_10\WObj:=wobj_Active;
+       MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_13\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
         !
-        MoveL RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_10\WObj:=wobj_Active;
+        MoveL RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_13\WObj:=wobj_Active;
         !		   
     ENDPROC
     
@@ -234,10 +235,10 @@ MODULE mDwarsbalk
         num nShift_y,
         num nShift_z,
         num Shift_Track)
-        VAR num nStep := -1;
-        VAR num nMillDepth := -10;
-        VAR num nRadius := 13.65;
-        VAR num nPrecut := 0.2;
+        VAR num nStep := -2;
+        VAR num nMillDepth := -8.5;
+        VAR num nRadius := 11.15;
+        VAR num nPrecut :=0;
         VAR num nCurrStep;
         !
         PDispOff;
@@ -245,30 +246,30 @@ MODULE mDwarsbalk
         EOffsSet [Shift_Track+nShift_x,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_10\WObj:=wobj_Active;
-        !MoveL pGatCenter_330,v50,fine,tFrees_10\WObj:=wobj_Active;
+        MoveJ RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_13\WObj:=wobj_Active;
+        !MoveL pGatCenter_330,v50,fine,tFrees_13\WObj:=wobj_Active;
         !
         rStart_Spindle;
         !
-        MoveL Offs(pGatCenter_330,13.65,10,0),v2000,z50,tFrees_10\WObj:=wobj_Active;
-        MoveL Offs(pGatCenter_330,13.65,3,0),v150,fine,tFrees_10\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,nRadius,10,0),v2000,z50,tFrees_13\WObj:=wobj_Active;
+        MoveL Offs(pGatCenter_330,nRadius,3,0),v150,fine,tFrees_13\WObj:=wobj_Active;
         
         !voorbewerken
-        FOR nCurrStep FROM -2 TO nMillDepth STEP nStep DO  
-         IF nCurrstep >= nMillDepth THEN nPrecut := 0; ENDIF
+        FOR nCurrStep FROM -1 TO nMillDepth STEP nStep DO  
+         IF nCurrstep <= nMillDepth THEN nPrecut := 0; stop; ENDIF
             !in stuk (stuk doorboren)
-            MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_10\WObj:=wobj_Active;
+            MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_13\WObj:=wobj_Active;
             !gat frezen
-            MoveC Offs(pGatCenter_330,0,nCurrStep,nRadius-nPrecut),Offs(pGatCenter_330,-nRadius-nPrecut,nCurrStep,0),vFrezen,z0,tFrees_10\WObj:=wobj_Active;
-            MoveC Offs(pGatCenter_330,0,nCurrStep,-nRadius-nPrecut),Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vFrezen,fine,tFrees_10\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,nRadius-nPrecut),Offs(pGatCenter_330,-nRadius-nPrecut,nCurrStep,0),vFrezen,z0,tFrees_13\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,-nRadius-nPrecut),Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vFrezen,fine,tFrees_13\WObj:=wobj_Active;
         ENDFOR
-       MoveL Offs(pGatCenter_330,nRadius,nMillDepth,0),vFrees_aanzet,fine,tFrees_10\WObj:=wobj_Active;
+       MoveL Offs(pGatCenter_330,nRadius,nMillDepth,0),vFrees_aanzet,fine,tFrees_13\WObj:=wobj_Active;
        !weg van stuk 
-       MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_10\WObj:=wobj_Active;
+       MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_13\WObj:=wobj_Active;
         !		
         !rStop_Spindle;
         !
-        MoveL RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_10\WObj:=wobj_Active;
+        MoveL RelTool(pGatCenter_330,0,0,-200),v2000,z50,tFrees_13\WObj:=wobj_Active;
         !	
     ENDPROC
 
@@ -549,10 +550,14 @@ MODULE mDwarsbalk
        !
     ENDPROC
     
+    PROC testFrewen()
+        rDwarsbalk_Frezen_5020330 1 ,wobj_BalkStation1;
+    ENDPROC 
+    
   PROC rDwarsbalk_Frezen_5020330(num nStation, wobjdata WobjActiveStation) 
         var num trackshift;
         !
-        Set_Tool Frees;
+        Set_Tool Frees_13;
         !
         wobj_Active:=WobjActiveStation;
         wobj_Active.uframe.trans.x :=  WobjActiveStation.uframe.trans.x-nStationOffset(nStation);

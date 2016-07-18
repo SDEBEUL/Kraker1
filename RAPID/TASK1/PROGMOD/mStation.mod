@@ -275,7 +275,7 @@ ENDPROC
   PROC rSationx_uitlijnen (wobjdata WobjActiveStation, \num UseStationOffsets ) 
         var num trackshift;
         !
-        Set_Tool Krasnaald;
+        Set_Tool Boor_11m;
         !
         wobj_Active:=WobjActiveStation;
         IF Present(UseStationOffsets) THEN 
@@ -312,7 +312,7 @@ ENDPROC
  PROC rSation5_uitlijnen() 
 
         !
-        Set_Tool Krasnaald;
+        Set_Tool Boor_11m;
         !
         wobj_Active:=wobj_BalkStation5;
         EOffsSet [0,0,0,0,0,0];

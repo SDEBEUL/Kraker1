@@ -4,7 +4,7 @@ PROC Main()
    LoggProc "Main",18,"PP to main";
      !speed and ACC overrides 
      !VelSet 100, 1500;
-     AccSet 50,50;
+     AccSet 80,80;
      !spindel off just in case
      rStop_Spindle;
      !in manueel onderhouds beschikbaar stellen  

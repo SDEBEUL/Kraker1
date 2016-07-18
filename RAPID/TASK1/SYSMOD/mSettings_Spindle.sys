@@ -3,7 +3,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num EmptySpindel :=0;
     CONST num Boor_11m := 1;
     CONST num Frees := 2;
-    CONST num Krasnaald := 3;
+    CONST num Frees_13 := 3;
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
@@ -23,27 +23,39 @@ MODULE mSettings_Spindle(SYSMODULE)
     TASK PERS tooldata tSpindle:=[TRUE,[[314,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata boor_11mm_L190:=[TRUE,[[502,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata tFrees_10:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
+    TASK PERS tooldata tFrees_13:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
 
     !Speedata
     PERS speeddata vBoren_11_190:=[4,500,5000,1000];
     PERS speeddata vBoren_aanzet:=[100,500,5000,1000];
     
     PERS speeddata vFrezen:=[15,500,5000,1000]; 
-    PERS speeddata vBorenMetFrees:=[4,500,5000,1000];
-    PERS speeddata vFrees_aanzet:=[80,500,5000,1000];
+    PERS speeddata vBorenMetFrees:=[2,500,5000,1000];
+    PERS speeddata vFrees_aanzet:=[50,500,5000,1000];
 
     
     
     LOCAL PROC rInitSpindelData()
         !voorlopig gefoefel
-        
-        vBoren_11_190 := Spindeltool{1}.VoedingBoren;
-        vBoren_aanzet := Spindeltool{1}.VoedingAanzetBoren;
-        
-        vFrezen := Spindeltool{2}.VoedingFrezen;
-        vBorenMetFrees := Spindeltool{2}.VoedingBoren;
-        vFrees_aanzet := Spindeltool{2}.VoedingAanzetFrezen;
-     
+        TEST fGet_activeTool()
+          CASE 1:
+             vBoren_11_190 := Spindeltool{1}.VoedingBoren;
+             vBoren_aanzet := Spindeltool{1}.VoedingAanzetBoren;
+          CASE 2:
+             vBoren_11_190 := Spindeltool{2}.VoedingBoren;
+             vBoren_aanzet := Spindeltool{2}.VoedingAanzetBoren;
+             vFrezen := Spindeltool{2}.VoedingFrezen;
+             vBorenMetFrees := Spindeltool{2}.VoedingBoren;
+             vFrees_aanzet := Spindeltool{2}.VoedingAanzetFrezen;
+          CASE 3:
+             vBoren_11_190 := Spindeltool{3}.VoedingBoren;
+             vBoren_aanzet := Spindeltool{3}.VoedingAanzetBoren;
+             vFrezen := Spindeltool{3}.VoedingFrezen;
+             vBorenMetFrees := Spindeltool{3}.VoedingBoren;
+             vFrees_aanzet := Spindeltool{3}.VoedingAanzetFrezen;          
+         DEFAULT:  
+           !do nothing 
+        ENDTEST
     ENDPROC
     
     LOCAL PROC rteach_mag_Pos()
