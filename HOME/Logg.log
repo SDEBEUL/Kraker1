@@ -281,4 +281,56 @@
 2016-07-17, 15:46:42, Offset ,Code , 31 ,Info , off:1 x=0.00 n=1.32 p=-1.31 P1=-768.96 P2=789.75 
 2016-07-17, 15:46:42, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:1 |Time:47.74 
 2016-07-17, 15:51:06, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:223.14 
-2016-07-17, 15:54:00, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:173.99
+2016-07-17, 15:54:00, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:173.99 
+2016-07-19, 12:59:30, Main ,Code , 18 ,Info , PP to main 
+2016-07-19, 13:00:52, Main ,Code , 18 ,Info , PP to main 
+2016-07-19, 13:03:12, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:20, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:26, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:31, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:37, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:42, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:48, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:03:53, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:04:00, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:05:02, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
+2016-07-19, 13:11:50, Main ,Code , 18 ,Info , PP to main 
+2016-07-19, 13:25:59, Main ,Code , 18 ,Info , PP to main 
+2016-07-19, 13:41:37, Main ,Code , 18 ,Info , PP to main 
+2016-07-19, 13:44:44, Offset ,Code , 31 ,Info , off:1 x=-1.82 n=-0.93 p=-2.71 P1=-766.71 P2=791.14 
+2016-07-19, 13:44:44, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:174.29 
+2016-07-19, 13:45:51, Offset ,Code , 31 ,Info , off:2 x=-1.36 n=-0.78 p=-1.94 P1=-766.87 P2=790.38 
+2016-07-19, 13:45:52, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:4 |Time:67.22 
+2016-07-19, 13:46:55, Offset ,Code , 31 ,Info , off:3 x=-1.42 n=-0.63 p=-2.21 P1=-767.01 P2=790.65 
+2016-07-19, 13:46:56, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:4 |Time:64.07 
+2016-07-19, 13:47:54, Offset ,Code , 31 ,Info , off:4 x=-1.49 n=-0.36 p=-2.63 P1=-767.28 P2=791.07 
+2016-07-19, 13:47:55, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:4 |Time:59.37 
+2016-07-19, 13:56:40, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:524.99 
+2016-07-19, 14:00:37, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:4 |Time:237.05 
+2016-07-19, 14:03:46, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:4 |Time:188.83 
+2016-07-19, 14:06:55, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:4 |Time:188.83 
+2016-07-19, 14:12:28, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:332.69 
+2016-07-19, 14:23:46, Cycletime ,Code , 99 ,Info , Sation:2 Frezen Type:4 |Time:678.03 
+2016-07-19, 14:38:50, Cycletime ,Code , 99 ,Info , Sation:3 Frezen Type:4 |Time:903.94 
+2016-07-19, 14:45:59, Cycletime ,Code , 99 ,Info , Sation:4 Frezen Type:4 |Time:429.20 
+2016-07-19, 14:47:39, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:4 |Time:25.80 
+2016-07-19, 14:48:08, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:4 |Time:29.86 
+2016-07-19, 14:48:43, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:4 |Time:34.64 
+2016-07-19, 14:49:22, mBuffer ,Code , 5 ,Info , Buffer:4 Vol (target) 
+2016-07-19, 14:49:22, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:4 |Time:38.55 
+2016-07-19, 14:50:24, Offset ,Code , 31 ,Info , off:1 x=-1.82 n=-0.92 p=-2.71 P1=-766.72 P2=791.15 
+2016-07-19, 14:50:25, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:61.99 
+2016-07-19, 14:51:32, Offset ,Code , 31 ,Info , off:2 x=-1.40 n=-0.60 p=-2.21 P1=-767.04 P2=790.64 
+2016-07-19, 14:51:32, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:4 |Time:67.59 
+2016-07-19, 14:55:34, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:241.95 
+2016-07-19, 15:00:36, mBuffer ,Code , 10 ,Info , Buffer:4 vol (rIncr) 
+2016-07-19, 15:01:06, mBuffer ,Code , 5 ,Info , Buffer:4 Vol (target) 
+2016-07-19, 15:01:06, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:4 |Time:262.10 
+2016-07-19, 15:02:09, Offset ,Code , 31 ,Info , off:1 x=0.18 n=1.07 p=-0.71 P1=-768.72 P2=789.14 
+2016-07-19, 15:02:09, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:62.21 
+2016-07-19, 15:04:13, Offset ,Code , 31 ,Info , meeting NOK max retry station:1 OUT OF USE 
+2016-07-19, 15:04:20, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:63.45 
+2016-07-19, 15:05:51, Offset ,Code , 31 ,Info , meeting NOK max retry station:1 OUT OF USE 
+2016-07-19, 15:05:57, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:74.79 
+2016-07-19, 15:08:47, Offset ,Code , 31 ,Info , off:1 x=-4.03 n=-2.87 p=-5.19 P1=-764.77 P2=793.62 
+2016-07-19, 15:08:47, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:67.93

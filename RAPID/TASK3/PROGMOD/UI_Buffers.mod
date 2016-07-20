@@ -6,10 +6,10 @@ MODULE UI_Buffers
         lblBegin:
         nAnswer:=UIMessageBox(\Header:="Dwarsbalken"
         \MsgArray:=["CONTROLLER WELKE BUFFERS ACTIEF ZIJN!",
-        "BufferIn  => Lastused:" + NumToStr(nLastInvoerbuffer,0) + "  (voor nieuwe balken) ",
-        "BufferUit => Lastused:" +  NumToStr(nLastUitvoerbuffer,0)  +"  (voor afgewerkte balken)",
+        "InVoerBuffer  => Lastused" + NumToStr(nLastInvoerbuffer,0) + "  (voor nieuwe balken) ",
+        "UitVoerBuffer => Lastused:" +  NumToStr(nLastUitvoerbuffer,0)  +"  (voor afgewerkte balken)",
         "Start => begin met procutie (Huidige status: " + sBooltoString( Production.Dwarsbalken) +")"],
-        \BtnArray:=["Start","Stop","SetBufferIn","SetBufferUit","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
+        \BtnArray:=["Start","Stop","InVoerBuffer","UitVoerBuffer","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
         TEST nAnswer
             CASE 1:
                Production.Dwarsbalken := TRUE;
@@ -55,7 +55,7 @@ MODULE UI_Buffers
             CASE 4:
                 nAnswer:=UIMessageBox(\Header:="Dwarsbalken INVOERBUFFER"
                 \MsgArray:=["Dit zijn de buffers waar de nieuwe balken uit genomen worden","selecteer een buffer om het status te veranderen"],
-                \BtnArray:=["Buffer4","Buffer5","","meer","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
+                \BtnArray:=["Buffer4","Buffer5","Buffer6","meer","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
                 TEST nAnswer
                     CASE 1:
                      rSetInVoerbufferStatus(4);
@@ -64,7 +64,8 @@ MODULE UI_Buffers
                      rSetInVoerbufferStatus(5);
                      GOTO lbl_begin;
                     CASE 3:
-                     !leeg
+                     rSetInVoerbufferStatus(6);
+                     GOTO lbl_begin;
                     CASE 4:
                       GOTO lbl_begin;
                     CASE 5:
@@ -139,7 +140,7 @@ MODULE UI_Buffers
                 "",
                 "",
                 "selecteer een buffer om het status te veranderen"],
-                \BtnArray:=["Buffer4","Buffer5","","meer","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
+                \BtnArray:=["Buffer4","Buffer5","Buffer6","meer","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
                 TEST nAnswer
                     CASE 1:
                      rSetUitvoerbufferStatus(4);
@@ -148,7 +149,8 @@ MODULE UI_Buffers
                      rSetUitvoerbufferStatus(5);
                      GOTO lbl_begin;
                     CASE 3:
-                       !leeg
+                     rSetUitvoerbufferStatus(6);
+                     GOTO lbl_begin;
                     CASE 4:
                       GOTO lbl_begin;
                     CASE 5:
@@ -184,7 +186,7 @@ LOCAL PROC rSetInVoerbufferStatus(num nBuffer)
          "aantalstukken="+NumToStr((InvoerBuffer{nBuffer}.actiefstuk*InvoerBuffer{nBuffer}.actievelaag),0),
          "actievelaag="+NumToStr(InvoerBuffer{nBuffer}.actievelaag,0), 
          "actiefstuk="+NumToStr(InvoerBuffer{nBuffer}.actiefstuk,0)],
-        \BtnArray:=["InDienst","UitDienst","VOL","","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
+        \BtnArray:=["InDienst","UitDienst","RESET","","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
         TEST nAnswer
             CASE 1:
               InvoerBuffer{nBuffer}.indienst := true;
@@ -222,7 +224,7 @@ LOCAL PROC rSetUitvoerbufferStatus(num nBuffer)
          "aantalstukken="+NumToStr((UitvoerBuffer{nBuffer}.actiefstuk*UitvoerBuffer{nBuffer}.actievelaag),0),
          "actievelaag="+NumToStr(UitvoerBuffer{nBuffer}.actievelaag,0), 
          "actiefstuk="+NumToStr(UitvoerBuffer{nBuffer}.actiefstuk,0)],
-         \BtnArray:=["InDienst","UitDienst","LEEG","Aanvraag","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
+         \BtnArray:=["InDienst","UitDienst","RESET","Aanvraag","Terug"],\DOBreak := so_ui_refresh,\BreakFlag:=err_var );
         TEST nAnswer
             CASE 1:
               UitvoerBuffer{nBuffer}.indienst := true;
@@ -261,7 +263,7 @@ LOCAL PROC rSetRequest(Num nbuffer)
          "Aantal Balk330="+NumToStr(AantalPartsGewenst.Balk330,0),
          "Aantal Balk331="+NumToStr(AantalPartsGewenst.Balk331,0),
          "Aantal Balk332="+NumToStr(AantalPartsGewenst.Balk332,0),
-         "--------------------",
+         "-------------------------------------------------------",
          "Dit zijn de balken die zich nu in de buffer bevinden",
          "Aantal Balk330="+NumToStr(AantalPartsAanwezig.Balk330,0),
          "Aantal Balk331="+NumToStr(AantalPartsAanwezig.Balk331,0),

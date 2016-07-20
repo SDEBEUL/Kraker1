@@ -37,7 +37,7 @@
       <PROP name="target" value="" />
     </DATA>
     <DATA id="Program Editor">
-      <PROP name="HideDeclarations" value="True" />
+      <PROP name="HideDeclarations" value="False" />
       <PROP name="ShowOnlyServiceRoutines" value="False" />
       <PROP name="ModulePath" value="ctrl:/hd0a/Modules/" />
     </DATA>

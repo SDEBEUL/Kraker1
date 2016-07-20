@@ -195,7 +195,7 @@ MODULE mDwarsbalk
         num nShift_y,
         num nShift_z,
         num Shift_Track)
-        VAR num nStep := -2;
+        VAR num nStep := -1;
         VAR num nMillDepth := -8.5;
         VAR num nRadius := 16.15;
         VAR num nPrecut := 0;
@@ -235,7 +235,7 @@ MODULE mDwarsbalk
         num nShift_y,
         num nShift_z,
         num Shift_Track)
-        VAR num nStep := -2;
+        VAR num nStep := -1;
         VAR num nMillDepth := -8.5;
         VAR num nRadius := 11.15;
         VAR num nPrecut :=0;

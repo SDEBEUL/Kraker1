@@ -5,7 +5,8 @@ MODULE UI_Stations
       lbl_begin:
         nAnswer:=UIMessageBox(\Header:="Stations"
         \MsgArray:=[
-        "Dit zijn de stations waar de nieuwe balken gemaakt worden",  
+        "Dit zijn de stations waar de nieuwe balken gemaakt worden",
+        "nr  |InDienst|  Lading             |  opdracht          ",   
         " 1  | " + sBooltoString(Station{1}.InDienst) +" | " + sPartTypetoString(Station{1}.Lading)   + " | " + sPartTypetoString(Station{1}.opdracht), 
         " 2  | " + sBooltoString(Station{2}.InDienst) +" | " + sPartTypetoString(Station{2}.Lading)   + " | " + sPartTypetoString(Station{2}.opdracht), 
         " 3  | " + sBooltoString(Station{3}.InDienst) +" | " + sPartTypetoString(Station{3}.Lading)   + " | " + sPartTypetoString(Station{3}.opdracht), 
@@ -27,6 +28,7 @@ MODULE UI_Stations
         nAnswer:=UIMessageBox(\Header:="Stations"
         \MsgArray:=[
         "Dit zijn de stations waar de nieuwe balken gemaakt worden",  
+        "nr  |InDienst|  Lading             |  opdracht          ",    
         " 1  | " + sBooltoString(Station{1}.InDienst) +" | " + sPartTypetoString(Station{1}.Lading)   + " | " + sPartTypetoString(Station{1}.opdracht), 
         " 2  | " + sBooltoString(Station{2}.InDienst) +" | " + sPartTypetoString(Station{2}.Lading)   + " | " + sPartTypetoString(Station{2}.opdracht), 
         " 3  | " + sBooltoString(Station{3}.InDienst) +" | " + sPartTypetoString(Station{3}.Lading)   + " | " + sPartTypetoString(Station{3}.opdracht), 
@@ -64,7 +66,7 @@ PROC rSetStationStatus(num stationnum)
          "Lading="+sPartTypetoString(Station{stationnum}.Lading),
          "Bewerkingsstap="+NumToStr(Station{stationnum}.Bewerkingsstap,0),
          "Opdracht="+sPartTypetoString(Station{stationnum}.Opdracht),
-         "xOffset="+NumToStr(Station{stationnum}.xOffset,0),
+         "xOffset="+NumToStr(Station{stationnum}.xOffset,2),
          "Indienst/Uitdienst om DIT station in of uit te schakelen",
          "Via Lading kan je selecteren wat er nu in het station ligt. (order word gewist)",
          "Via klemmen kan je de klemmen van het station bedienen"]

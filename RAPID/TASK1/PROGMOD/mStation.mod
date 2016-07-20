@@ -119,7 +119,7 @@ ENDPROC
       VAR robtarget PosDummy;
       VAR speeddata Vsearchfast := [20,500,5000,1000]; !zoeksnelheid 
       VAR speeddata Vsearch := [2,500,5000,1000]; !zoeksnelheid 
-      VAR num nSearchlength := 60; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
+      VAR num nSearchlength := 80; !de zoek functie begint nSearchlength/2 van de calib pos en eindig  nSearchlength/2 erna. default 20mm
       VAR num nSearchReturnlength := 1; !hoeveel mm weg bewegen voor slow search
       CONST num nBeamlength := 2440; !de nominale lengte van een balk
       VAR num XoffsetPos1;
@@ -208,13 +208,14 @@ ENDPROC
                 StartMove;
                 RETRY;
             ELSE
-              WHILE TRUE DO 
-               Stop;
-              ENDWHILE
               Station{nStation}.InDienst := FALSE;
+              Station{nStation}.Lading := part.Geen;
               LoggProc "Offset",31,"meeting NOK max retry station:" + NumToStr(nStation,0) + " OUT OF USE";
               MoveL  PosDummy, v100, fine, tGripper\WObj:=wobj_Active; 
               MoveL RelTool(PosDummy,-140,-10,0), v100, z100, tGripper\WObj:=wobj_Active;
+              MoveL RelTool(pMeasurePos2Start,-140,-10,0), v4000, fine, tGripper\WObj:=wobj_Active;
+              rSetSationClamps nStation \open;
+              RETURN;
             ENDIF 
             !
            DEFAULT:
