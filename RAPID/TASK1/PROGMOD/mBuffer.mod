@@ -66,7 +66,6 @@ MODULE mBuffer
    VAR num zPos := 0;
    VAR num nLaag;
    VAR num nStuk;
-   VAR btnres nAnswer; 
   !eerst naar een postie om te kijken of het rek er staat. 
    yPos := nYposPart(1);
    ZPos := nZposPart(5);
@@ -82,21 +81,12 @@ MODULE mBuffer
     IF NOT fCheckGripperPart(\nExpection:= 1) THEN
        !NO RACK
         LoggProc "mBuffer",30,"Actieve uitvoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
-        nAnswer := UIMessageBox(\Header:="REK NIET GEVONDEN!"\MsgArray:=["","Hier zou een rek moeten staan?","Druk OK om opnieuw te controlleren","Druk Cancel als dit rek is verwijderd"]
-        ,\BtnArray:=["Cancel","","","","OK"]); 
-       TEST nAnswer
-         CASE 5:
-          UitvoerBuffer{nBuffernum}.vol := TRUE;
-          MoveL Offs(Pbuffer,0,-200,0),v4000,z50,tGripper\WObj:=wobj_Active;
-          MoveL Offs(Pbuffer,0,-200,450),v4000,z50,tGripper\WObj:=wobj_Active;
-          RETURN;
-         CASE 1:
-          GOTO lbl_retry;
-        DEFAULT:
-          GOTO lbl_retry;
-       ENDTEST
+        UitvoerBuffer{nBuffernum}.vol := TRUE;
+        MoveL Offs(Pbuffer,0,-200,0),v4000,z50,tGripper\WObj:=wobj_Active;
+        MoveL Offs(Pbuffer,0,-200,450),v4000,z50,tGripper\WObj:=wobj_Active;
+        InvoerBuffer{nBuffernum}.Veilig := TRUE;
        RETURN;
-    ENDIf
+    ENDIF
     MoveL Offs(Pbuffer,0,-200,0),v2000,z50,tGripper\WObj:=wobj_Active;
     !100 mm van stuk1 onderste rij
     MoveL Offs(Pbuffer,0,-80,0),v2000,z50,tGripper\WObj:=wobj_Active;
@@ -159,7 +149,7 @@ MODULE mBuffer
             IF yPos = 615 THEN !als dit laatste stuk in de rij was eerst naar achter
                 MoveL Offs(Pbuffer,0,-750,0),v4000,z50,tGripper\WObj:=wobj_Active;
                 rDecrInvoerbuffer nBuffernum;
-                IF zPos = 0 THEN ! rek leeg
+                IF InvoerBuffer{nBuffernum}.Leeg THEN 
                   RETURN;
                 ENDIF 
             ENDIF
@@ -337,23 +327,6 @@ ENDPROC
      !
  ENDPROC
  
- LOCAL PROC rResetUitvoerbuffer(num nBuffer)
-    !***************************************	    
-    ! Func: rResetUitvoerbuffer
-    ! Description: set het status vol van inbuffer
-    !*************************************** 
-   VAR PartType AantalPartsAanwezig; 
-   AantalPartsAanwezig := UitvoerBuffer{nBuffer}.AantalPartsAanwezig;
-   UitvoerBuffer{nBuffer}.leeg := true;
-   AantalPartsAanwezig.Balk330 := 0;
-   AantalPartsAanwezig.Balk331 := 0;
-   AantalPartsAanwezig.Balk332 := 0;
-   UitvoerBuffer{nBuffer}.AantalPartsAanwezig := AantalPartsAanwezig;
-   UitvoerBuffer{nBuffer}.ActiefStuk := 8; !leeg rek = part8 rij5
-   UitvoerBuffer{nBuffer}.Actievelaag := 5; !leeg rek = part8 rij5
-   UitvoerBuffer{nBuffer}.Veilig := FALSE;
-   !
-ENDPROC
  
   PROC Buffer_IN_safeCheck(num nBuffernum, wobjdata WobjBufferx, robtarget Pbuffer)
  !calc position
@@ -362,7 +335,6 @@ ENDPROC
    VAR num zPos := 0;
    VAR num nLaag;
    VAR num nStuk;
-   VAR btnres nAnswer; 
   !eerst naar een postie om te kijken of het rek er staat. 
    yPos := nYposPart(1);
    ZPos := nZposPart(5);
@@ -377,19 +349,10 @@ ENDPROC
     IF NOT fCheckGripperPart(\nExpection:= 1) THEN
        !NO RACK
         LoggProc "mBuffer",30,"Actieve uitvoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
-        nAnswer := UIMessageBox(\Header:="REK NIET GEVONDEN!"\MsgArray:=["","Hier zou een rek moeten staan?","Druk OK om opnieuw te controlleren","Druk Cancel als dit rek is verwijderd"]
-        ,\BtnArray:=["Cancel","","","","OK"]); 
-       TEST nAnswer
-         CASE 5:
-          UitvoerBuffer{nBuffernum}.vol := TRUE;
-          MoveL Offs(Pbuffer,0,-200,0),v4000,z50,tGripper\WObj:=wobj_Active;
-          MoveL Offs(Pbuffer,0,-200,450),v4000,z50,tGripper\WObj:=wobj_Active;
-          RETURN;
-         CASE 1:
-          GOTO lbl_retry;
-        DEFAULT:
-          GOTO lbl_retry;
-       ENDTEST
+        UitvoerBuffer{nBuffernum}.vol := TRUE;
+        MoveL Offs(Pbuffer,0,-200,0),v4000,z50,tGripper\WObj:=wobj_Active;
+        MoveL Offs(Pbuffer,0,-200,450),v4000,z50,tGripper\WObj:=wobj_Active;
+       UitvoerBuffer{nBuffernum}.veilig :=TRUE;
        RETURN;
     ENDIF
     MoveL Offs(Pbuffer,0,-200,0),v4000,z50,tGripper\WObj:=wobj_Active;
@@ -489,8 +452,7 @@ lbl_nextpart:
     MoveL Offs(pBuffer_Boven_1,0,-90,10), v50, fine, tGripper\WObj:=wobj_Active;
     rGripper_CheckPart FALSE;
     MoveL Offs(pBuffer_Boven_1,0,-120,10), v50, fine, tGripper\WObj:=wobj_Active;
-   ! check part off  ? 
-   rIncrUitvoerbuffer nBuffernum;
+    rIncrUitvoerbuffer nBuffernum;
    !
  ENDPROC
     

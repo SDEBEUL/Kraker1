@@ -10,7 +10,19 @@ FUNC bool bDwarbalkenGewenst()
     IF nGetUitvoerbuffer(part.Balk330) <> 0 OR nGetUitvoerbuffer(part.Balk331) <> 0 OR nGetUitvoerbuffer(part.Balk332) <> 0 THEN
         RETURN TRUE;
     ELSE
-        RETURN FALSE;
+        !need to test 
+        while true do stop; endwhile 
+        
+         FOR i FROM 1 TO 6 DO 
+          IF (UitvoerBuffer{i}.InDienst = TRUE) AND (UitvoerBuffer{i}.Vol = TRUE ) AND (UitvoerBuffer{i}.veilig = FALSE) AND bLichtbeamOK(i) THEN 
+            Putpart i \Safecheck;
+            !recheck 
+               IF nGetUitvoerbuffer(part.Balk330) <> 0 OR nGetUitvoerbuffer(part.Balk331) <> 0 OR nGetUitvoerbuffer(part.Balk332) <> 0 THEN
+                RETURN TRUE;
+               ENDIF
+          ENDIF
+         ENDFOR
+     RETURN FALSE;
     ENDIF
 ENDFUNC
 
@@ -19,11 +31,13 @@ FUNC bool bDwarbalkenBeschikbaar()
     ! Proc: bDwarbalkenBeschikbaar
     ! Description: kijk of er nieuwe balken beschikbaar zijn 
     !***************************************
-    IF nGetInvoerbuffer() <> 0 THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    ENDIF
+    FOR i FROM 1 TO 6 DO 
+        IF (InvoerBuffer{i}.InDienst = TRUE) AND (InvoerBuffer{i}.Veilig = TRUE) AND (InvoerBuffer{i}.Leeg = FALSE) THEN 
+          RETURN TRUE;
+        ENDIF           
+    ENDFOR
+    !niets beschikbaar 
+    RETURN FALSE;
 ENDFUNC
 
 FUNC num nEersteBufferDiewil()
@@ -134,23 +148,17 @@ PROC rloadStations()
     VAR btnres nAnswer; 
     VAR num buffernummer;
     FOR i FROM 1 TO 5 STEP 1 DO
-       lblNextRek:
         IF Station{i}.inDienst AND (Station{i}.lading = part.Geen)THEN 
            buffernummer := nGetInvoerbuffer();
-           IF buffernummer <> 0 THEN !er zijn stukken beschikbaar
-              r_ctMeas 1, \Start;
-              !haal stuk uit buffer
+               r_ctMeas 1, \Start;
+               !haal stuk uit buffer 
                Getnextpart;
-               !als er geen stuk in de grijper zit was het rek leeg 
-               IF not fCheckGripperPart(\nExpection:= 1) THEN
-                  GOTO lblNextRek;
+               !als er geen stuk in de grijper zit waren al de rekken leeg
+               IF  fCheckGripperPart(\nExpection:= 1) THEN
+                 !laad stuk in station
+                 rloadStation i;
+                 r_ctMeas 1,\name:= "Laad Station:"+NumToStr(i,0)+" van Buffer:"+NumToStr(buffernummer,0),\Stop;    
                ENDIF
-               !laad stuk in station
-               rloadStation i;
-               r_ctMeas 1,\name:= "Laad Station:"+NumToStr(i,0)+" van Buffer:"+NumToStr(buffernummer,0),\Stop;            
-           ELSE
-             !geen nieuwe stukken meer 
-           ENDIF
         ENDIF
     ENDFOR
     !

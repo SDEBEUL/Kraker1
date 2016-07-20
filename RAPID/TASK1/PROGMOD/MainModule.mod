@@ -46,6 +46,7 @@ PROC Main()
              !actieve lege stations kunnen toch nog geladen worden.
              !ook al zijn er geen uitvoer rekken
              rloadStations;
+             !
         ENDIF
      ENDWHILE
      !
