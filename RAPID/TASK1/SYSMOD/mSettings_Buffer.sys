@@ -44,9 +44,6 @@ PROC Getnextpart()
         !robot kan nergens een stuk halen 
         IF nbuffernummer = 0 THEN
           FOR i FROM 1 TO 6 DO 
-            !need to test ! 
-            WHILE TRUE DO stop; ENDWHILE 
-              
             IF (InvoerBuffer{i}.InDienst = TRUE) AND (InvoerBuffer{i}.Leeg = TRUE) AND (InvoerBuffer{i}.Veilig = false) AND bLichtbeamOK(i) THEN 
                getpart(i);
                IF fCheckGripperPart(\nExpection:= 1) THEN
@@ -458,28 +455,13 @@ FUNC bool bLichtbeamOK(num nBuffer)
     ! Description: kijk of safety (lichtscherm);
     ! voor een bepaalde buffer oke is.
     !***************************************   
-    ! VAR signalgi safetyGi;
-    ! VAR num SafetyBitLeft;
-    ! VAR num SafetyBitright;
-    ! safetyGi := giPLC_1;  
-    ! SafetyBitLeft := 1;
-    ! SafetyBitRight := 2;
     IF nbuffer <= 3 THEN 
       !buffers 1 tem 3 (in en uitvoer)
-      
-      !gegokt dat ik safety bit van plc ga kunnen lezen...
-      !wachten op robwelding foor feeback
-      !RETURN BitCheckDnum(GInputDnum (safetyGi),SafetyBitLeft);
+        RETURN TestDI(di_Lightbeam1);
     ELSE 
       !buffer 3 tem 6 (in en uitvoer)   
-        
-      !gegokt dat ik safety bit van plc ga kunnen lezen...
-      !wachten op robwelding foor feeback
-      !RETURN BitCheckDnum(GInputDnum (safetyGi),SafetyBitRight);
+        RETURN TestDI(di_Lightbeam2);
     endif
-    !REMOVE IN FINAL REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    !voorlopig altijd veilig nog geen buffer safety! 
-    RETURN TRUE;
 ENDFUNC 
 
 PROC rMonitorSafety()
@@ -488,14 +470,16 @@ PROC rMonitorSafety()
   ! Description: kijkt of 1 van de lichtschermen gebroken is
   ! indien nodig word buffer veilig van die kant gereset 
   !***************************************  
-     VAR signalgi safetyGi;
-     safetyGi := giPLC_1;
      !
-     IDelete Int3Sprvlichtbeam;  
-     CONNECT Int3Sprvlichtbeam WITH tResetbuffersafety;
-     !watch for changes on the complete GI wil scan in the trap for the correct bit 
-     ISignalGI safetyGi,Int3Sprvlichtbeam;
-     IWatch Int3Sprvlichtbeam;
+     IDelete Int3Sprvlichtbeam1;  
+     IDelete Int4Sprvlichtbeam2;
+     CONNECT Int3Sprvlichtbeam1 WITH tResetbuffersafety;
+     CONNECT Int4Sprvlichtbeam2 WITH tResetbuffersafety;
+     !watch for interupt on safety 
+     ISignalDI di_Lightbeam1, 0,Int3Sprvlichtbeam1;
+     ISignalDI di_Lightbeam2, 0,Int4Sprvlichtbeam2;
+     IWatch Int3Sprvlichtbeam1;
+     IWatch Int4Sprvlichtbeam2;
 ENDPROC 
 
 TRAP tResetbuffersafety
@@ -505,18 +489,22 @@ TRAP tResetbuffersafety
     ! Connected in rMonitorSafety
     !***************************************
     !
-    ISleep Int3Sprvlichtbeam;
+    ISleep Int3Sprvlichtbeam1;
+    ISleep Int4Sprvlichtbeam2;
     if  bLichtbeamOK(1) = FALSE THEN 
         rResetBufferSafe \leftside;
         LoggProc "mBuffer",40,"Safety reset on Left side!";
+        TPWrite "Safety reset on Left side!";
     ENDIF 
     
     if  bLichtbeamOK(4) = FALSE THEN 
         rResetBufferSafe \rightside;
         LoggProc "mBuffer",41,"Safety reset on Right side!";
+        TPWrite "Safety reset on Right side!";
     ENDIF 
-    IWatch Int3Sprvlichtbeam;
-
+    IWatch Int3Sprvlichtbeam1;
+    IWatch Int4Sprvlichtbeam2;
+    !
   ENDTRAP
   
  

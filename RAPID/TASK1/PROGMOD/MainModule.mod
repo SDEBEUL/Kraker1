@@ -14,7 +14,7 @@ PROC Main()
      !Reset safestate on all buffers
      rResetBufferSafe;
      !Monitor for sombody entering one of the beams
-     !rMonitorSafety;
+     rMonitorSafety;
      !check part in gripper
      rGripper_CheckPart FALSE;
      !check home 
@@ -113,4 +113,7 @@ PROC Main()
         ENDTEST 
        
    ENDPROC
+	PROC rEPS()
+		MoveAbsJ [[1,2,3,4,5,6],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs, v1000, z50, tool0;
+	ENDPROC
 ENDMODULE

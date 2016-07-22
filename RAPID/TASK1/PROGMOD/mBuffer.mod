@@ -148,12 +148,14 @@ MODULE mBuffer
           ELSE !stuk nog steeds niet aanwezig = volgende stuk 
             IF yPos = 615 THEN !als dit laatste stuk in de rij was eerst naar achter
                 MoveL Offs(Pbuffer,0,-750,0),v4000,z50,tGripper\WObj:=wobj_Active;
-                rDecrInvoerbuffer nBuffernum;
+
                 IF InvoerBuffer{nBuffernum}.Leeg THEN 
                   RETURN;
                 ENDIF 
+           ELSE
+              rDecrInvoerbuffer nBuffernum;
+              goto lbl_nextPart; 
             ENDIF
-          goto lbl_nextPart; 
           ENDIF
         ENDIF 
         !stuk tegen aanslag en goed duwen 

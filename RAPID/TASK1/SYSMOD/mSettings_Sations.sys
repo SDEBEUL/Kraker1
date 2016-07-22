@@ -10,9 +10,6 @@ FUNC bool bDwarbalkenGewenst()
     IF nGetUitvoerbuffer(part.Balk330) <> 0 OR nGetUitvoerbuffer(part.Balk331) <> 0 OR nGetUitvoerbuffer(part.Balk332) <> 0 THEN
         RETURN TRUE;
     ELSE
-        !need to test 
-        while true do stop; endwhile 
-        
          FOR i FROM 1 TO 6 DO 
           IF (UitvoerBuffer{i}.InDienst = TRUE) AND (UitvoerBuffer{i}.Vol = TRUE ) AND (UitvoerBuffer{i}.veilig = FALSE) AND bLichtbeamOK(i) THEN 
             Putpart i \Safecheck;

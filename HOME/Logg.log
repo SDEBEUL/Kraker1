@@ -333,4 +333,32 @@
 2016-07-19, 15:05:51, Offset ,Code , 31 ,Info , meeting NOK max retry station:1 OUT OF USE 
 2016-07-19, 15:05:57, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:74.79 
 2016-07-19, 15:08:47, Offset ,Code , 31 ,Info , off:1 x=-4.03 n=-2.87 p=-5.19 P1=-764.77 P2=793.62 
-2016-07-19, 15:08:47, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:67.93
+2016-07-19, 15:08:47, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:67.93 
+2016-07-20, 11:24:35, Main ,Code , 18 ,Info , PP to main 
+2016-07-20, 12:13:48, Main ,Code , 18 ,Info , PP to main 
+2016-07-20, 12:37:36, Main ,Code , 18 ,Info , PP to main 
+2016-07-20, 12:38:50, Main ,Code , 18 ,Info , PP to main 
+2016-07-20, 14:26:45, Main ,Code , 18 ,Info , PP to main 
+2016-07-20, 14:27:05, mSations ,Code , 1 ,Info , Onafgewerkt stuk in station:1 
+2016-07-20, 14:27:29, mBuffer ,Code , 40 ,Info , Safety reset on Left side! 
+2016-07-20, 14:29:44, mBuffer ,Code , 41 ,Info , Safety reset on Right side! 
+2016-07-20, 14:29:56, mBuffer ,Code , 40 ,Info , Safety reset on Left side! 
+2016-07-20, 14:29:56, mBuffer ,Code , 41 ,Info , Safety reset on Right side! 
+2016-07-20, 15:49:32, Main ,Code , 18 ,Info , PP to main 
+2016-07-20, 15:54:01, mBuffer ,Code , 30 ,Info , Actieve uitvoerbuffer:2 niet gevonden 
+2016-07-20, 15:56:06, mBuffer ,Code , 40 ,Info , Safety reset on Left side! 
+2016-07-20, 15:56:06, mBuffer ,Code , 41 ,Info , Safety reset on Right side! 
+2016-07-20, 15:58:42, Offset ,Code , 31 ,Info , off:1 x=-0.54 n=1.35 p=-2.44 P1=-769.00 P2=790.88 
+2016-07-20, 15:58:43, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:276.37 
+2016-07-20, 15:59:56, Offset ,Code , 31 ,Info , off:2 x=-2.30 n=-0.64 p=-3.96 P1=-767.00 P2=792.39 
+2016-07-20, 15:59:57, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:4 |Time:74.10 
+2016-07-20, 16:07:56, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:383.76 
+2016-07-20, 16:10:50, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:174.31 
+2016-07-20, 16:12:38, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:1 |Time:29.68 
+2016-07-20, 16:13:05, mBuffer ,Code , 5 ,Info , Buffer:1 Vol (target) 
+2016-07-20, 16:13:05, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:1 |Time:26.82 
+2016-07-20, 16:16:57, Offset ,Code , 31 ,Info , off:1 x=-1.68 n=-0.59 p=-2.77 P1=-767.05 P2=791.21 
+2016-07-20, 16:16:58, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:4 |Time:67.97 
+2016-07-20, 16:18:04, Offset ,Code , 31 ,Info , off:2 x=-2.20 n=-0.66 p=-3.73 P1=-766.98 P2=792.17 
+2016-07-20, 16:18:05, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:4 |Time:66.54 
+2016-07-20, 16:21:48, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:223.87
