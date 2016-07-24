@@ -1,8 +1,8 @@
 #
 # Generated backup file, do not edit.
 #
-# Originally at: C:/Users/admin/Desktop/kraker/Kraker_Freesrobot_Offline_BACKUP_2016-07-22dbg
-# 16-07-22  08:37:48
+# Originally at: C:/Users/admin/AppData/Local/Temp/tmp4C34.tmp
+# 16-07-24  17:09:17
 #
 >>SYSTEM_ID:
 66-60711

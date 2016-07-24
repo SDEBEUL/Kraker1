@@ -445,7 +445,6 @@ PROC rResetBufferSafe( \switch leftside \switch rightside)
    InvoerBuffer{i}.veilig  := FALSE;
  ENDFOR
  RETURN;
- SetDO SO_UI_refresh, 1;
 ENDPROC
 
 
@@ -491,13 +490,13 @@ TRAP tResetbuffersafety
     !
     ISleep Int3Sprvlichtbeam1;
     ISleep Int4Sprvlichtbeam2;
-    if  bLichtbeamOK(1) = FALSE THEN 
+    if  TestDI(di_Lightbeam1) = FALSE THEN 
         rResetBufferSafe \leftside;
         LoggProc "mBuffer",40,"Safety reset on Left side!";
         TPWrite "Safety reset on Left side!";
     ENDIF 
     
-    if  bLichtbeamOK(4) = FALSE THEN 
+    if  TestDI(di_Lightbeam2) = FALSE  THEN 
         rResetBufferSafe \rightside;
         LoggProc "mBuffer",41,"Safety reset on Right side!";
         TPWrite "Safety reset on Right side!";

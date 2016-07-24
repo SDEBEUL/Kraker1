@@ -21,6 +21,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     TASK PERS wobjdata wobj_Magazijn:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
     !Tooldata
     TASK PERS tooldata tSpindle:=[TRUE,[[314,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
+    TASK PERS tooldata tSpindleSensor:=[TRUE,[[314,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata boor_11mm_L190:=[TRUE,[[502,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata tFrees_10:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata tFrees_13:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
@@ -239,12 +240,18 @@ MODULE mSettings_Spindle(SYSMODULE)
         Magpos := fToolMagpos(Toolnum);
         !
             MoveJ Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
+            !check no tool present (deep check)
+            !MoveL Offs(Magpos,0,0,20),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
+            !CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
             MoveL Offs(Magpos,0,0,20),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Offs(Magpos,0,0,2),v50,fine,tSpindle\WObj:=wobj_Magazijn;
             rSpindle_Unlock;
             bActiveTool{Toolnum} :=FALSE;
             MoveL Offs(Magpos,0,0,100),v200,fine,tSpindle\WObj:=wobj_Magazijn;
             Reset doSpindle_Air_On;
+            !check tool detached 
+            !MoveL Offs(Magpos,0,0,20),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
+            !CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
             MoveL Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
         !     
     ENDPROC 
@@ -258,6 +265,9 @@ MODULE mSettings_Spindle(SYSMODULE)
         Magpos := fToolMagpos(Toolnum);
         !
             MoveJ Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
+            !check  tool present
+            !MoveL Offs(Magpos,0,0,20),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
+            !CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
             rSpindle_Unlock;
             MoveL Offs(Magpos,0,0,100),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Magpos,v50,fine,tSpindle\WObj:=wobj_Magazijn;
