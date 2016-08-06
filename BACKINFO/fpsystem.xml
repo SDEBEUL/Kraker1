@@ -42,7 +42,7 @@
       <PROP name="target" value="" />
     </DATA>
     <DATA id="Program Editor">
-      <PROP name="HideDeclarations" value="False" />
+      <PROP name="HideDeclarations" value="True" />
       <PROP name="ShowOnlyServiceRoutines" value="True" />
       <PROP name="ModulePath" value="ctrl:/hd0a/Modules/" />
     </DATA>
@@ -62,13 +62,13 @@
     </DATA>
     <DATA id="IO View">
       <PROP name="Configurations file" value="/hd0a/Kraker_Freesrobot/INTERNAL/FPConfigurations.xml" />
-      <PROP name="Signal view layout" value="Default" />
+      <PROP name="Signal view layout" value="ValueLabelType" />
     </DATA>
     <DATA id="Programmable Key_4">
       <PROP name="type" value="Output" />
       <PROP name="allowInAuto" value="No" />
       <PROP name="pressed" value="Toggle" />
-      <PROP name="target" value="doKP_1_Ventiel" />
+      <PROP name="target" value="doSpindle_CoolingOil_On" />
     </DATA>
     <DATA id="Programmable Key_1">
       <PROP name="type" value="None" />

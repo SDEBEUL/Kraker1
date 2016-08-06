@@ -11,9 +11,9 @@ MODULE mSettings_Spindle(SYSMODULE)
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-114.954,-13.8901,3.19333,84.0191,-65.7533,-33.8858],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
-    local CONST robtarget Magazijn_Pos1:=[[-460.63,-1000.68,235.99],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    local CONST robtarget Magazijn_Pos2:=[[-310.78,-1003.15,242.39],[0.00365054,-0.999993,0.000240162,-0.000632287],[-2,0,-1,0],[500.006,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    local CONST robtarget Magazijn_Pos3:=[[-160.10,-1003.44,234.54],[0.00364142,-0.999993,0.000234007,-0.000609401],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    local CONST robtarget Magazijn_Pos1:=[[-460.63,-1000.68,236],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    local CONST robtarget Magazijn_Pos2:=[[-310.78,-1003.15,242],[0.00365054,-0.999993,0.000240162,-0.000632287],[-2,0,-1,0],[500.006,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    local CONST robtarget Magazijn_Pos3:=[[-160.10,-1003.44,244.47],[0.00364503,-0.999993,0.000235225,-0.000610413],[-2,0,-1,0],[500.002,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos4:=[[-460.63,-1000.68,235.99],[0.00362869,-0.999994,0.000227334,-0.00060485],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos5:=[[-310.37,-1002.67,239.95],[0.00363142,-0.999993,0.00022822,-0.000658208],[-2,0,-1,0],[500.001,9E+09,9E+09,9E+09,9E+09,9E+09]];
     local CONST robtarget Magazijn_Pos6:=[[-160.10,-1003.45,242.36],[0.00363494,-0.999994,0.000227547,-0.000607041],[-2,0,-1,0],[500.003,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -21,21 +21,22 @@ MODULE mSettings_Spindle(SYSMODULE)
     TASK PERS wobjdata wobj_Magazijn:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
     !Tooldata
     TASK PERS tooldata tSpindle:=[TRUE,[[314,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
-    TASK PERS tooldata tSpindleSensor:=[TRUE,[[314,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
+    TASK PERS tooldata tSpindleSensor:=[TRUE,[[437.094,57.5763,-0.711741],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata boor_11mm_L190:=[TRUE,[[502,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
     TASK PERS tooldata tFrees_10:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
-    TASK PERS tooldata tFrees_13:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
+    TASK PERS tooldata tFrees_13:=[TRUE,[[515,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
 
     !Speedata
     PERS speeddata vBoren_11_190:=[4,500,5000,1000];
     PERS speeddata vBoren_aanzet:=[100,500,5000,1000];
     
-    PERS speeddata vFrezen:=[10,500,5000,1000]; 
+    PERS speeddata vFrezen:=[25,500,5000,1000]; 
     PERS speeddata vBorenMetFrees:=[1,500,5000,1000];
     PERS speeddata vFrees_aanzet:=[50,500,5000,1000];
+    
+    !counter to keep trqck of oil pusle,
+    PERS num nOilPulses := 5;
 
-    
-    
     LOCAL PROC rInitSpindelData()
         !voorlopig gefoefel
         TEST fGet_activeTool()
@@ -239,19 +240,21 @@ MODULE mSettings_Spindle(SYSMODULE)
         VAR robtarget Magpos;
         Magpos := fToolMagpos(Toolnum);
         !
-            MoveJ Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
+            Movej Offs(Magpos,0,0,200),v7000,fine,tSpindleSensor\WObj:=wobj_Magazijn;
             !check no tool present (deep check)
-            !MoveL Offs(Magpos,0,0,20),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
-            !CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            MoveL Offs(Magpos,0,0,40),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
+            WaitTime \InPos, 2;
+            CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            Movel Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
             MoveL Offs(Magpos,0,0,20),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Offs(Magpos,0,0,2),v50,fine,tSpindle\WObj:=wobj_Magazijn;
             rSpindle_Unlock;
             bActiveTool{Toolnum} :=FALSE;
-            MoveL Offs(Magpos,0,0,100),v200,fine,tSpindle\WObj:=wobj_Magazijn;
+            MoveL Offs(Magpos,0,0,200),v200,fine,tSpindle\WObj:=wobj_Magazijn;
             Reset doSpindle_Air_On;
             !check tool detached 
-            !MoveL Offs(Magpos,0,0,20),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
-            !CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            MoveL Offs(Magpos,-5,0,68),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
+            CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
             MoveL Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
         !     
     ENDPROC 
@@ -264,10 +267,10 @@ MODULE mSettings_Spindle(SYSMODULE)
         VAR robtarget Magpos;
         Magpos := fToolMagpos(Toolnum);
         !
-            MoveJ Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
+            Movej Offs(Magpos,0,0,200),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
             !check  tool present
-            !MoveL Offs(Magpos,0,0,20),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
-            !CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            MoveL Offs(Magpos,-5,0,68),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
+            CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
             rSpindle_Unlock;
             MoveL Offs(Magpos,0,0,100),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Magpos,v50,fine,tSpindle\WObj:=wobj_Magazijn;
@@ -284,8 +287,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Proc: rSpindle_Unlock
     ! Description: unlock spindel
     !***************************************
-        SetDO doSpindle_Air_On,1;
-        Reset doSpindle_Lock;
+        SetDO doSpindle_Air_On,0;
         SetDO doSpindle_Release,1;
         CheckInput diSpindle_S2,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S2 0 ";
         CheckInput diSpindle_S3,0, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S3 1 ";
@@ -299,12 +301,10 @@ MODULE mSettings_Spindle(SYSMODULE)
     ! Description: lock spindel
     !***************************************
         SetDO doSpindle_Air_On,1;
-        Reset doSpindle_Release;
-        SetDO doSpindle_Lock,1;
+        SetDO doSpindle_Release,0;
         CheckInput diSpindle_S2,0,  \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S2 1 ";
         CheckInput diSpindle_S3,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S3 2 ";
         CheckInput diSpindle_S4,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S4 0 ";
-        Reset doSpindle_Air_On;
         !
     ENDPROC
 
@@ -334,6 +334,67 @@ MODULE mSettings_Spindle(SYSMODULE)
         !
     ENDPROC
 
+   PROC rOilPulse(\num nPulseTime, \switch keepON )
+    !***************************************	    
+    ! Proc: rOil
+    ! Description: control oil mister
+    !***************************************
+    SetDO doSpindle_CoolingAir_On, 1;
+    SetDO so_Olie_aan, 0;
+    
+   IF Present(nPulseTime) THEN 
+    PulseDO \PLength:= nPulseTime, doSpindle_CoolingAir_On;
+    PulseDO \High \PLength:= nPulseTime, so_Olie_aan;
+   ELSE
+       IF Present(keepOn) THEN
+         SetDO doSpindle_CoolingAir_On, 0;
+         SetDO so_Olie_aan, 1;
+       else
+        PulseDO \PLength:= 5, doSpindle_CoolingAir_On;
+        PulseDO \High \PLength:= 5, so_Olie_aan;
+       ENDIF
+   ENDIF
+   
+   
+   ENDPROC
+   
+   PROC roilOFF()
+    !***************************************	    
+    ! Proc: roilOFF
+    ! Description: interupt oil mister 
+    !***************************************
+      SetDO so_Olie_aan, 0;
+      SetDO doSpindle_CoolingAir_On, 1;
+   ENDPROC 
+   
+    PROC roiliNIT()
+    !***************************************	    
+    ! Proc: roilOFF
+    ! Description: interupt oil mister 
+    !***************************************
+     nOilPulses := 10000;
+   ENDPROC 
+   
+  PROC rAutoOilPulse(\num nPulseTime, \switch keepON, \num nPulseinterval)
+    !***************************************	    
+    ! Proc: rOilnPulseinterval
+    ! Description: control oil mister witch counter 
+    !***************************************
+VAR num lPulsinterval;
+   IF NOT Present(nPulseinterval) THEN
+    lPulsinterval := 10;
+   ELSE
+    lPulsinterval := nPulseinterval;
+   ENDIF
+   IF nOilPulses >= lPulsinterval THEN
+     rOilPulse \nPulseTime?nPulseTime, \keepON?keepON;
+     nOilPulses := 0;
+   ELSE
+    Incr nOilPulses;
+    roilOFF;
+   ENDIF
+ ENDPROC
+    
     PROC rStop_Spindle()
     !***************************************	    
     ! Proc: rStop_Spindle
@@ -343,6 +404,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         SetAO aoPLC_Spindle_Speed,0;
         Reset so_Boren_aan;
         Reset doSpindle_Air_On;
+        Reset so_Olie_aan;
         !
     ENDPROC
     

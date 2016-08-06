@@ -151,15 +151,13 @@ PROC rSpindelManUnlock(bool bEnable \switch init)
     !***************************************	    
         WaitTime 3;
         IF TestDI(diSpindle_Button) THEN
-            SetDO doSpindle_Air_On,1;
-            Reset doSpindle_Lock;
+            SetDO doSpindle_Air_On,0;
             SetDO doSpindle_Release,1;
           
             WaitDI diSpindle_Button, 0;
             
             SetDO doSpindle_Air_On,1;
-            Reset doSpindle_Release;
-            SetDO doSpindle_Lock,1;
+            SetDO doSpindle_Release,0;
             IWatch Int3ManUnlock;
         ENDIF
   ENDTRAP

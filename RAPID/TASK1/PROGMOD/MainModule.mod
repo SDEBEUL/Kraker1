@@ -4,7 +4,7 @@ PROC Main()
    LoggProc "Main",18,"PP to main";
      !speed and ACC overrides 
      !VelSet 100, 1500;
-     AccSet 80,80;
+     AccSet 90,90;
      !spindel off just in case
      rStop_Spindle;
      !in manueel onderhouds beschikbaar stellen  
@@ -13,8 +13,6 @@ PROC Main()
      ENDIF
      !Reset safestate on all buffers
      rResetBufferSafe;
-     !Monitor for sombody entering one of the beams
-     rMonitorSafety;
      !check part in gripper
      rGripper_CheckPart FALSE;
      !check home 
@@ -57,7 +55,7 @@ PROC Main()
         lbl_begin:
         nAnswer:=UIMessageBox(\Header:="T_rob"
         \MsgArray:=["Wat wilt u doen?","OM TE STARTEN VOER EERST GoHome UIT !"],
-        \BtnArray:=["Maint","Productie","GoHome","",""]);
+        \BtnArray:=["Maint","Productie","GoHome","EPS",""]);
         TEST nAnswer
         CASE 1:
           rMaint;
@@ -68,7 +66,7 @@ PROC Main()
          go_home \Armonly; 
          GOTO lbl_begin;
         CASE 4:
-          !leeg
+          rEPS;
         CASE 5:
          !leeg
         ENDTEST
@@ -114,6 +112,9 @@ PROC Main()
        
    ENDPROC
 	PROC rEPS()
+        Stop;
 		MoveAbsJ [[1,2,3,4,5,6],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs, v1000, z50, tool0;
+        Softwaresync;
+        Stop;
 	ENDPROC
 ENDMODULE

@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=2;
+    PERS num nActive_Gripper:=3;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;
@@ -12,10 +12,10 @@ MODULE mSettings_Gripper(SYSMODULE)
 	PERS tooldata tGripper:=[TRUE,[[0,220.75,942],[0.5,0.5,-0.5,0.5]],[50,[0,175,400],[1,0,0,0],0,0,0]];
     ! robtargets 
     CONST robtarget pDummy:=[[15227.80,-607.60,468.05],[0.00432513,-0.999965,0.00716432,0.000383958],[-1,0,-3,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pGripper:=[[16029.73,-561.80,452.31],[0.00457466,0.999965,-0.00576448,-0.00404656],[-1,-1,-3,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGripper:=[[16029.70,-561.83,448.04],[0.00457259,0.999965,-0.00574971,-0.00404551],[-1,-1,-3,0],[14350,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !joint targets
     CONST jointtarget pHomeJoint_Grijper:=[[-10.0764,7.09903,-3.16348,0.234242,90.0265,-186.888],[14350.6,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Dummy:=[[-2.34978,-3.94306,2.59534,0.396952,1.07741,-88.065],[14350.5,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Dummy:=[[-10,-3.94306,2.59534,0.396952,1.07741,-88.065],[14350.5,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !vars voor safemove
     VAR pos WZ_High_Pos;
     VAR pos WZ_Low_Pos;
@@ -188,8 +188,8 @@ MODULE mSettings_Gripper(SYSMODULE)
 
     LOCAL PROC rAttach_Dummy()
         !   
-        MoveL reltool(pDummy,0,0,-500),v4000,z200,tool0;
-        MoveL reltool(pDummy,0,0,-50),v1000,fine,tool0;
+        Movej reltool(pDummy,0,0,-500),v7000,z200,tool0;
+        MoveL reltool(pDummy,0,0,-50),v7000,fine,tool0;
         rToolchanger_Open;   
         MoveL pDummy,v500,fine,tool0;
         !push down
@@ -199,16 +199,16 @@ MODULE mSettings_Gripper(SYSMODULE)
         Reset so_Changer_Open;
         Reset do_Gripper_Open;
         MoveL reltool(pDummy,0,0,-50),v500,fine,tool0;
-        MoveL reltool(pDummy,0,0,-500),v4000,z200,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z200,tool0;
+        MoveL reltool(pDummy,0,0,-500),v7000,z200,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v7000,z200,tool0;
         !
     ENDPROC
 
     LOCAL PROC rDetach_Dummy()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v4000,z200,tool0;
-        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v4000,z200,tool0;
-        MoveJ reltool(pDummy,0,0,-500),v4000,z200,tool0;
+        MoveAbsJ fArm_only(pHomeJoint_Dummy)\NoEOffs,v7000,z200,tool0;
+        MoveAbsJ pHomeJoint_Dummy\NoEOffs,v7000,z200,tool0;
+        MoveJ reltool(pDummy,0,0,-500),v7000,z200,tool0;
         MoveL reltool(pDummy,0,0,-50),v1000,z200,tool0;
         MoveL pDummy,v10,fine,tool0;
         rToolchanger_Open;
@@ -218,15 +218,15 @@ MODULE mSettings_Gripper(SYSMODULE)
         MoveL reltool(pDummy,0,0,-50),v500,fine,tool0;
         rReset_Grijper_WZ;
         WaitDI di_Changer_Tool_Aanwezig, 0;
-        MoveL reltool(pDummy,0,0,-500),v4000,z200,tool0;
+        MoveL reltool(pDummy,0,0,-500),v7000,z200,tool0;
         Reset so_Changer_Open;
         !
     ENDPROC 
 
     LOCAL PROC rAttach_Gripper()
         !
-        MoveL RelTool(pGripper,0,0,-500),v4000,z200,tool0;
-        MoveL RelTool(pGripper,0,0,-50),v1000,fine,tool0;
+        MoveL RelTool(pGripper,0,0,-500),v7000,z200,tool0;
+        MoveL RelTool(pGripper,0,0,-50),v7000,fine,tool0;
         rToolchanger_Open;
         MoveL pGripper,v50,fine,tool0;
         rToolchanger_close;
@@ -234,16 +234,16 @@ MODULE mSettings_Gripper(SYSMODULE)
         nActive_Gripper := GrijperTool;
         Check_gripper(GrijperTool);
         MoveL RelTool(pGripper,0,-250,0),v500,fine,tool0;
-        MoveL RelTool(pGripper,0,-250,-850),v2000,z200,tool0;
-        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v4000,z200,tool0;
+        MoveL RelTool(pGripper,0,-250,-850),v7000,z200,tool0;
+        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v7000,z200,tool0;
         !
     ENDPROC
     
     
     LOCAL PROC rDetach_Gripper()
         !
-        MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v2000,z200,tool0;
-        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v2000,z200,tool0;
+        MoveAbsJ fArm_only(pHomeJoint_Grijper)\NoEOffs,v7000,z200,tool0;
+        MoveAbsJ pHomeJoint_Grijper\NoEOffs,v7000,z200,tool0;
         MoveJ RelTool(pGripper,0,-250,-850),v2000,z200,tool0;
         MoveL RelTool(pGripper,0,-250,0),v1000,fine,tool0;
         MoveL pGripper,v500,fine,tool0;
@@ -252,7 +252,7 @@ MODULE mSettings_Gripper(SYSMODULE)
         Check_Notool;
         MoveL RelTool(pGripper,0,0,-70),v500,fine,tool0;
         rReset_Grijper_WZ;
-        MoveL RelTool(pGripper,0,0,-500),v4000,z200,tool0;
+        MoveL RelTool(pGripper,0,0,-500),v7000,z200,tool0;
         !
     ENDPROC
     
@@ -263,7 +263,9 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
       rSet_Grijper_WZ;
       Set so_Changer_Open;
-      CheckInput di_Changer_Vergrendeld,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 1 ";
+      WaitTime \InPos, 3;
+      !commented wegengs kabelbreuk
+      !CheckInput di_Changer_Vergrendeld,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 1 ";
     !
   ENDPROC 
   
@@ -273,8 +275,10 @@ MODULE mSettings_Gripper(SYSMODULE)
     ! Description: sluit toolchanger
     !***************************************
       Reset so_Changer_Open;
-      IF not Present(NoLockcheck) then
-          CheckInput di_Changer_Vergrendeld,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 0 ";
+      IF not Present(NoLockcheck) THEN
+      WaitTime \InPos, 3;
+      !commented wegengs kabelbreuk
+      !CheckInput di_Changer_Vergrendeld,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 0 ";
       endif
       CheckInput di_Changer_Tool_Aanwezig,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Tool_Aanwezig 0 ";
       rReset_Grijper_WZ;

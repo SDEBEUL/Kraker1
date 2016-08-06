@@ -1,6 +1,7 @@
 MODULE m_Main
 PROC Main()
     rSpindelManUnlock TRUE \init;
+    rMonitorSafety;
     WHILE TRUE DO 
       IF UIClientExist() THEN
         rInterFaceHome;

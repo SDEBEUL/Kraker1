@@ -25,12 +25,13 @@ MODULE mDwarsbalk
     !pos met eensnijderd 
     !CONST robtarget pGatCenter_330:=[[0,-66,59.5],[0.674814,0.674808,0.211288,-0.211231],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pGatCenter_330:=[[0.01,-76.82,59.49],[0.67481,0.674814,0.211286,-0.211228],[-1,1,-1,0],[1165.02,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    
+    CONST robtarget p_330CleanStart:=[[475.34,-38.73,75.70],[0.296007,0.689292,0.245469,-0.614005],[-1,0,-1,0],[2334.74,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget p_330CleanEnd:=[[-2094.22,-38.73,75.70],[0.296008,0.689291,0.245468,-0.614007],[-1,0,-1,0],[-234.818,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !stations uitlijning
-    PERS robtarget pMeasurePos1Start:=[[-767.642,14.0348,50.1192],[0.00308684,-0.708002,0.7062,-0.00242395],[-1,0,-3,0],[800.103,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS robtarget pMeasurePos2Start:=[[788.437,14.0383,50.0944],[0.00308121,-0.708103,0.706098,-0.00242806],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    PERS num off_Sensor1_Q1_In:= -767.642;
-    PERS num off_Sensor2_Q1_In:= 788.437;
+    PERS robtarget pMeasurePos1Start:=[[-769.315,14.0313,50.1388],[0.00308722,-0.708007,0.706195,-0.00242576],[-1,0,-3,0],[800.102,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS robtarget pMeasurePos2Start:=[[781.774,14.042,50.1107],[0.00308625,-0.708106,0.706096,-0.0024273],[-1,0,-3,0],[1896.26,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    PERS num off_Sensor1_Q1_In:= -769.315;
+    PERS num off_Sensor2_Q1_In:= 781.774;
     
     !jointagerts
     CONST jointtarget pHomeJoint_StationXboor11:=[[-171.697,20.7673,73.6379,9.40827,-78.4414,76.6744],[2201.06,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -55,6 +56,7 @@ MODULE mDwarsbalk
         !
         MoveJ RelTool(pGat11_330,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
+        rAutoOilPulse;
         MoveL RelTool(pGat11_330,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_330,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_330,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -78,6 +80,7 @@ MODULE mDwarsbalk
         !
         MoveJ RelTool(pGat11_330,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
+        rAutoOilPulse;
         MoveL RelTool(pGat11_330,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_330,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_330,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -103,6 +106,7 @@ MODULE mDwarsbalk
         !
         MoveJ RelTool(pGat11_331,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
+        rAutoOilPulse;
         MoveL RelTool(pGat11_331,0,0,-5),v2000,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -127,6 +131,7 @@ MODULE mDwarsbalk
         !
         MoveJ RelTool(pGat11_331,0,0,-100),v2000,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
+        rAutoOilPulse;
         MoveL RelTool(pGat11_331,0,0,-5),v2000,z5,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_331,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_331,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -152,6 +157,7 @@ MODULE mDwarsbalk
         !
         MoveJ RelTool(pGat11_332,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
+        rAutoOilPulse;
         MoveL RelTool(pGat11_332,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_332,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_332,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -175,6 +181,7 @@ MODULE mDwarsbalk
         !
         MoveJ RelTool(pGat11_332,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
+        rAutoOilPulse;
         MoveL RelTool(pGat11_332,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_332,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_332,0,0,20),vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
@@ -196,10 +203,12 @@ MODULE mDwarsbalk
         num nShift_z,
         num Shift_Track)
         VAR num nStep;
-        VAR num nMillDepth := -8.5;
+        VAR num nMillDepth := -7;
         VAR num nRadius := 16.15;
-        VAR num nPrecut := 0;
+        VAR num nPrecut := 0.5;
         VAR num nCurrStep;
+        VAR num nCurRadius;
+        VAR num nLoop := 0;
         nStep := Spindeltool{Frees_13}.nFreesStap;
         !
         PDispOff;
@@ -213,14 +222,27 @@ MODULE mDwarsbalk
         !
         MoveL Offs(pGatCenter_330,nRadius,10,0), v2000, fine, tFrees_13\WObj:=wobj_Active;
         MoveL Offs(pGatCenter_330,nRadius,3,0),v150,fine,tFrees_13\WObj:=wobj_Active;
+        roiliNIT;
         !voorbewerken
-        FOR nCurrStep FROM -1 TO nMillDepth STEP nStep DO  
-         IF nCurrstep <= nMillDepth THEN nPrecut := 0; stop; ENDIF
+        FOR nLoop FROM -1 TO nMillDepth STEP nStep DO  
+         rAutoOilPulse \keepon , \nPulseinterval:=4 ;
+         IF nLoop <= nMillDepth THEN 
+             rStart_Spindle \nSpeed:= 12000;
+             nCurrStep := -10;
+             nCurRadius := nRadius;
+             nPrecut := 0;
+             roilOFF;
+         ELSE
+             nCurrStep := nLoop;
+             nCurRadius := nRadius-nPrecut;
+         ENDIF
+         TPWrite "CurrStep:" + NumToStr(nCurrStep,2) + "  nPreCur:" + NumToStr(nPrecut,2);
             !in stuk (stuk doorboren)
-            MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_13\WObj:=wobj_Active;
+            MoveL Offs(pGatCenter_330,nCurRadius,nCurrStep,0),vBorenMetFrees,fine,tFrees_13\WObj:=wobj_Active;
             !gat frezen
-            MoveC Offs(pGatCenter_330,0,nCurrStep,nRadius-nPrecut),Offs(pGatCenter_330,-nRadius-nPrecut,nCurrStep,0),vFrezen,z0,tFrees_13\WObj:=wobj_Active;
-            MoveC Offs(pGatCenter_330,0,nCurrStep,-nRadius-nPrecut),Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vFrezen,fine,tFrees_13\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,nCurRadius),Offs(pGatCenter_330,-nCurRadius,nCurrStep,0),vFrezen,z0,tFrees_13\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,-nCurRadius),Offs(pGatCenter_330,nCurRadius,nCurrStep,0),vFrezen,fine,tFrees_13\WObj:=wobj_Active;
+            roilOFF;
         ENDFOR
        !weg van stuk 
        MoveL RelTool(pGatCenter_330,0,0,-30),v150,z5,tFrees_13\WObj:=wobj_Active;
@@ -237,10 +259,12 @@ MODULE mDwarsbalk
         num nShift_z,
         num Shift_Track)
         VAR num nStep;
-        VAR num nMillDepth := -8.5;
+        VAR num nMillDepth := -7;
         VAR num nRadius := 11.15;
-        VAR num nPrecut :=0;
+        VAR num nPrecut := 0.5;
         VAR num nCurrStep;
+        VAR num nCurRadius;
+        VAR num nLoop := 0;
         nStep := Spindeltool{Frees_13}.nFreesStap;
         !
         PDispOff;
@@ -255,15 +279,27 @@ MODULE mDwarsbalk
         !
         MoveL Offs(pGatCenter_330,nRadius,10,0),v2000,z50,tFrees_13\WObj:=wobj_Active;
         MoveL Offs(pGatCenter_330,nRadius,3,0),v150,fine,tFrees_13\WObj:=wobj_Active;
-        
+        roiliNIT;
         !voorbewerken
-        FOR nCurrStep FROM -1 TO nMillDepth STEP nStep DO  
-         IF nCurrstep <= nMillDepth THEN nPrecut := 0; stop; ENDIF
+        FOR nLoop FROM -1 TO nMillDepth STEP nStep DO  
+         rAutoOilPulse \keepon , \nPulseinterval:=4 ;
+         IF nLoop <= nMillDepth THEN 
+             rStart_Spindle \nSpeed:= 12000;
+             nCurrStep := -10;
+             nCurRadius := nRadius;
+             nPrecut := 0;
+             roilOFF;
+         ELSE
+             nCurrStep := nLoop;
+             nCurRadius := nRadius-nPrecut;
+         ENDIF
+            TPWrite "CurrStep:" + NumToStr(nCurrStep,2) + "  nPreCur:" + NumToStr(nPrecut,2);
             !in stuk (stuk doorboren)
-            MoveL Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vBorenMetFrees,fine,tFrees_13\WObj:=wobj_Active;
+            MoveL Offs(pGatCenter_330,nCurRadius,nCurrStep,0),vBorenMetFrees,fine,tFrees_13\WObj:=wobj_Active;
             !gat frezen
-            MoveC Offs(pGatCenter_330,0,nCurrStep,nRadius-nPrecut),Offs(pGatCenter_330,-nRadius-nPrecut,nCurrStep,0),vFrezen,z0,tFrees_13\WObj:=wobj_Active;
-            MoveC Offs(pGatCenter_330,0,nCurrStep,-nRadius-nPrecut),Offs(pGatCenter_330,nRadius-nPrecut,nCurrStep,0),vFrezen,fine,tFrees_13\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,nCurRadius),Offs(pGatCenter_330,-nCurRadius,nCurrStep,0),vFrezen,z0,tFrees_13\WObj:=wobj_Active;
+            MoveC Offs(pGatCenter_330,0,nCurrStep,-nCurRadius),Offs(pGatCenter_330,nCurRadius,nCurrStep,0),vFrezen,fine,tFrees_13\WObj:=wobj_Active;
+            roilOFF;
         ENDFOR
        MoveL Offs(pGatCenter_330,nRadius,nMillDepth,0),vFrees_aanzet,fine,tFrees_13\WObj:=wobj_Active;
        !weg van stuk 
@@ -579,8 +615,20 @@ MODULE mDwarsbalk
         !
         rFrezen_Gat_45mm_Dwarsbalk_330 665,0,0,trackshift;
         !
+        !kuisen 
+        trackshift := nXdistanceBetweenWobj(wobj_BalkStation1,WobjActiveStation);
+        EOffsSet [trackshift,0,0,0,0,0];
+        rSetSationClamps nStation, \open, \nWaittime:=0;
+        !
+        MoveJ Offs(p_330CleanStart,0,200,0), v2000, fine, tFrees_13\WObj:=wobj_Active;
+        rSetSationClamps nStation , \open, \Check;
+        MoveL p_330CleanStart,v2000,z50,tFrees_13\WObj:=wobj_Active;
+        MoveL p_330CleanEnd, v200, z50, tFrees_13\WObj:=wobj_Active;
+        MoveL Offs(p_330CleanEnd,0,200,0),v2000,z50,tFrees_13\WObj:=wobj_Active;
+        !
         EOffsSet [trackshift+1300,0,0,0,0,0];
         MoveAbsJ pHomeJoint_StationXFrees11,v4000,z50,tool0; 
+        rSetSationClamps nStation, \close, \nWaittime:= 0;
         !
     ENDPROC
     

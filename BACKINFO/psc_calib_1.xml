@@ -6,5 +6,5 @@
   <Motor_Calib JointID="4" Cal_Offset="0.728257" AbsAcc="false" />
   <Motor_Calib JointID="5" Cal_Offset="4.32065" AbsAcc="false" />
   <Motor_Calib JointID="6" Cal_Offset="2.62292" AbsAcc="false" />
-  <Motor_Calib JointID="7" Cal_Offset="3.79373" AbsAcc="false" />
+  <Motor_Calib JointID="7" Cal_Offset="0" AbsAcc="false" />
 </Motor>

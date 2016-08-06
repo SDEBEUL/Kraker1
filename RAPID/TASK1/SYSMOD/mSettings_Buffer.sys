@@ -43,11 +43,11 @@ PROC Getnextpart()
         nbuffernummer := nGetInvoerbuffer();
         !robot kan nergens een stuk halen 
         IF nbuffernummer = 0 THEN
-          FOR i FROM 1 TO 6 DO 
+            FOR i FROM 1 TO 6 DO 
             IF (InvoerBuffer{i}.InDienst = TRUE) AND (InvoerBuffer{i}.Leeg = TRUE) AND (InvoerBuffer{i}.Veilig = false) AND bLichtbeamOK(i) THEN 
-               getpart(i);
+                getpart(i);
                IF fCheckGripperPart(\nExpection:= 1) THEN
-                 rUpdateInvoerbuffer nbuffernummer;
+
                  RETURN;
                ENDIF
             ENDIF
@@ -463,48 +463,5 @@ FUNC bool bLichtbeamOK(num nBuffer)
     endif
 ENDFUNC 
 
-PROC rMonitorSafety()
-  !***************************************	    
-  ! Func: rMonitorSafety
-  ! Description: kijkt of 1 van de lichtschermen gebroken is
-  ! indien nodig word buffer veilig van die kant gereset 
-  !***************************************  
-     !
-     IDelete Int3Sprvlichtbeam1;  
-     IDelete Int4Sprvlichtbeam2;
-     CONNECT Int3Sprvlichtbeam1 WITH tResetbuffersafety;
-     CONNECT Int4Sprvlichtbeam2 WITH tResetbuffersafety;
-     !watch for interupt on safety 
-     ISignalDI di_Lightbeam1, 0,Int3Sprvlichtbeam1;
-     ISignalDI di_Lightbeam2, 0,Int4Sprvlichtbeam2;
-     IWatch Int3Sprvlichtbeam1;
-     IWatch Int4Sprvlichtbeam2;
-ENDPROC 
-
-TRAP tResetbuffersafety
-    !***************************************	    
-    ! Trap: tResetbuffersafety
-    ! Description: reset buffer veilig als lichtscherm is gebroken  
-    ! Connected in rMonitorSafety
-    !***************************************
-    !
-    ISleep Int3Sprvlichtbeam1;
-    ISleep Int4Sprvlichtbeam2;
-    if  TestDI(di_Lightbeam1) = FALSE THEN 
-        rResetBufferSafe \leftside;
-        LoggProc "mBuffer",40,"Safety reset on Left side!";
-        TPWrite "Safety reset on Left side!";
-    ENDIF 
-    
-    if  TestDI(di_Lightbeam2) = FALSE  THEN 
-        rResetBufferSafe \rightside;
-        LoggProc "mBuffer",41,"Safety reset on Right side!";
-        TPWrite "Safety reset on Right side!";
-    ENDIF 
-    IWatch Int3Sprvlichtbeam1;
-    IWatch Int4Sprvlichtbeam2;
-    !
-  ENDTRAP
-  
  
 ENDMODULE

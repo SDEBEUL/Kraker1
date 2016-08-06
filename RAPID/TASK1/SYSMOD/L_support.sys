@@ -78,61 +78,59 @@ MODULE L_support(SYSMODULE)
   !station 1-5 zijn de automatische station 6 is het manuele station gebruikt voor onderranden en bovenranden
   PERS StationType Station{6} := 
   [
-  [TRUE,0,0,0,-1.68317,-2.77161,-0.594727],
-  [TRUE,0,0,0,-2.19791,-3.73492,-0.660889],
-  [FALSE,0,0,0,-1.42023,-2.20862,-0.631836],
-  [FALSE,0,0,0,-1.49481,-2.63104,-0.358582],
+  [TRUE,1,0,0,1.26956,1.32593,1.2132],
+  [TRUE,1,0,0,-0.160126,-0.460693,0.140442],
+  [TRUE,1,0,0,-1.5513,-1.28131,-1.82129],
+  [TRUE,0,0,0,-1.12619,-0.620422,-1.63196],
   [FALSE,0,2.64965E-31,0,1.4013E-45,1.05938E-42,1.05938E-42],
-  [TRUE,0,2.64554E-31,0,8.40779E-45,2.66006E-31,2.8026E-45]
+  [TRUE,7,2.64554E-31,7,8.40779E-45,2.66006E-31,2.8026E-45]
   ];
   PERS UitvoerBufferType UitvoerBuffer{6} :=
   [
-  [TRUE,FALSE,TRUE,FALSE,5,8,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,2,0,0,0,0,0,0]],
-  [FALSE,TRUE,FALSE,FALSE,0,8,[0,0,0,0,2,2,0,0,0,0,0,0],[0,0,0,0,2,3,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
-  [FALSE,FALSE,TRUE,FALSE,5,8,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,1,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
-  [FALSE,FALSE,FALSE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]]
+  [TRUE,TRUE,FALSE,FALSE,1,1,[0,0,0,0,37,0,0,0,0,0,0,0],[0,0,0,0,39,0,0,0,0,0,0,0]],
+  [TRUE,FALSE,TRUE,FALSE,3,1,[0,0,0,0,0,23,0,0,0,0,0,0],[0,0,0,0,0,38,0,0,0,0,0,0]],
+  [FALSE,FALSE,TRUE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
+  [TRUE,FALSE,TRUE,FALSE,5,8,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,39,0,0,0,0,0,0]],
+  [FALSE,TRUE,TRUE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],
+  [FALSE,TRUE,TRUE,FALSE,0,0,[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]]
   ];
   PERS InvoerBufferType InvoerBuffer{6} :=
   [
-  [FALSE,FALSE,TRUE,FALSE,7,2],
   [TRUE,FALSE,TRUE,FALSE,6,1],
-  [FALSE,FALSE,FALSE,FALSE,0,0],
-  [FALSE,FALSE,FALSE,FALSE,4,4],
-  [FALSE,FALSE,FALSE,FALSE,0,0],
-  [FALSE,FALSE,FALSE,FALSE,0,0]
+  [TRUE,FALSE,TRUE,FALSE,6,1],
+  [FALSE,FALSE,TRUE,FALSE,7,1],
+  [TRUE,FALSE,FALSE,TRUE,1,4],
+  [FALSE,FALSE,FALSE,FALSE,1,2],
+  [FALSE,FALSE,TRUE,FALSE,6,1]
   ];
-  PERS ProcuctionType Production := [TRUE,FALSE,FALSE];
+  PERS ProcuctionType Production := [TRUE,TRUE,FALSE];
   PERS SpindeltoolType Spindeltool{6} := 
   [
-  ["Boor 11",3500,[4,500,5000,1000],[10,500,5000,1000],[100,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
+  ["Boor 11",3000,[4,500,5000,1000],[10,500,5000,1000],[100,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
   ["Frees 11",6000,[4,500,5000,1000],[15,500,5000,1000],[10,500,5000,1000],[80,500,5000,1000],-1,-0.5,0,0,"",1000,1000],
-  ["Frees_13",4500,[1,500,5000,1000],[10,500,5000,1000],[40,500,5000,1000],[50,500,5000,1000],-1,1,0,0,"",1000,1000],
+  ["Frees_13",6000,[1,500,5000,1000],[25,500,5000,1000],[40,500,5000,1000],[50,500,5000,1000],-2,1,0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",1000,1000],
   ["Leeg",1800,[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],[0.1,500,5000,1000],1,1,0,0,"",0,0] 
   ];
   !vars shared with the UI task for visulaisation
   PERS num nLastInvoerbuffer := 4;
-  PERS num nLastUitvoerbuffer := 1;
+  PERS num nLastUitvoerbuffer := 4;
   
   !******************************************************************************
   
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+009,9E+009,9E+009,9E+009,9E+009]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[4928.5,-1043.5,507],[0.707107,0.707107,0,0]],[[-1202.5,-27.5,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[10925.9,-1046,509],[0.707107,0.707107,0,0]],[[0,0,0],[1,0,0,0]]];
   PERS tooldata TempTool:=[TRUE,[[0,220.75,942],[0.5,0.5,-0.5,0.5]],[50,[0,175,400],[1,0,0,0],0,0,0]];
-  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[8700,0,15],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+  PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[0,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
   !interupts
   VAR intnum Int1SprvSpindel := 1;
   VAR intnum Int2SprvPart := 2;
-  VAR intnum Int3Sprvlichtbeam1 := 3;
-  VAR intnum Int4Sprvlichtbeam2 := 4;
   !logfile
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=1000;
-  LOCAL PERS num logCounterErrDisp:=364;
+  LOCAL PERS num logCounterErrDisp:=148;
   LOCAL VAR iodev file;
   !CycleTime
   VAR clock CTclock{6};

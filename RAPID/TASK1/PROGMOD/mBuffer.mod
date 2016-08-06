@@ -8,25 +8,25 @@ MODULE mBuffer
 	TASK PERS wobjdata Wobj_Buffer5:=[FALSE,TRUE,"",[[11604,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
 	TASK PERS wobjdata Wobj_Buffer6:=[FALSE,TRUE,"",[[14500,0,0],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
   !deze worden gebruikt en verschoven om het stuk te nemen 
-	TASK PERS wobjdata Wobj_Buffer_Onder_1:=[FALSE,TRUE,"",[[965,1086,310],[1,0,0,0]],[[0,0,400],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Onder_2:=[FALSE,TRUE,"",[[3860,1086,310],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Onder_3:=[FALSE,TRUE,"",[[6765,1086,321],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Onder_4:=[FALSE,TRUE,"",[[9665,1086,321],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Onder_5:=[FALSE,TRUE,"",[[12569,1086,317],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Onder_6:=[FALSE,TRUE,"",[[15465,1086,310],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Boven_1:=[FALSE,TRUE,"",[[965,1096,1400],[1,0,0,0]],[[0,516,200],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Boven_2:=[FALSE,TRUE,"",[[3860,1096,1400],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Boven_3:=[FALSE,TRUE,"",[[6765,1096,1400],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Boven_4:=[FALSE,TRUE,"",[[9665,1096,1400],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Boven_5:=[FALSE,TRUE,"",[[12569,1096,1400],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
-	TASK PERS wobjdata Wobj_Buffer_Boven_6:=[FALSE,TRUE,"",[[15465,1096,1400],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Onder_1:=[FALSE,TRUE,"",[[965,1086,280],[1,0,0,0]],[[0,0,400],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Onder_2:=[FALSE,TRUE,"",[[3860,1086,280],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Onder_3:=[FALSE,TRUE,"",[[6765,1086,290],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Onder_4:=[FALSE,TRUE,"",[[9665,1086,290],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Onder_5:=[FALSE,TRUE,"",[[12569,1086,287],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Onder_6:=[FALSE,TRUE,"",[[15465,1086,280],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Boven_1:=[FALSE,TRUE,"",[[965,1096,1370],[1,0,0,0]],[[0,516,200],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Boven_2:=[FALSE,TRUE,"",[[3860,1096,1370],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Boven_3:=[FALSE,TRUE,"",[[6765,1096,1370],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Boven_4:=[FALSE,TRUE,"",[[9665,1096,1370],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Boven_5:=[FALSE,TRUE,"",[[12569,1096,1370],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
+	TASK PERS wobjdata Wobj_Buffer_Boven_6:=[FALSE,TRUE,"",[[15465,1096,1370],[1,0,0,0]],[[0,0,0],[1,0,0,0]]];
 
   !Robtargets  
 	CONST robtarget pBuffer_Onder_1:=[[30.3,5,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_2:=[[34.3,5,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_3:=[[33.5,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_4:=[[32.3,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
-	CONST robtarget pBuffer_Onder_5:=[[33.6,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
+	CONST robtarget pBuffer_Onder_5:=[[33.6,5,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Onder_6:=[[34.6,-6.51,2.69],[0.706828,-0.00208267,0.00740312,0.707344],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Boven_1:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 	CONST robtarget pBuffer_Boven_2:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
@@ -36,12 +36,12 @@ MODULE mBuffer
 	CONST robtarget pBuffer_Boven_6:=[[29.32,-6.51,7.59],[0.709401,0.00311641,0.000945133,0.704797],[-1,-4,-3,0],[-0.00539908,9E+09,9E+09,9E+09,9E+09,9E+09]];
 
   !Jointtargets
-    CONST jointtarget pHomeJoint_Bu_1:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[2841.97,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_2:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[2895,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_3:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[5950,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_4:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[8700,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_5:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[11604,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST jointtarget pHomeJoint_Bu_6:=[[5.11316E-05,-20,6.39656E-05,-180,-20,-90.0003],[14500,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_1:=[[-10,-19.971,9.60894E-05,-180,-20.0009,-90.0009],[2841.95,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_2:=[[-10,-19.971,9.60894E-05,-180,-20.0009,-90.0009],[2895,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_3:=[[-10,-19.971,9.60894E-05,-180,-20.0009,-90.0009],[5950,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_4:=[[-10,-19.971,9.60894E-05,-180,-20.0009,-90.0009],[8700,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_5:=[[-10,-19.971,9.60894E-05,-180,-20.0009,-90.0009],[11604,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST jointtarget pHomeJoint_Bu_6:=[[-10,-19.971,9.60894E-05,-180,-20.0009,-90.0009],[14500,9E+09,9E+09,9E+09,9E+09,9E+09]];
    
     LOCAL pers num Shift_Track := 8700;
     LOCAL pers num Shift_x := 0;
@@ -81,7 +81,7 @@ MODULE mBuffer
     IF NOT fCheckGripperPart(\nExpection:= 1) THEN
        !NO RACK
         LoggProc "mBuffer",30,"Actieve uitvoerbuffer:"+NumToStr(nBuffernum,0)+ " niet gevonden";
-        UitvoerBuffer{nBuffernum}.vol := TRUE;
+        UitvoerBuffer{nBuffernum}.leeg := TRUE;
         MoveL Offs(Pbuffer,0,-200,0),v4000,z50,tGripper\WObj:=wobj_Active;
         MoveL Offs(Pbuffer,0,-200,450),v4000,z50,tGripper\WObj:=wobj_Active;
         InvoerBuffer{nBuffernum}.Veilig := TRUE;
@@ -113,6 +113,11 @@ MODULE mBuffer
         !laat nu de normale stuk uit routine ovenemen
        InvoerBuffer{nBuffernum}.ActiefStuk := nStuk;
        InvoerBuffer{nBuffernum}.Actievelaag := nLaag;
+       IF (nStuk = 8) AND (nLaag = 5) THEN 
+         InvoerBuffer{nBuffernum}.leeg := TRUE;
+       ELSE
+         InvoerBuffer{nBuffernum}.leeg := FALSE;
+       ENDIF 
         !
         Buffer_UIT_PickPart nBuffernum, WobjBufferx ,Pbuffer;
         ! set safe
@@ -125,11 +130,14 @@ MODULE mBuffer
    VAR num xPos := 0;
    VAR num yPos := 0;
    VAR num zPos := 0;
+IF InvoerBuffer{nBuffernum}.leeg  THEN 
+  RETURN;
+ENDIF
  lbl_nextpart:
    yPos := nYposPart(InvoerBuffer{nBuffernum}.ActiefStuk);
    ZPos := nZposPart(InvoerBuffer{nBuffernum}.Actievelaag);
-   !
-      wobj_Active:=WobjBufferx;
+    !
+      wobj_Active:=WobjBufferx;      
       wobj_Active.oframe.trans:=[xPos,ypos,zpos];
       rGripper_Open;
     !
@@ -146,17 +154,19 @@ MODULE mBuffer
            rGripper_Close;
            rDecrInvoerbuffer nBuffernum;
           ELSE !stuk nog steeds niet aanwezig = volgende stuk 
-            IF yPos = 615 THEN !als dit laatste stuk in de rij was eerst naar achter
-                MoveL Offs(Pbuffer,0,-750,0),v4000,z50,tGripper\WObj:=wobj_Active;
-
-                IF InvoerBuffer{nBuffernum}.Leeg THEN 
-                  RETURN;
-                ENDIF 
-           ELSE
-              rDecrInvoerbuffer nBuffernum;
-              goto lbl_nextPart; 
-            ENDIF
-          ENDIF
+            IF (InvoerBuffer{nBuffernum}.ActiefStuk = 8) THEN !als dit laatste stuk in de rij was eerst naar achter
+               MoveL Offs(Pbuffer,0,-750,0),v4000,z50,tGripper\WObj:=wobj_Active;
+               rDecrInvoerbuffer nBuffernum;  
+                    IF InvoerBuffer{nBuffernum}.Leeg THEN 
+                      RETURN;
+                    ELSE
+                      goto lbl_nextPart; 
+                    ENDIF 
+               ELSE
+                  rDecrInvoerbuffer nBuffernum;  
+                  goto lbl_nextPart; 
+              ENDIF
+             ENDIF
         ENDIF 
         !stuk tegen aanslag en goed duwen 
           MoveL Offs(Pbuffer,10,0,0),v4000,fine,tGripper\WObj:=wobj_Active;
@@ -169,6 +179,9 @@ MODULE mBuffer
           rGripper_CheckPart TRUE \Supervision; 
         MoveL Offs(Pbuffer,-5,0,5),v4000,z50,tGripper\WObj:=wobj_Active;
         MoveL Offs(Pbuffer,-5,-5,5),v4000,z50,tGripper\WObj:=wobj_Active;
+        !ga naar vaste positie 
+        wobj_Active.oframe.trans:=[0,0,0];
+        MoveL Offs(Pbuffer,0,0,530),v4000,z50,tGripper\WObj:=wobj_Active;
  ENDPROC
     
 PROC Buffer_1_Uit()
@@ -181,7 +194,7 @@ PROC Buffer_1_Uit()
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer1.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer1;
+    MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer1;
     MoveJ [[1651.25,-685.86,2349.66],[0.850394,0.0649746,-0.511807,-0.103256],[-1,-2,-3,0],[-0.00279531,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
     MoveJ [[1419.37,422.00,831.75],[0.870237,0.0688476,0.255949,0.415256],[-1,-4,-2,0],[-0.0018189,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
     MoveJ [[1259.95,829.12,876.64],[0.806798,-0.1922,0.159569,0.53542],[0,-4,-3,0],[0.00174832,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
@@ -192,7 +205,7 @@ PROC Buffer_1_Uit()
     MoveL [[964.08,1081.20,842.98],[0.706832,-0.00207937,0.00739282,0.70734],[-1,-4,-3,0],[-0.00832831,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer1;
     MoveL [[973.50,866.47,863.12],[0.694052,-0.12894,0.133882,0.695515],[-1,-4,-3,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer1;
     Movej [[1077.38,701.93,1307.07],[0.693619,-0.131098,0.136236,0.695087],[-1,-4,-2,0],[-0.00637549,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
-    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
+    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer1;
     !
 ENDPROC
 
@@ -206,17 +219,18 @@ PROC Buffer_2_Uit()
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer2.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveAbsJ pHomeJoint_Bu_2\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer2;
-    MoveJ [[1419.34,422.03,831.74],[0.686907,-0.15701,0.151426,0.693236],[-1,-4,-3,0],[-0.000517021,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
-    MoveJ [[965.50,886.91,831.74],[0.686907,-0.157009,0.151423,0.693237],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
-    MoveJ [[965.94,941.91,800.11],[0.706966,-0.000164395,-0.000372177,0.707248],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveAbsJ pHomeJoint_Bu_2\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer2;
+    MoveJ [[1651.25,-685.86,2349.66],[0.850394,0.0649746,-0.511807,-0.103256],[-1,-2,-3,0],[-0.00279531,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveJ [[1419.37,422.00,831.75],[0.870237,0.0688476,0.255949,0.415256],[-1,-4,-2,0],[-0.0018189,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveJ [[1259.95,829.12,876.64],[0.806798,-0.1922,0.159569,0.53542],[0,-4,-3,0],[0.00174832,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveJ [[965.95,941.91,800.11],[0.699084,-0.105843,0.105271,0.699283],[-1,-4,-3,0],[0.000784861,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
     !
     BUFFER_UIT 2, Wobj_Buffer_Onder_2, pBuffer_Onder_2;
     ! 
     MoveL [[964.08,1081.20,842.98],[0.706832,-0.00207937,0.00739282,0.70734],[-1,-4,-3,0],[-0.00832831,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer2;
     MoveL [[964.08,859.22,842.98],[0.706872,0.00536178,-3.72045E-05,0.707321],[-1,-4,-3,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer2;
     MoveJ [[966.30,636.73,1307.08],[0.706872,0.00536242,-4.20536E-05,0.707321],[-1,-4,-3,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
-    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer2;
     !    
 ENDPROC
 
@@ -230,17 +244,18 @@ PROC Buffer_3_Uit()
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer3.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveAbsJ pHomeJoint_Bu_3\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer3;
-    MoveJ [[1419.34,422.03,831.74],[0.686907,-0.15701,0.151426,0.693236],[-1,-4,-3,0],[-0.000517021,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
-    MoveJ [[965.50,886.91,831.74],[0.686907,-0.157009,0.151423,0.693237],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
-    MoveJ [[965.94,941.91,800.11],[0.706966,-0.000164395,-0.000372177,0.707248],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveAbsJ pHomeJoint_Bu_3\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer3;
+    MoveJ [[1651.25,-685.86,2349.66],[0.850394,0.0649746,-0.511807,-0.103256],[-1,-2,-3,0],[-0.00279531,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveJ [[1419.37,422.00,831.75],[0.870237,0.0688476,0.255949,0.415256],[-1,-4,-2,0],[-0.0018189,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveJ [[1259.95,829.12,876.64],[0.806798,-0.1922,0.159569,0.53542],[0,-4,-3,0],[0.00174832,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveJ [[965.95,941.91,800.11],[0.699084,-0.105843,0.105271,0.699283],[-1,-4,-3,0],[0.000784861,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
     !
     BUFFER_UIT 3, Wobj_Buffer_Onder_3, pBuffer_Onder_3;
     ! 
     MoveL [[964.08,1081.20,842.98],[0.706832,-0.00207937,0.00739282,0.70734],[-1,-4,-3,0],[-0.00832831,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer3;
     MoveL [[964.08,859.22,842.98],[0.706872,0.00536178,-3.72045E-05,0.707321],[-1,-4,-3,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer3;
     MoveJ [[966.30,636.73,1307.08],[0.706872,0.00536242,-4.20536E-05,0.707321],[-1,-4,-3,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
-    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer3;
     ! 
 ENDPROC
     
@@ -254,17 +269,18 @@ PROC Buffer_4_Uit()
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer4.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveAbsJ pHomeJoint_Bu_4\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer4;
-    MoveJ [[1419.34,422.03,831.74],[0.686907,-0.15701,0.151426,0.693236],[-1,-4,-3,0],[-0.000517021,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
-    MoveJ [[965.50,886.91,831.74],[0.686907,-0.157009,0.151423,0.693237],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
-    MoveJ [[965.94,941.91,800.11],[0.706966,-0.000164395,-0.000372177,0.707248],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveAbsJ pHomeJoint_Bu_4\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer4;
+    MoveJ [[1651.25,-685.86,2349.66],[0.850394,0.0649746,-0.511807,-0.103256],[-1,-2,-3,0],[-0.00279531,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveJ [[1419.37,422.00,831.75],[0.870237,0.0688476,0.255949,0.415256],[-1,-4,-2,0],[-0.0018189,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveJ [[1259.95,829.12,876.64],[0.806798,-0.1922,0.159569,0.53542],[0,-4,-3,0],[0.00174832,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveJ [[965.95,941.91,800.11],[0.699084,-0.105843,0.105271,0.699283],[-1,-4,-3,0],[0.000784861,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
     !
     BUFFER_UIT 4, Wobj_Buffer_Onder_4, pBuffer_Onder_4;
     ! 
     MoveL [[964.08,1081.20,842.98],[0.706832,-0.00207937,0.00739282,0.70734],[-1,-4,-3,0],[-0.00832831,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer4;
     MoveL [[964.08,859.22,842.98],[0.706872,0.00536178,-3.72045E-05,0.707321],[-1,-4,-3,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer4;
     MoveJ [[966.30,636.73,1307.08],[0.706872,0.00536242,-4.20536E-05,0.707321],[-1,-4,-3,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
-    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer4;
     !  
 ENDPROC
 
@@ -278,17 +294,18 @@ PROC Buffer_5_Uit()
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer5.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer5;
-    MoveJ [[1419.34,422.03,831.74],[0.686907,-0.15701,0.151426,0.693236],[-1,-4,-3,0],[-0.000517021,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
-    MoveJ [[965.50,886.91,831.74],[0.686907,-0.157009,0.151423,0.693237],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
-    MoveJ [[965.94,941.91,800.11],[0.706966,-0.000164395,-0.000372177,0.707248],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer5;
+    MoveJ [[1651.25,-685.86,2349.66],[0.850394,0.0649746,-0.511807,-0.103256],[-1,-2,-3,0],[-0.00279531,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveJ [[1419.37,422.00,831.75],[0.870237,0.0688476,0.255949,0.415256],[-1,-4,-2,0],[-0.0018189,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveJ [[1259.95,829.12,876.64],[0.806798,-0.1922,0.159569,0.53542],[0,-4,-3,0],[0.00174832,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveJ [[965.95,941.91,800.11],[0.699084,-0.105843,0.105271,0.699283],[-1,-4,-3,0],[0.000784861,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
     !
     BUFFER_UIT 5, Wobj_Buffer_Onder_5, pBuffer_Onder_5;
     ! 
     MoveL [[964.08,1081.20,842.98],[0.706832,-0.00207937,0.00739282,0.70734],[-1,-4,-3,0],[-0.00832831,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer5;
     MoveL [[964.08,859.22,842.98],[0.706872,0.00536178,-3.72045E-05,0.707321],[-1,-4,-3,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer5;
     MoveJ [[966.30,636.73,1307.08],[0.706872,0.00536242,-4.20536E-05,0.707321],[-1,-4,-3,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
-    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer5;
     !  
 ENDPROC
 
@@ -302,17 +319,18 @@ PROC Buffer_6_Uit()
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer6.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveAbsJ pHomeJoint_Bu_6\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer6;
-    MoveJ [[1419.34,422.03,831.74],[0.686907,-0.15701,0.151426,0.693236],[-1,-4,-3,0],[-0.000517021,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
-    MoveJ [[965.50,886.91,831.74],[0.686907,-0.157009,0.151423,0.693237],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
-    MoveJ [[965.94,941.91,800.11],[0.706966,-0.000164395,-0.000372177,0.707248],[-1,-4,-3,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveAbsJ pHomeJoint_Bu_6\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer6;
+    MoveJ [[1651.25,-685.86,2349.66],[0.850394,0.0649746,-0.511807,-0.103256],[-1,-2,-3,0],[-0.00279531,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveJ [[1419.37,422.00,831.75],[0.870237,0.0688476,0.255949,0.415256],[-1,-4,-2,0],[-0.0018189,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveJ [[1259.95,829.12,876.64],[0.806798,-0.1922,0.159569,0.53542],[0,-4,-3,0],[0.00174832,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveJ [[965.95,941.91,800.11],[0.699084,-0.105843,0.105271,0.699283],[-1,-4,-3,0],[0.000784861,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
     !
     BUFFER_UIT 6, Wobj_Buffer_Onder_6, pBuffer_Onder_6;
     ! 
     MoveL [[964.08,1081.20,842.98],[0.706832,-0.00207937,0.00739282,0.70734],[-1,-4,-3,0],[-0.00832831,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer6;
     MoveL [[964.08,859.22,842.98],[0.706872,0.00536178,-3.72045E-05,0.707321],[-1,-4,-3,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer6;
     MoveJ [[966.30,636.73,1307.08],[0.706872,0.00536242,-4.20536E-05,0.707321],[-1,-4,-3,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
-    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveJ [[980.56,16.39,2883.35],[0.582481,0.418994,-0.479568,0.505147],[-1,-3,-2,0],[-0.00897925,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer6;
     !
 ENDPROC
 
@@ -337,6 +355,7 @@ ENDPROC
    VAR num zPos := 0;
    VAR num nLaag;
    VAR num nStuk;
+   VAR bool bMemory := FALSE;
   !eerst naar een postie om te kijken of het rek er staat. 
    yPos := nYposPart(1);
    ZPos := nZposPart(5);
@@ -372,7 +391,7 @@ ENDPROC
   Lbl_laagGevonden:
 
      FOR stuk FROM 1 TO 8 STEP 1 DO
-       MoveL Offs(Pbuffer,0,-80+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
+       MoveL Offs(Pbuffer,0,-75+nYposPart(stuk),nZposPart(nLaag)),v100,z0,tGripper\WObj:=wobj_Active;
        IF (fCheckGripperNotInrange() = FALSE) OR (stuk = 8) THEN
           nStuk := stuk;
           !CRASH CRASH 
@@ -421,6 +440,10 @@ lbl_nextpart:
               rDecrUitvoerbuffer(nBuffernum);
               TPWrite NumToStr(UitvoerBuffer{nBuffernum}.ActiefStuk,0) + " w " + NumToStr(UitvoerBuffer{nBuffernum}.Actievelaag,0);
               IF UitvoerBuffer{nBuffernum}.ActiefStuk = 8 and UitvoerBuffer{nBuffernum}.Actievelaag = 5 THEN
+                  IF bMemory = FALSE THEN 
+                      bMemory := TRUE;
+                      goto lbl_nextPart; 
+                  ENDIF
                   rResetUitvoerbuffer nBuffernum;
                   UitvoerBuffer{nBuffernum}.veilig :=TRUE;
                   RETURN;
@@ -442,6 +465,11 @@ lbl_nextpart:
    VAR num zPos := 0;
    yPos := nYposPart(Uitvoerbuffer{nBuffernum}.ActiefStuk);
    ZPos := nZposPart(Uitvoerbuffer{nBuffernum}.Actievelaag);
+   !go to fixed pos
+   wobj_Active:=WobjBufferx;
+   wobj_Active.oframe.trans:=[0,0,0];
+   MoveL Offs(Pbuffer,0,20,445),v4000,z100,tGripper\WObj:=wobj_Active;
+   MoveL Offs(Pbuffer,0,10,410),v4000,fine,tGripper\WObj:=wobj_Active;
    !
     wobj_Active:=WobjBufferx;
     wobj_Active.oframe.trans:=[xPos,yPos,zPos];
@@ -468,15 +496,15 @@ PROC Buffer_1_In(\switch Safecheck)
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer1.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
+    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer1;
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
-    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
+    MoveL [[987.75,1099.35,1893.41],[0.705506,0.0492264,-0.0438818,0.705629],[-1,-3,-2,0],[-0.00834126,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer1;
     !
     BUFFER_IN 1 , Wobj_Buffer_Boven_1 , pBuffer_Boven_1 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
-    MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer1;
+    MoveAbsJ pHomeJoint_Bu_1\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer1;
     !
 ENDPROC
 
@@ -490,15 +518,15 @@ PROC Buffer_2_In(\switch Safecheck)
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer2.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer2;
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
-    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
+    MoveL [[987.74,1106.14,1914.19],[0.705507,0.0492259,-0.0438832,0.705628],[-1,-3,-2,0],[-0.00882149,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer2;
     !
     BUFFER_IN 2 , Wobj_Buffer_Boven_2 , pBuffer_Boven_2 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer2;
-    MoveAbsJ pHomeJoint_Bu_2\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer2;
+    MoveAbsJ pHomeJoint_Bu_2\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer2;
     !
 ENDPROC
 
@@ -512,15 +540,15 @@ PROC Buffer_3_In(\switch Safecheck)
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer3.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer3;
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
-    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
+    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer3;
     !
     BUFFER_IN 3 , Wobj_Buffer_Boven_3 , pBuffer_Boven_3 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer3;
-    MoveAbsJ pHomeJoint_Bu_3\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer3;
+    MoveAbsJ pHomeJoint_Bu_3\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer3;
     !     
 ENDPROC
 
@@ -534,15 +562,15 @@ PROC Buffer_4_In(\switch Safecheck)
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer4.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer4;
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
-    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
+    MoveL [[987.75,1099.35,1928.20],[0.705508,0.0492208,-0.0438743,0.705628],[-1,-3,-2,0],[-0.00858307,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer4;
     !
     BUFFER_IN 4 , Wobj_Buffer_Boven_4 , pBuffer_Boven_4 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer4;
-    MoveAbsJ pHomeJoint_Bu_4\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer4;
+    MoveAbsJ pHomeJoint_Bu_4\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer4;
     !
 ENDPROC
 
@@ -556,15 +584,15 @@ PROC Buffer_5_In(\switch Safecheck)
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer5.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer5;
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
-    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
+    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer5;
     !
     Buffer_IN 5 , Wobj_Buffer_Boven_5 , pBuffer_Boven_5 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer5;
-    MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer5;
+    MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer5;
     !
 ENDPROC
 
@@ -577,16 +605,16 @@ PROC Buffer_6_In(\switch Safecheck)
     EOffsSet [Shift_Track,0,0,0,0,0];
     Wobj_Buffer6.oframe.trans:=[Shift_X,Shift_Y,Shift_z];
     !
-    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveJ [[960.71,-123.84,2956.18],[0.530631,0.457529,-0.512371,0.496562],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v7000, z200, tGripper\WObj:=Wobj_Buffer6;
     MoveJ [[964.88,730.22,1995.24],[0.704814,0.0592514,-0.0539032,0.704856],[-1,-3,-2,0],[-0.00702643,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
-    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer6;
+    MoveL [[987.73,1099.35,1995.24],[0.705506,0.0492272,-0.0438821,0.705629],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z50, tGripper\WObj:=Wobj_Buffer6;
     !
     BUFFER_IN 6 , Wobj_Buffer_Boven_6 , pBuffer_Boven_6 \SafeCheck?Safecheck;
     !
     MoveL [[987.74,1099.35,1995.24],[0.705507,0.049229,-0.0438808,0.705628],[-1,-3,-2,0],[-0.00767737,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200
     , tGripper\WObj:=Wobj_Buffer6;
     MoveJ [[1154.17,653.84,1935.53],[0.718939,0.059201,-0.0712691,0.68887],[-1,-3,-2,0],[-0.00116796,9E+09,9E+09,9E+09,9E+09,9E+09]], v4000, z200, tGripper\WObj:=Wobj_Buffer1;
-    MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v4000, z50, tGripper\WObj:=Wobj_Buffer1;
+    MoveAbsJ pHomeJoint_Bu_5\NoEOffs, v7000, z50, tGripper\WObj:=Wobj_Buffer1;
     !
 ENDPROC
 
