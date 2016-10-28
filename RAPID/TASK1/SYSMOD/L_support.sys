@@ -120,7 +120,7 @@ MODULE L_support(SYSMODULE)
   !******************************************************************************
   PERS speeddata vFastTrack:=[7000,500,5000,7000];
   CONST jointtarget Sync_Position:=[[0,0,0,0,0,0],[0,9E+09,9E+09,9E+09,9E+09,9E+09]];
-  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[2438.8,0,0],[1,0,0,0]]];
+  TASK PERS wobjdata wobj_Active:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[3748.5,0,0],[1,0,0,0]]];
   PERS tooldata TempTool:=[TRUE,[[505,-0.75,111],[0.707107,0,0.707107,0]],[25.8,[102.9,49.8,-410.4],[1,0,0,0],0,0,0]];
   PERS wobjdata TempWobj:=[FALSE,TRUE,"",[[14493.1,-1400,300],[0,0,0,1]],[[3748.5,0,0],[1,0,0,0]]];
   !interupts
@@ -130,7 +130,7 @@ MODULE L_support(SYSMODULE)
   PERS string file1LoggErrW:="Logg.log";
   PERS string file2LoggErrW:="Logg_old.log";
   LOCAL PERS num maxLogCounErrDisp:=1000;
-  LOCAL PERS num logCounterErrDisp:=61;
+  LOCAL PERS num logCounterErrDisp:=65;
   LOCAL VAR iodev file;
   !CycleTime
   VAR clock CTclock{6};

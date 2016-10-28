@@ -35,7 +35,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     PERS speeddata vFrees_aanzet:=[80,500,5000,1000];
     
     !counter to keep trqck of oil pusle,
-    PERS num nOilPulses := 2;
+    PERS num nOilPulses := 1;
 
     LOCAL PROC rInitSpindelData()
         !voorlopig gefoefel
@@ -330,7 +330,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         IF (bAlreadyOn = FALSE) THEN
          rCheckSpindelRunning \nPulses:=3;
         ENDIF
-        !rSpindelSprVsn TRUE \init ;
+        rSpindelSprVsn TRUE \init ;
         !
     ENDPROC
 
@@ -400,7 +400,7 @@ VAR num lPulsinterval;
     ! Proc: rStop_Spindle
     ! Description: stop spindel
     !***************************************
-        !rSpindelSprVsn FALSE;
+        rSpindelSprVsn FALSE;
         SetAO aoPLC_Spindle_Speed,0;
         Reset so_Boren_aan;
         Reset doSpindle_Air_On;
@@ -428,14 +428,14 @@ VAR num lPulsinterval;
      IF Present(init) THEN   
       IDelete Int1SprvSpindel;  
       CONNECT Int1SprvSpindel WITH tSpindelSprVsn;
-      ISignalDI diSpindle_No_Rotation,0,Int1SprvSpindel;
+      ISignalDI di_SpindleDriveOK,0,Int1SprvSpindel;
       ISleep Int1SprvSpindel;
      ENDIF
      
      IF bEnable THEN
       IWatch Int1SprvSpindel;
      ELSE
-      ISleep Int1SprvSpindel;
+      !ISleep Int1SprvSpindel;
      ENDIF
     ENDPROC
     
@@ -450,7 +450,7 @@ VAR num lPulsinterval;
    ISleep Int1SprvSpindel;
    StopMove;
    StorePath;
-   nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien"],\BtnArray:=["","","","","Reset"]);
+   nAnswer := UIMessageBox(\Header:="Spindelfout"\MsgArray:=["Spindel onverwachts gestopt","controleer dat de spindle vrij kan draaien","controleer of de spindle drive oke is"],\BtnArray:=["","","","","Reset"]);
    RestoPath;
    IWatch Int1SprvSpindel;
    StartMove;
