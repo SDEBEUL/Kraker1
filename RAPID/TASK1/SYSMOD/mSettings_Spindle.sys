@@ -7,7 +7,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     CONST num empty4 := 4;
     CONST num empty5 := 5;
     CONST num empty6 := 6;
-    local PERS bool  bActiveTool{6} := [TRUE,FALSE,FALSE,FALSE,FALSE,FALSE];
+    local PERS bool  bActiveTool{6} := [FALSE,TRUE,FALSE,FALSE,FALSE,FALSE];
     !joint targets
     CONST jointtarget pHomeJoint_spindel:=[[-114.954,-13.8901,3.19333,84.0191,-65.7533,-33.8858],[500.019,9E+09,9E+09,9E+09,9E+09,9E+09]];
     !Robtargets  
@@ -28,14 +28,14 @@ MODULE mSettings_Spindle(SYSMODULE)
 
     !Speedata
     PERS speeddata vBoren_11_190:=[4,500,5000,1000];
-    PERS speeddata vBoren_aanzet:=[100,500,5000,1000];
+    PERS speeddata vBoren_aanzet:=[10,500,5000,1000];
     
-    PERS speeddata vFrezen:=[25,500,5000,1000]; 
-    PERS speeddata vBorenMetFrees:=[1,500,5000,1000];
-    PERS speeddata vFrees_aanzet:=[50,500,5000,1000];
+    PERS speeddata vFrezen:=[15,500,5000,1000]; 
+    PERS speeddata vBorenMetFrees:=[4,500,5000,1000];
+    PERS speeddata vFrees_aanzet:=[80,500,5000,1000];
     
     !counter to keep trqck of oil pusle,
-    PERS num nOilPulses := 5;
+    PERS num nOilPulses := 2;
 
     LOCAL PROC rInitSpindelData()
         !voorlopig gefoefel
@@ -244,7 +244,7 @@ MODULE mSettings_Spindle(SYSMODULE)
             !check no tool present (deep check)
             MoveL Offs(Magpos,0,0,40),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
             WaitTime \InPos, 2;
-            CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
             Movel Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
             MoveL Offs(Magpos,0,0,20),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Offs(Magpos,0,0,2),v50,fine,tSpindle\WObj:=wobj_Magazijn;
@@ -254,7 +254,7 @@ MODULE mSettings_Spindle(SYSMODULE)
             Reset doSpindle_Air_On;
             !check tool detached 
             MoveL Offs(Magpos,-5,0,68),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
-            CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool hangt nog aan robot! ";
             MoveL Offs(Magpos,0,0,200),v1000,fine,tSpindle\WObj:=wobj_Magazijn;
         !     
     ENDPROC 
@@ -270,7 +270,7 @@ MODULE mSettings_Spindle(SYSMODULE)
             Movej Offs(Magpos,0,0,200),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
             !check  tool present
             MoveL Offs(Magpos,-5,0,68),v500,fine,tSpindleSensor\WObj:=wobj_Magazijn;
-            CheckInput di_SpindelSensor,0, \CheckTimeOut:=3,"Tool magazijn niet leeg! ";
+            CheckInput di_SpindelSensor,1, \CheckTimeOut:=3,"Tool niet aanwezig in magazijn! ";
             rSpindle_Unlock;
             MoveL Offs(Magpos,0,0,100),v500,z0,tSpindle\WObj:=wobj_Magazijn;
             MoveL Magpos,v50,fine,tSpindle\WObj:=wobj_Magazijn;
@@ -304,7 +304,7 @@ MODULE mSettings_Spindle(SYSMODULE)
         SetDO doSpindle_Release,0;
         CheckInput diSpindle_S2,0,  \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S2 1 ";
         CheckInput diSpindle_S3,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S3 2 ";
-        CheckInput diSpindle_S4,1, \CheckTimeOut:=3,"Sinpdel sensor fout diSpindle_S4 0 ";
+        CheckInput diSpindle_S4,1, \CheckTimeOut:=5,"Sinpdel sensor fout diSpindle_S4 0 ";
         !
     ENDPROC
 
@@ -350,8 +350,8 @@ MODULE mSettings_Spindle(SYSMODULE)
          SetDO doSpindle_CoolingAir_On, 0;
          SetDO so_Olie_aan, 1;
        else
-        PulseDO \PLength:= 5, doSpindle_CoolingAir_On;
-        PulseDO \High \PLength:= 5, so_Olie_aan;
+        PulseDO \PLength:= 2, doSpindle_CoolingAir_On;
+        PulseDO \High \PLength:= 2, so_Olie_aan;
        ENDIF
    ENDIF
    
@@ -382,7 +382,7 @@ MODULE mSettings_Spindle(SYSMODULE)
     !***************************************
 VAR num lPulsinterval;
    IF NOT Present(nPulseinterval) THEN
-    lPulsinterval := 10;
+    lPulsinterval := 5;
    ELSE
     lPulsinterval := nPulseinterval;
    ENDIF

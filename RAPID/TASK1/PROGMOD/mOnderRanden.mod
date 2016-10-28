@@ -2,13 +2,12 @@ MODULE mOnderRanden
     
     TASK PERS wobjdata wobj_Onderrand_L:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[0,0,-6],[1,0,0,0]]];
     TASK PERS wobjdata wobj_Onderrand_Frees_L:=[FALSE,TRUE,"",[[785,-1400,300],[1,0,0,0]],[[0,0,-6],[1,0,0,0]]];
-    TASK PERS wobjdata wobj_Onderrand_R:=[FALSE,TRUE,"",[[14493.5,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
+    TASK PERS wobjdata wobj_Onderrand_R:=[FALSE,TRUE,"",[[14493.1,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
     TASK PERS wobjdata wobj_Onderrand_Frees_R:=[FALSE,TRUE,"",[[14493.5,-1400,300],[0,0,0,1]],[[0,0,0],[1,0,0,0]]];
     
-    CONST robtarget pGat11_R:=[[-0.77,-18.62,317.59],[0.0019007,0.999998,2.8729E-08,0.000697868],[-1,-1,0,0],[14172,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    CONST robtarget pGat11_L:=[[-0.77,15.48,319.21],[0.000595015,-1,-9.43398E-06,-0.00058483],[-1,1,-1,0],[1000.01,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGat11_R:=[[0,-18.62,319],[0.0019007,0.999998,2.8729E-08,0.000697868],[-1,-1,0,0],[14172,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget pGat11_L:=[[0,15.48,319],[0.000595015,-1,-9.43398E-06,-0.00058483],[-1,1,-1,0],[1000.01,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand_R:=[[4.82,-49.59,245.16],[0.00183349,0.996226,-0.0867734,0.000871471],[-1,-1,0,0],[14172,9E+09,9E+09,9E+09,9E+09,9E+09]];
-    !CONST robtarget pFrees_Onderrand_L:=[[4.64,50.59,208.77],[9.48623E-05,-1,2.18639E-05,-2.53724E-05],[-1,1,-1,0],[1000,9E+09,9E+09,9E+09,9E+09,9E+09]];
     CONST robtarget pFrees_Onderrand_L:=[[4.63,48.31,243.55],[0.000111642,-1,3.36849E-05,-2.80698E-05],[-1,1,-1,0],[999.987,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
   !===============================================================================================================
@@ -26,7 +25,7 @@ MODULE mOnderRanden
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_L,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_L,0,0,-50),vFastTrack,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         rAutoOilPulse;
         MoveL RelTool(pGat11_L,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
@@ -44,7 +43,7 @@ MODULE mOnderRanden
         MoveL pGat11_L,vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_L,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
         !
-        MoveL RelTool(pGat11_L,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_L,0,0,-50),vFastTrack,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -60,12 +59,12 @@ MODULE mOnderRanden
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_R,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_R,0,0,-50),vFastTrack,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_R,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
         MoveL pGat11_R,vBoren_11_190,fine,boor_11mm_L190\WObj:=wobj_Active;
         Stop;
         MoveL RelTool(pGat11_R,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
-        MoveL RelTool(pGat11_R,0,0,-200),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_R,0,0,-50),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
         !		
     ENDPROC
 
@@ -81,7 +80,7 @@ MODULE mOnderRanden
         EOffsSet [Shift_Track,0,0,0,0,0];
         wobj_Active.oframe.trans:=[nShift_x,nShift_y,nShift_z];
         !
-        MoveJ RelTool(pGat11_R,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveJ RelTool(pGat11_R,0,0,-50),vFastTrack,fine,boor_11mm_L190\WObj:=wobj_Active;
         rStart_Spindle;
         rAutoOilPulse;
         MoveL RelTool(pGat11_R,0,0,-5),v200,z0,boor_11mm_L190\WObj:=wobj_Active;
@@ -99,7 +98,7 @@ MODULE mOnderRanden
         MoveL pGat11_R,vBoren_aanzet,fine,boor_11mm_L190\WObj:=wobj_Active;
         MoveL RelTool(pGat11_R,0,0,-30),v200,z5,boor_11mm_L190\WObj:=wobj_Active;
         !
-        MoveL RelTool(pGat11_R,0,0,-100),v200,fine,boor_11mm_L190\WObj:=wobj_Active;
+        MoveL RelTool(pGat11_R,0,0,-50),vFastTrack,fine,boor_11mm_L190\WObj:=wobj_Active;
         !
     ENDPROC
 
@@ -224,7 +223,8 @@ MODULE mOnderRanden
 
     PROC rOnderrand_Frezen_215537_603_R()
         !
-        wobj_Active:=wobj_Onderrand_Frees_R;
+        wobj_Active:=wobj_Onderrand_R;
+        !wobj_Active.uframe.trans.x :=  wobj_Onderrand_R.uframe.trans.x+nStationOffset(6);
         !
         go_home \Armonly;
         Set_Tool Frees;
@@ -474,7 +474,10 @@ MODULE mOnderRanden
         go_home \Armonly;
         Set_Tool Boor_11m;
         !
-        !MoveAbsJ [[-90,0,0,-90,90,90],[14400,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
+        MoveAbsJ [[-89.4955,-15.8538,12.2466,-89.6076,-89.3998,53.4309],[14130.5,9E+09,9E+09,9E+09,9E+09,9E+09]]\NoEOffs,v4000,z50,boor_11mm_L190\WObj:=wobj0;
+        !
+        !rMeasureStation6Offset wobj_Onderrand_R;
+        !wobj_Active.uframe.trans.x :=  wobj_Onderrand_R.uframe.trans.x+nStationOffset(6);
         !
         rBoren_11mm_Onderrand_NUL_R 0,0,0,0;
         !7mm correctie op volle lengte voor krimp 

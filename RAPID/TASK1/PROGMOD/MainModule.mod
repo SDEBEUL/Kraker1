@@ -67,6 +67,7 @@ PROC Main()
          GOTO lbl_begin;
         CASE 4:
           rEPS;
+          GOTO lbl_begin;
         CASE 5:
          !leeg
         ENDTEST

@@ -3,7 +3,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !! 1 geen tool
     !! 2 DUMMY
     !! 3 Grijper
-    PERS num nActive_Gripper:=3;
+    PERS num nActive_Gripper:=2;
     CONST num NoTool := 1;
     CONST num DummyTool := 2;
     CONST num GrijperTool := 3;
@@ -263,9 +263,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
       rSet_Grijper_WZ;
       Set so_Changer_Open;
-      WaitTime \InPos, 3;
-      !commented wegengs kabelbreuk
-      !CheckInput di_Changer_Vergrendeld,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 1 ";
+      CheckInput di_Changer_Vergrendeld,0, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 1 ";
     !
   ENDPROC 
   
@@ -276,9 +274,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
       Reset so_Changer_Open;
       IF not Present(NoLockcheck) THEN
-      WaitTime \InPos, 3;
-      !commented wegengs kabelbreuk
-      !CheckInput di_Changer_Vergrendeld,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 0 ";
+      CheckInput di_Changer_Vergrendeld,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Vergrendeld 0 ";
       endif
       CheckInput di_Changer_Tool_Aanwezig,1, \CheckTimeOut:=3,"Toolchanger sensor fout di_Changer_Tool_Aanwezig 0 ";
       rReset_Grijper_WZ;
@@ -347,7 +343,7 @@ MODULE mSettings_Gripper(SYSMODULE)
     !***************************************
      WaitRob \InPos;
      WaitTime 1.5;
-     IF (ai_Sensor1_Q1_in > 500) AND (ai_Sensor2_Q2_in > 500) AND  TestDI(di_Sensor1_Q1_In) = false AND TestDI(di_Sensor2_Q1_In) = false  THEN
+     IF (ai_Sensor1_Q1_in > 10) AND (ai_Sensor2_Q2_in > 2000) AND  TestDI(di_Sensor1_Q1_In) = false AND TestDI(di_Sensor2_Q1_In) = false  THEN
         RETURN TRUE; 
      ENDIF
       RETURN FALSE;

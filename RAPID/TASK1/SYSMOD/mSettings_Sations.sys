@@ -1,539 +1,552 @@
 MODULE mSettings_Sations(SYSMODULE)
 
 
-FUNC bool bDwarbalkenGewenst()
-    !***************************************	    
-    ! Proc: bDwarbalkenGewenst
-    ! Description: is true als er dwarsbalken gemaakt kunnen worden
-    !dit word bekeken op vlak van UITVOER
-    !***************************************
-    IF nGetUitvoerbuffer(part.Balk330) <> 0 OR nGetUitvoerbuffer(part.Balk331) <> 0 OR nGetUitvoerbuffer(part.Balk332) <> 0 THEN
-        RETURN TRUE;
-    ELSE
-         FOR i FROM 1 TO 6 DO 
-          IF (UitvoerBuffer{i}.InDienst = TRUE) AND (UitvoerBuffer{i}.Vol = TRUE ) AND (UitvoerBuffer{i}.veilig = FALSE) AND bLichtbeamOK(i) THEN 
-            Putpart i \Safecheck;
-            !recheck 
-               IF nGetUitvoerbuffer(part.Balk330) <> 0 OR nGetUitvoerbuffer(part.Balk331) <> 0 OR nGetUitvoerbuffer(part.Balk332) <> 0 THEN
-                RETURN TRUE;
-               ENDIF
-          ENDIF
-         ENDFOR
-     RETURN FALSE;
-    ENDIF
-ENDFUNC
-
-FUNC bool bDwarbalkenBeschikbaar()
-    !***************************************	    
-    ! Proc: bDwarbalkenBeschikbaar
-    ! Description: kijk of er nieuwe balken beschikbaar zijn 
-    !***************************************
-    FOR i FROM 1 TO 6 DO 
-        IF (InvoerBuffer{i}.InDienst = TRUE) AND (InvoerBuffer{i}.Veilig = TRUE) AND (InvoerBuffer{i}.Leeg = FALSE) THEN 
-          RETURN TRUE;
-        ENDIF           
-    ENDFOR
-    !niets beschikbaar 
-    RETURN FALSE;
-ENDFUNC
-
-FUNC num nEersteBufferDiewil()
-    !***************************************	    
-    ! Proc: nEersteBufferDiewil
-    ! Description: geeft de nummer van de eerste buffer die nog balken wil
-    ! ik gebruik dit om de orders te bepalen
-    !***************************************
-    VAR num nBuffernummer;
-    nBuffernummer := 0;
-    nBuffernummer := nGetUitvoerbuffer(part.Balk330);
-    IF nBuffernummer <> 0 THEN
-       RETURN nBuffernummer;
-    ENDIF
-    nBuffernummer := nGetUitvoerbuffer(part.Balk331);
-    IF nBuffernummer <> 0 THEN
-       RETURN nBuffernummer;
-    ENDIF
-    nBuffernummer := nGetUitvoerbuffer(part.Balk332);
-    IF nBuffernummer <> 0 THEN
-       RETURN nBuffernummer;
-    ENDIF
-     RETURN nBuffernummer;
-ENDFUNC
-
-PROC rSetOrders()
-    !***************************************	    
-    ! Proc: rSetOrders
-    ! Description: geef producite orders aan stations
-    ! kijkt welke buffer er stukken wil
-    !***************************************  
-    VAR num nReqestBuffer; 
-    nReqestBuffer := nEersteBufferDiewil();
-    IF nReqestBuffer = 0 THEN
-       !niemand wil stukken
-       RETURN;
-    ENDIF
-    
-    FOR i FROM 1 TO 4 STEP 1 DO
-      !station niet uit dienst nieuwe balk aanwezig en stuk gewenst
-      IF  (Station{i}.inDienst AND (Station{i}.Lading = part.OnbewerkteBalk)) AND (bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk330) OR bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk331)) THEN
-       IF bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk330) THEN !geeft voorrang aan 330 productie
-        Station{i}.Opdracht := part.Balk330;
-       ELSE
-        Station{i}.Opdracht := part.Balk331;  
-       ENDIF
-     ENDIF
-    ENDFOR
-    !station 5 maakt enkel 332
-    !station niet uit dienst nieuze balk aanwezig en stuk gewenst
-    IF  Station{5}.indienst AND (Station{5}.lading = part.OnbewerkteBalk) AND bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk332) THEN
-       Station{5}.Opdracht := part.Balk332; 
-    ENDIF
-ENDPROC
-
-PROC rUnloadStations()
-    !***************************************	    
-    ! Proc: rUnloadStations
-    ! Description: ontladen van alle active stations
-    !***************************************	
-    VAR btnres nAnswer; 
-    VAR num nPartypeIngripper;
-    VAR num nUitvoerbuffer;
-     FOR i FROM 5 TO 1 STEP -1 DO
-        !niet uit dienst niet leeg en geen nieuwe balk
-       IF Station{i}.inDienst AND (Station{i}.lading <> part.Geen) AND (Station{i}.lading <> part.OnbewerkteBalk) THEN
-       !verwerk afgewerkte stukken
-           IF (Station{i}.lading = part.Balk330) OR (Station{i}.lading = part.Balk331) OR (Station{i}.lading = part.Balk332)  THEN
-              !kijk of er een buffer is die het stuk wil 
-              nUitvoerbuffer := nGetUitvoerbuffer(Station{i}.lading);
-              IF nUitvoerbuffer <> 0 THEN
-                !als het station niet veilig is dan eerst safecheck
-                IF NOT UitvoerBuffer{nUitvoerbuffer}.veilig THEN
-                   Putpart nUitvoerbuffer \Safecheck;
-                ENDIF
-                !moest de buffer nog niet veilig zijn na check dan next station
-                IF UitvoerBuffer{nUitvoerbuffer}.veilig THEN
-                    r_ctMeas 1, \Start;
-                    !haal stuk uit station
-                    rUnloadStation(i);
-                    !overdracht van stuk 
-                    nPartypeIngripper := Station{i}.lading;
-                    Station{i}.lading := part.Geen; 
-                    Station{i}.Opdracht := part.Geen;
-                    !Plaats stuk in buffer
-                    PUTnextpart(nPartypeIngripper);
-                    r_ctMeas 1,\name:= "Ontlaad Station:"+NumToStr(i,0)+" naar buffer:"+NumToStr(nUitvoerbuffer,0),\Stop;  
-                ENDIF
-              ENDIF 
-           ELSE
-               !moet beter uitwerken wat te doen .... repair procs ? process step counter is voorzien 
-               !vraag gebruiker wat te doen;
-               LoggProc "mSations",1,"Onafgewerkt stuk in station:"+NumToStr(i,0);
-               WHILE TRUE DO 
-                nAnswer := UIMessageBox(\Header:="Onafgewerkt stuk in station!"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]); 
-               ENDWHILE
-           ENDIF
-       ENDIF   
-     ENDFOR 
-     !
-ENDPROC
-
-PROC rloadStations()
-    !***************************************	    
-    ! Proc: rloadStations
-    ! Description: laad stations die leeg en in dienst zijn
-    !***************************************	
-    VAR btnres nAnswer; 
-    VAR num buffernummer;
-    FOR i FROM 1 TO 5 STEP 1 DO
-        IF Station{i}.inDienst AND (Station{i}.lading = part.Geen)THEN 
-           buffernummer := nGetInvoerbuffer();
-               r_ctMeas 1, \Start;
-               !haal stuk uit buffer 
-               Getnextpart;
-               !als er geen stuk in de grijper zit waren al de rekken leeg
-               IF  fCheckGripperPart(\nExpection:= 1) THEN
-                 !laad stuk in station
-                 rloadStation i;
-                 r_ctMeas 1,\name:= "Laad Station:"+NumToStr(i,0)+" van Buffer:"+NumToStr(buffernummer,0),\Stop;    
-               ENDIF
-        ENDIF
-    ENDFOR
-    !
-ENDPROC
-
-PROC rUnloadStation(num nStation)
-    !***************************************	    
-    ! Proc: rUnloadStation
-    ! Description: haal stuk uit een specfiek station
-    !robot begint thuis en eindigd met stuk in wachtpos
-    !***************************************
-    rSetSationClamps nStation, \Open, \nwaittime := 0;
-    TEST nStation
-      CASE 1:
-       Station_1_Uit;
-      CASE 2:
-       Station_2_Uit;
-      CASE 3:
-       Station_3_Uit;
-      CASE 4:
-       Station_4_Uit;
-      CASE 5:
-       Station_5_Uit;   
-    ENDTEST
-    rSetSationClamps nStation, \Close, \nwaittime := 0;
-    !
-ENDPROC
-
-PROC rLoadStation(num nStation)
-    !***************************************	    
-    ! Proc: rLoadStation
-    ! Description: laad een station
-    !robot begint in wachtpos met stuk en eindigd ...
-    !***************************************
-    rSetSationClamps nStation, \open, \nwaittime := 0;
-    TEST nStation
-      CASE 1:
-       Station_1_In;
-       station{1}.lading := part.OnbewerkteBalk;
-      CASE 2:
-       Station_2_In;
-       station{2}.lading := part.OnbewerkteBalk;
-      CASE 3:
-       Station_3_In;
-       station{3}.lading := part.OnbewerkteBalk;
-      CASE 4:
-       Station_4_In;
-       station{4}.lading := part.OnbewerkteBalk;
-      CASE 5:
-       Station_5_In;
-       station{5}.lading := part.OnbewerkteBalk;  
-    ENDTEST
-    !
-ENDPROC
-
-PROC rWorkStations()
-    !***************************************	    
-    ! Proc: rWorkStations
-    ! Description: bewerk stuk in de stations waar nodig
-    !***************************************
-   IF Production.Onderanden THEN
-      IF (Station{6}.InDienst AND Station{6}.Lading = part.OnbewerkteOnderrand) AND (Station{6}.Opdracht = part.OnderrandLinks OR Station{6}.Opdracht = part.OnderrandRechts) THEN
-           r_ctMeas 1, \Start;
-           rWorkStationBoren(6);
-           r_ctMeas 1,\name:= "Sation:"+NumToStr(6,0)+" Boren Type:"+NumToStr(Station{6}.Opdracht,0),\Stop;
-           r_ctMeas 1, \Start;
-           rWorkStationFrezen(6);
-           r_ctMeas 1,\name:= "Sation:"+NumToStr(6,0)+" Frezen Type:"+NumToStr(Station{6}.Opdracht,0),\Stop;
-           rStop_Spindle;
-      ENDIF 
-   ENDIF
-    
-    IF Production.Dwarsbalken THEN
-    !ga eerst op ale stations die in klaar zijn voor werk gaan boren  
-     FOR i FROM 1 TO 5 STEP 1 DO
-        !niet uit dienst niet leeg en nieuwe balk
-       IF Station{i}.InDienst AND Station{i}.Lading = part.OnbewerkteBalk AND Station{i}.Opdracht <> part.geen  THEN
-         r_ctMeas 1, \Start;
-         rWorkStationBoren(i);
-         r_ctMeas 1,\name:= "Sation:"+NumToStr(i,0)+" Boren Type:"+NumToStr(Station{i}.Opdracht,0),\Stop;
-       ENDIF
-     ENDFOR
-     rStop_Spindle;
-     !ga nu op al de stations die in dienst staan gaan frezen
-      FOR i FROM 1 TO 5 STEP 1 DO
-        !niet uit dienst niet leeg zou hier eigenlijk een beter check voor moeten maken 
-       IF Station{i}.InDienst AND Station{i}.Lading <> part.Geen AND Station{i}.Opdracht <> part.geen AND Station{i}.Lading = part.inbewerking  THEN
-           r_ctMeas 1, \Start;
-           rWorkStationFrezen(i);
-           r_ctMeas 1,\name:= "Sation:"+NumToStr(i,0)+" Frezen Type:"+NumToStr(Station{i}.Opdracht,0),\Stop;
-       ENDIF
-     ENDFOR
-     rStop_Spindle;
-    ENDIF
-     !
-ENDPROC
-
-PROC rWorkStationBoren(num nStation)
-    !***************************************	    
-    ! Proc: rWorkStationBoren
-    ! Description: bewerk stuk in het station
-    !***************************************
-TEST nStation
-  CASE 1:  !station 1
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation1;
-     CASE part.Balk331:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation1;
-        Station{nStation}.lading := part.Balk331;
-    CASE part.Balk332:
-       !mag niet in dit station liggen
-       Stop;
-    ENDTEST
-
-  CASE 2:  !station 2
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation2;
-     CASE part.Balk331:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation2;
-        Station{nStation}.lading := part.Balk331;
-     CASE part.Balk332:
-       !mag niet in dit station
-    ENDTEST
-    
-   CASE 3:  !station 3
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation3;
-     CASE part.Balk331:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation3;
-        Station{nStation}.lading := part.Balk331;
-     CASE part.Balk332:
-       !mag niet in dit station
-       Stop;
-    ENDTEST
-    
-   CASE 4:  !station 4
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020330 nStation, wobj_BalkStation4;
-     CASE part.Balk331:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Boren_5020331 nStation, wobj_BalkStation4;
-        Station{nStation}.lading := part.Balk331;
-     CASE part.Balk332:
-       !mag niet in dit station
-       Stop;
-    ENDTEST
-    
-   CASE 5:  !station 5
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-         !mag niet in dit station
-         Stop;
-     CASE part.Balk331:
-         !mag niet in dit station
-         Stop;
-     CASE part.Balk332:
-       Station{nStation}.lading := part.Inbewerking;
-       rDwarsbalk_Boren_5020332;
-    ENDTEST
-    
-   CASE 6: !station 6 (enkel voor onder en bovenranden)
-    TEST Station{nStation}.Opdracht
-         CASE part.OnderrandLinks:
-           Station{nStation}.lading := part.Inbewerking;
-            rOnderrand_B_215537_602_Links;
-         CASE part.OnderrandRechts:
-           Station{nStation}.lading := part.Inbewerking;
-           rOnderrand_B_215537_603_Rechts;
-    ENDTEST
-    
-ENDTEST
-    SetDO SO_UI_refresh, 1;
-!
-ENDPROC
-
-PROC rWorkStationFrezen(num nStation)
-    !***************************************	    
-    ! Proc: rWorkStationFrezen
-    ! Description: bewerk stuk in het station
-    !***************************************
-TEST nStation
-  CASE 1:  !station 1
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation1;
-        Station{nStation}.lading := part.balk330;
-     CASE part.Balk331:
-       !mag niet in dit station
-    CASE part.Balk332:
-       !mag niet in dit station liggen
-       Stop;
-    ENDTEST
-
-  CASE 2:  !station 2
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation2;
-        Station{nStation}.lading := part.balk330;
-     CASE part.Balk331:
-       !mag niet in dit station
-     CASE part.Balk332:
-       !mag niet in dit station
-    ENDTEST
-    
-   CASE 3:  !station 3
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation3;
-        Station{nStation}.lading := part.balk330;
-     CASE part.Balk331:
-       !mag niet in dit station
-     CASE part.Balk332:
-       !mag niet in dit station
-       Stop;
-    ENDTEST
-    
-   CASE 4:  !station 4
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-        Station{nStation}.lading := part.Inbewerking;
-        rDwarsbalk_Frezen_5020330 nStation, wobj_BalkStation4;
-        Station{nStation}.lading := part.balk330;
-     CASE part.Balk331:
-       !mag niet in dit station
-     CASE part.Balk332:
-       !mag niet in dit station
-       Stop;
-    ENDTEST
-    
-   CASE 5:  !station 5
-    TEST Station{nStation}.Opdracht
-     CASE part.Balk330:
-         !mag niet in dit station liggen
-         Stop;
-     CASE part.Balk331:
-         !mag niet in dit station liggens
-         Stop;
-     CASE part.Balk332:
-      !SAFETY CHECK!!!! station 6 mag niet geladen zijn ! CRASH GEVAAR!
-      !onderranden zitten in de weg bij het doorfrezen
-      IF Station{6}.Lading = part.geen THEN
-           Station{nStation}.lading := part.Inbewerking;
-           rDwarsbalk_Frezen_5020332;
-           Station{nStation}.lading := part.balk332;
-      ELSE
-        LoggProc "mSations", 0 ,"frezen overgeslaan wegens lading in station 6!";
-      ENDIF
-    ENDTEST
-    
- CASE 6: !station 6 (enkel voor onder en bovenranden)
-    TEST Station{nStation}.Opdracht
-         CASE part.OnderrandLinks:
-           Station{nStation}.lading := part.Inbewerking;
-            rOnderrand_Frezen_215537_602_L;
-           Station{nStation}.lading := part.OnderrandLinks;
-         CASE part.OnderrandRechts:
-           Station{nStation}.lading := part.Inbewerking;
-           rOnderrand_Frezen_215537_603_R;
-           Station{nStation}.lading := part.OnderrandRechts;
-    ENDTEST
-    
-ENDTEST
-  SetDO SO_UI_refresh, 1;
-!
-ENDPROC
-
-PROC rSetSationClamps(num nStation,\switch open \switch close, \num nWaittime\switch Check)
-    !***************************************	    
-    ! Proc: rSetSationClamps
-    ! Description: open of sluit klemmen 
-    !***************************************
-    VAR num nState;
-    VAR bool timeout;
- lbl_retry:
-    IF Present(close) THEN
-        nState := 0;
-    endif
-    IF Present(open) THEN
-        nState := 1;
-    ENDIF
-    IF Present(close) AND Present(open) THEN
-        RETURN;
-    ENDIF
-    TEST nStation
-          CASE 1:
-              SetDO doKP_1_Ventiel,nState;
-          CASE 2:
-              SetDO doKP_2_Ventiel,nState;
-          CASE 3:
-              SetDO doKP_3_Ventiel,nState;
-          CASE 4:
-              SetDO doKP_4_Ventiel,nState;
-          CASE 5:
-              SetDO doKP_5_Ventiel,nState;
-    ENDTEST   
-    
-    IF NOT Present(Check) THEN 
-        IF Present(nWaittime) THEN
-          WaitTime nWaittime;
+    FUNC bool bDwarbalkenGewenst()
+        !***************************************	    
+        ! Proc: bDwarbalkenGewenst
+        ! Description: is true als er dwarsbalken gemaakt kunnen worden
+        !dit word bekeken op vlak van UITVOER
+        !***************************************
+        IF nGetUitvoerbuffer(part.Balk330)<>0 OR nGetUitvoerbuffer(part.Balk331)<>0 OR nGetUitvoerbuffer(part.Balk332)<>0 THEN
+            RETURN TRUE;
         ELSE
-          WaitTime 3;
+            FOR i FROM 1 TO 6 DO
+                IF (UitvoerBuffer{i}.InDienst=TRUE)AND (UitvoerBuffer{i}.Vol=TRUE)AND (UitvoerBuffer{i}.veilig=FALSE)AND bLichtbeamOK(i) THEN
+                    Putpart i\Safecheck;
+                    !recheck 
+                    IF nGetUitvoerbuffer(part.Balk330)<>0 OR nGetUitvoerbuffer(part.Balk331)<>0 OR nGetUitvoerbuffer(part.Balk332)<>0 THEN
+                        RETURN TRUE;
+                    ENDIF
+                ENDIF
+            ENDFOR
+            RETURN FALSE;
         ENDIF
-    ENDIF 
-    !need to test and verify the bits 
-    IF Present(Check) THEN
-       rCheckStationClamps nStation, nState;
-    ENDIF 
-    !
-ENDPROC
+    ENDFUNC
 
-PROC rCheckStationClamps(num nStation,num nState)
-    VAR signaldi alias_di;
-    VAR string sAlias;
-    FOR i FROM 1 TO 4 DO 
-       IF nState = 1 THEN
-         sAlias := "diKP_" + numtostr(nStation,0) + "_" + numtostr(i,0) + "Open";   
-       ELSE 
-         sAlias := "diKP_" + numtostr(nStation,0) + "_" + numtostr(i,0) + "Close";     
-       ENDIF
+    FUNC bool bDwarbalkenBeschikbaar()
+        !***************************************	    
+        ! Proc: bDwarbalkenBeschikbaar
+        ! Description: kijk of er nieuwe balken beschikbaar zijn 
+        !***************************************
+        FOR i FROM 1 TO 6 DO
+            IF (InvoerBuffer{i}.InDienst=TRUE)AND (InvoerBuffer{i}.Veilig=TRUE)AND (InvoerBuffer{i}.Leeg=FALSE) THEN
+                RETURN TRUE;
+            ENDIF
+        ENDFOR
+        !niets beschikbaar 
+        RETURN FALSE;
+    ENDFUNC
 
-       AliasIO sAlias, alias_di;
-       CheckInput alias_di,1, \CheckTimeOut:=3,"Station:"+NumToStr(nStation,0) + " Klem:"+NumToStr(i,0) + " NOK " + sAlias + " <> " + NumToStr(nState,0);
-    ENDFOR
-    
-ENDPROC
+    FUNC num nEersteBufferDiewil()
+        !***************************************	    
+        ! Proc: nEersteBufferDiewil
+        ! Description: geeft de nummer van de eerste buffer die nog balken wil
+        ! ik gebruik dit om de orders te bepalen
+        !***************************************
+        VAR num nBuffernummer;
+        nBuffernummer:=0;
+        nBuffernummer:=nGetUitvoerbuffer(part.Balk330);
+        IF nBuffernummer<>0 THEN
+            RETURN nBuffernummer;
+        ENDIF
+        nBuffernummer:=nGetUitvoerbuffer(part.Balk331);
+        IF nBuffernummer<>0 THEN
+            RETURN nBuffernummer;
+        ENDIF
+        nBuffernummer:=nGetUitvoerbuffer(part.Balk332);
+        IF nBuffernummer<>0 THEN
+            RETURN nBuffernummer;
+        ENDIF
+        RETURN nBuffernummer;
+    ENDFUNC
 
- FUNC num nStationOffset(num nStation\switch Positive \switch Negeative)
-    !***************************************	    
-    ! FUNC: nStationOffset
-    ! Description: safety function for frame offset
-    !***************************************
+    PROC rSetOrders()
+        !***************************************	    
+        ! Proc: rSetOrders
+        ! Description: geef producite orders aan stations
+        ! kijkt welke buffer er stukken wil
+        !***************************************  
+        VAR num nReqestBuffer;
+        nReqestBuffer:=nEersteBufferDiewil();
+        IF nReqestBuffer=0 THEN
+            !niemand wil stukken
+            RETURN ;
+        ENDIF
+
+        FOR i FROM 1 TO 4 STEP 1 DO
+            !station niet uit dienst nieuwe balk aanwezig en stuk gewenst
+            IF (Station{i}.inDienst AND (Station{i}.Lading=part.OnbewerkteBalk))AND (bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk330)OR bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk331)) THEN
+                IF bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk330) THEN
+                    !geeft voorrang aan 330 productie
+                    Station{i}.Opdracht:=part.Balk330;
+                ELSE
+                    Station{i}.Opdracht:=part.Balk331;
+                ENDIF
+            ENDIF
+        ENDFOR
+        !station 5 maakt enkel 332
+        !station niet uit dienst nieuze balk aanwezig en stuk gewenst
+        IF Station{5}.indienst AND (Station{5}.lading=part.OnbewerkteBalk)AND bUitvoerbufferPartNeeded(nReqestBuffer,part.Balk332) THEN
+            Station{5}.Opdracht:=part.Balk332;
+        ENDIF
+    ENDPROC
+
+    PROC rUnloadStations()
+        !***************************************	    
+        ! Proc: rUnloadStations
+        ! Description: ontladen van alle active stations
+        !***************************************	
+        VAR btnres nAnswer;
+        VAR num nPartypeIngripper;
+        VAR num nUitvoerbuffer;
+        FOR i FROM 5 TO 1 STEP -1 DO
+            !niet uit dienst niet leeg en geen nieuwe balk
+            IF Station{i}.inDienst AND (Station{i}.lading<>part.Geen)AND (Station{i}.lading<>part.OnbewerkteBalk) THEN
+                !verwerk afgewerkte stukken
+                IF (Station{i}.lading=part.Balk330)OR (Station{i}.lading=part.Balk331)OR (Station{i}.lading=part.Balk332) THEN
+                    !kijk of er een buffer is die het stuk wil 
+                    nUitvoerbuffer:=nGetUitvoerbuffer(Station{i}.lading);
+                    IF nUitvoerbuffer<>0 THEN
+                        !als het station niet veilig is dan eerst safecheck
+                        IF NOT UitvoerBuffer{nUitvoerbuffer}.veilig THEN
+                            Putpart nUitvoerbuffer\Safecheck;
+                        ENDIF
+                        !moest de buffer nog niet veilig zijn na check dan next station
+                        IF UitvoerBuffer{nUitvoerbuffer}.veilig THEN
+                            r_ctMeas 1,\Start;
+                            !haal stuk uit station
+                            rUnloadStation(i);
+                            !overdracht van stuk 
+                            nPartypeIngripper:=Station{i}.lading;
+                            Station{i}.lading:=part.Geen;
+                            Station{i}.Opdracht:=part.Geen;
+                            !Plaats stuk in buffer
+                            PUTnextpart(nPartypeIngripper);
+                            r_ctMeas 1,\name:="Ontlaad Station:"+NumToStr(i,0)+" naar buffer:"+NumToStr(nUitvoerbuffer,0),\Stop;
+                        ENDIF
+                    ENDIF
+                ELSE
+                    !moet beter uitwerken wat te doen .... repair procs ? process step counter is voorzien 
+                    !vraag gebruiker wat te doen;
+                    LoggProc "mSations",1,"Onafgewerkt stuk in station:"+NumToStr(i,0);
+                    WHILE TRUE DO
+                        nAnswer:=UIMessageBox(\Header:="Onafgewerkt stuk in station!"\MsgArray:=["","ga manueel en los het op","Dit zou niet mogen gebeuren"],\BtnArray:=["","","","","OK"]);
+                    ENDWHILE
+                ENDIF
+            ENDIF
+        ENDFOR
+        !
+    ENDPROC
+
+    PROC rloadStations()
+        !***************************************	    
+        ! Proc: rloadStations
+        ! Description: laad stations die leeg en in dienst zijn
+        !***************************************	
+        VAR btnres nAnswer;
+        VAR num buffernummer;
+        FOR i FROM 1 TO 5 STEP 1 DO
+            IF Station{i}.inDienst AND (Station{i}.lading=part.Geen) THEN
+                buffernummer:=nGetInvoerbuffer();
+                r_ctMeas 1,\Start;
+                !haal stuk uit buffer 
+                Getnextpart;
+                !als er geen stuk in de grijper zit waren al de rekken leeg
+                IF fCheckGripperPart(\nExpection:=1) THEN
+                    !laad stuk in station
+                    rloadStation i;
+                    r_ctMeas 1,\name:="Laad Station:"+NumToStr(i,0)+" van Buffer:"+NumToStr(buffernummer,0),\Stop;
+                ENDIF
+            ENDIF
+        ENDFOR
+        !
+    ENDPROC
+
+    PROC rUnloadStation(num nStation)
+        !***************************************	    
+        ! Proc: rUnloadStation
+        ! Description: haal stuk uit een specfiek station
+        !robot begint thuis en eindigd met stuk in wachtpos
+        !***************************************
+        rSetSationClamps nStation,\Open,\nwaittime:=0;
+        TEST nStation
+        CASE 1:
+            Station_1_Uit;
+        CASE 2:
+            Station_2_Uit;
+        CASE 3:
+            Station_3_Uit;
+        CASE 4:
+            Station_4_Uit;
+        CASE 5:
+            Station_5_Uit;
+        ENDTEST
+        rSetSationClamps nStation,\Close,\nwaittime:=0;
+        !
+    ENDPROC
+
+    PROC rLoadStation(num nStation,\switch NoMeasure)
+        !***************************************	    
+        ! Proc: rLoadStation
+        ! Description: laad een station
+        !robot begint in wachtpos met stuk en eindigd ...
+        !***************************************
+        rSetSationClamps nStation,\open,\nwaittime:=0;
+        TEST nStation
+        CASE 1:
+            Station_1_In\NoMeasure ?NoMeasure;
+            station{1}.lading:=part.OnbewerkteBalk;
+        CASE 2:
+            Station_2_In\NoMeasure ?NoMeasure;
+            station{2}.lading:=part.OnbewerkteBalk;
+        CASE 3:
+            Station_3_In\NoMeasure ?NoMeasure;
+            station{3}.lading:=part.OnbewerkteBalk;
+        CASE 4:
+            Station_4_In\NoMeasure ?NoMeasure;
+            station{4}.lading:=part.OnbewerkteBalk;
+        CASE 5:
+            Station_5_In\NoMeasure ?NoMeasure;
+            station{5}.lading:=part.OnbewerkteBalk;
+        ENDTEST
+        !
+    ENDPROC
+
+    PROC rWorkStations()
+        !***************************************	    
+        ! Proc: rWorkStations
+        ! Description: bewerk stuk in de stations waar nodig
+        !***************************************
+        IF Production.Onderanden THEN
+            IF (Station{6}.InDienst AND Station{6}.Lading=part.OnbewerkteOnderrand)AND (Station{6}.Opdracht=part.OnderrandLinks OR Station{6}.Opdracht=part.OnderrandRechts) THEN
+                r_ctMeas 1,\Start;
+                rWorkStationBoren(6);
+                r_ctMeas 1,\name:="Sation:"+NumToStr(6,0)+" Boren Type:"+NumToStr(Station{6}.Opdracht,0),\Stop;
+                r_ctMeas 1,\Start;
+                rWorkStationFrezen(6);
+                r_ctMeas 1,\name:="Sation:"+NumToStr(6,0)+" Frezen Type:"+NumToStr(Station{6}.Opdracht,0),\Stop;
+                rStop_Spindle;
+            ENDIF
+        ENDIF
+
+        IF Production.Dwarsbalken THEN
+            !ga eerst op ale stations die in klaar zijn voor werk gaan boren  
+            FOR i FROM 1 TO 5 STEP 1 DO
+                !niet uit dienst niet leeg en nieuwe balk
+                IF Station{i}.InDienst AND Station{i}.Lading=part.OnbewerkteBalk AND Station{i}.Opdracht<>part.geen THEN
+                    r_ctMeas 1,\Start;
+                    rWorkStationBoren(i);
+                    r_ctMeas 1,\name:="Sation:"+NumToStr(i,0)+" Boren Type:"+NumToStr(Station{i}.Opdracht,0),\Stop;
+                ENDIF
+            ENDFOR
+            rStop_Spindle;
+            !ga nu op al de stations die in dienst staan gaan frezen
+            FOR i FROM 1 TO 5 STEP 1 DO
+                !niet uit dienst niet leeg zou hier eigenlijk een beter check voor moeten maken 
+                IF Station{i}.InDienst AND Station{i}.Lading<>part.Geen AND Station{i}.Opdracht<>part.geen AND Station{i}.Lading=part.inbewerking THEN
+                    r_ctMeas 1,\Start;
+                    rWorkStationFrezen(i);
+                    r_ctMeas 1,\name:="Sation:"+NumToStr(i,0)+" Frezen Type:"+NumToStr(Station{i}.Opdracht,0),\Stop;
+                ENDIF
+            ENDFOR
+            rStop_Spindle;
+        ENDIF
+        !
+    ENDPROC
+
+    PROC rWorkStationBoren(num nStation)
+        !***************************************	    
+        ! Proc: rWorkStationBoren
+        ! Description: bewerk stuk in het station
+        !***************************************
+        TEST nStation
+        CASE 1:
+            !station 1
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020330 nStation,wobj_BalkStation1;
+            CASE part.Balk331:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020331 nStation,wobj_BalkStation1;
+                Station{nStation}.lading:=part.Balk331;
+            CASE part.Balk332:
+                !mag niet in dit station liggen
+                Stop;
+            ENDTEST
+
+        CASE 2:
+            !station 2
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020330 nStation,wobj_BalkStation2;
+            CASE part.Balk331:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020331 nStation,wobj_BalkStation2;
+                Station{nStation}.lading:=part.Balk331;
+            CASE part.Balk332:
+                !mag niet in dit station
+            ENDTEST
+
+        CASE 3:
+            !station 3
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020330 nStation,wobj_BalkStation3;
+            CASE part.Balk331:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020331 nStation,wobj_BalkStation3;
+                Station{nStation}.lading:=part.Balk331;
+            CASE part.Balk332:
+                !mag niet in dit station
+                Stop;
+            ENDTEST
+
+        CASE 4:
+            !station 4
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020330 nStation,wobj_BalkStation4;
+            CASE part.Balk331:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020331 nStation,wobj_BalkStation4;
+                Station{nStation}.lading:=part.Balk331;
+            CASE part.Balk332:
+                !mag niet in dit station
+                Stop;
+            ENDTEST
+
+        CASE 5:
+            !station 5
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                !mag niet in dit station
+                Stop;
+            CASE part.Balk331:
+                !mag niet in dit station
+                Stop;
+            CASE part.Balk332:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Boren_5020332;
+            ENDTEST
+
+        CASE 6:
+            !station 6 (enkel voor onder en bovenranden)
+            TEST Station{nStation}.Opdracht
+            CASE part.OnderrandLinks:
+                Station{nStation}.lading:=part.Inbewerking;
+                rOnderrand_B_215537_602_Links;
+            CASE part.OnderrandRechts:
+                Station{nStation}.lading:=part.Inbewerking;
+                rOnderrand_B_215537_603_Rechts;
+            ENDTEST
+
+        ENDTEST
+        SetDO SO_UI_refresh,1;
+        !
+    ENDPROC
+
+    PROC rWorkStationFrezen(num nStation)
+        !***************************************	    
+        ! Proc: rWorkStationFrezen
+        ! Description: bewerk stuk in het station
+        !***************************************
+        TEST nStation
+        CASE 1:
+            !station 1
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Frezen_5020330 nStation,wobj_BalkStation1;
+                Station{nStation}.lading:=part.balk330;
+            CASE part.Balk331:
+                !mag niet in dit station
+            CASE part.Balk332:
+                !mag niet in dit station liggen
+                Stop;
+            ENDTEST
+
+        CASE 2:
+            !station 2
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Frezen_5020330 nStation,wobj_BalkStation2;
+                Station{nStation}.lading:=part.balk330;
+            CASE part.Balk331:
+                !mag niet in dit station
+            CASE part.Balk332:
+                !mag niet in dit station
+            ENDTEST
+
+        CASE 3:
+            !station 3
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Frezen_5020330 nStation,wobj_BalkStation3;
+                Station{nStation}.lading:=part.balk330;
+            CASE part.Balk331:
+                !mag niet in dit station
+            CASE part.Balk332:
+                !mag niet in dit station
+                Stop;
+            ENDTEST
+
+        CASE 4:
+            !station 4
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                Station{nStation}.lading:=part.Inbewerking;
+                rDwarsbalk_Frezen_5020330 nStation,wobj_BalkStation4;
+                Station{nStation}.lading:=part.balk330;
+            CASE part.Balk331:
+                !mag niet in dit station
+            CASE part.Balk332:
+                !mag niet in dit station
+                Stop;
+            ENDTEST
+
+        CASE 5:
+            !station 5
+            TEST Station{nStation}.Opdracht
+            CASE part.Balk330:
+                !mag niet in dit station liggen
+                Stop;
+            CASE part.Balk331:
+                !mag niet in dit station liggens
+                Stop;
+            CASE part.Balk332:
+                !SAFETY CHECK!!!! station 6 mag niet geladen zijn ! CRASH GEVAAR!
+                !onderranden zitten in de weg bij het doorfrezen
+                IF Station{6}.Lading=part.geen THEN
+                    Station{nStation}.lading:=part.Inbewerking;
+                    rDwarsbalk_Frezen_5020332;
+                    Station{nStation}.lading:=part.balk332;
+                ELSE
+                    LoggProc "mSations",0,"frezen overgeslaan wegens lading in station 6!";
+                ENDIF
+            ENDTEST
+
+        CASE 6:
+            !station 6 (enkel voor onder en bovenranden)
+            TEST Station{nStation}.Opdracht
+            CASE part.OnderrandLinks:
+                Station{nStation}.lading:=part.Inbewerking;
+                rOnderrand_Frezen_215537_602_L;
+                Station{nStation}.lading:=part.OnderrandLinks;
+            CASE part.OnderrandRechts:
+                Station{nStation}.lading:=part.Inbewerking;
+                rOnderrand_Frezen_215537_603_R;
+                Station{nStation}.lading:=part.OnderrandRechts;
+            ENDTEST
+
+        ENDTEST
+        SetDO SO_UI_refresh,1;
+        !
+    ENDPROC
+
+    PROC rSetSationClamps(num nStation,\switch open\switch close,\num nWaittime\switch Check)
+        !***************************************	    
+        ! Proc: rSetSationClamps
+        ! Description: open of sluit klemmen 
+        !***************************************
+        VAR num nState;
+        VAR bool timeout;
+        lbl_retry:
+        IF Present(close) THEN
+            nState:=0;
+        endif
+        IF Present(open) THEN
+            nState:=1;
+        ENDIF
+        IF Present(close)AND Present(open) THEN
+            RETURN ;
+        ENDIF
+        TEST nStation
+        CASE 1:
+            SetDO doKP_1_Ventiel,nState;
+        CASE 2:
+            SetDO doKP_2_Ventiel,nState;
+        CASE 3:
+            SetDO doKP_3_Ventiel,nState;
+        CASE 4:
+            SetDO doKP_4_Ventiel,nState;
+        CASE 5:
+            SetDO doKP_5_Ventiel,nState;
+        ENDTEST
+
+        IF NOT Present(Check) THEN
+            IF Present(nWaittime) THEN
+                WaitTime nWaittime;
+            ELSE
+                WaitTime 3;
+            ENDIF
+        ENDIF
+        !need to test and verify the bits 
+        IF Present(Check) THEN
+            rCheckStationClamps nStation,nState;
+        ENDIF
+        !
+    ENDPROC
+
+    PROC rCheckStationClamps(num nStation,num nState)
+        VAR signaldi alias_di;
+        VAR string sAlias;
+        FOR i FROM 1 TO 4 DO
+            IF nState=1 THEN
+                sAlias:="diKP_"+numtostr(nStation,0)+"_"+numtostr(i,0)+"Open";
+            ELSE
+                sAlias:="diKP_"+numtostr(nStation,0)+"_"+numtostr(i,0)+"Close";
+            ENDIF
+
+            AliasIO sAlias,alias_di;
+            CheckInput alias_di,1,\CheckTimeOut:=3,"Station:"+NumToStr(nStation,0)+" Klem:"+NumToStr(i,0)+" NOK "+sAlias+" <> "+NumToStr(nState,0);
+        ENDFOR
+
+    ENDPROC
+
+    FUNC num nStationOffset(num nStation\switch Positive\switch Negeative)
+        !***************************************	    
+        ! FUNC: nStationOffset
+        ! Description: safety function for frame offset
+        !***************************************
         VAR num nNum;
         !
         IF Present(Positive) THEN
-          nNum :=Station{nStation}.pOffset;
-              IF abs(nNum) > 25 THEN
-                WHILE TRUE DO 
-                 Stop;
+            nNum:=Station{nStation}.pOffset;
+            IF abs(nNum)>25 THEN
+                WHILE TRUE DO
+                    Stop;
                 ENDwhile
                 RETURN 0;
-            ENDIF 
-            RETURN Station{nStation}.pOffset;  
+            ENDIF
+            RETURN Station{nStation}.pOffset;
         ENDIF
         !
         IF Present(Negeative) THEN
-          nNum :=Station{nStation}.nOffset;
-              IF abs(nNum) > 25 THEN
-                WHILE TRUE DO 
-                 Stop;
+            nNum:=Station{nStation}.nOffset;
+            IF abs(nNum)>25 THEN
+                WHILE TRUE DO
+                    Stop;
                 ENDwhile
                 RETURN 0;
-            ENDIF 
-            RETURN Station{nStation}.nOffset;  
+            ENDIF
+            RETURN Station{nStation}.nOffset;
         ENDIF
         !
-        nNum :=Station{nStation}.xOffset;
-        IF abs(nNum) > 25 THEN
-            WHILE TRUE DO 
-             Stop;
+        nNum:=Station{nStation}.xOffset;
+        IF abs(nNum)>25 THEN
+            WHILE TRUE DO
+                Stop;
             ENDwhile
             RETURN 0;
-        ENDIF 
+        ENDIF
         RETURN Station{nStation}.xOffset;
         !
-    ENDFUNC 
+    ENDFUNC
 
 ENDMODULE

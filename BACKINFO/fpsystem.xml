@@ -43,14 +43,19 @@
     </DATA>
     <DATA id="Program Editor">
       <PROP name="HideDeclarations" value="True" />
-      <PROP name="ShowOnlyServiceRoutines" value="True" />
+      <PROP name="ShowOnlyServiceRoutines" value="False" />
       <PROP name="ModulePath" value="ctrl:/hd0a/Modules/" />
+      <PROP name="ProgramPath" value="" />
     </DATA>
     <DATA id="Programmable Key_3">
       <PROP name="type" value="Output" />
       <PROP name="allowInAuto" value="Yes" />
       <PROP name="pressed" value="SetTo1" />
       <PROP name="target" value="SO_UI_refresh" />
+    </DATA>
+    <DATA id="GoToPosition ROB_1">
+      <PROP name="FilterScope" value="All" />
+      <PROP name="FilterString" value="" />
     </DATA>
     <DATA id="Backup Restore">
       <PROP name="LastPath" value="ctrl:/hd0a/BACKUP/" />

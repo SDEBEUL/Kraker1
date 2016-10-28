@@ -1,5 +1,5 @@
 MODULE UI_spindel
-    VAR intnum Int3ManUnlock := 3;
+    VAR intnum Int3ManUnlock := 13;
 
     
  PROC rSpindelToolUI() 
@@ -86,19 +86,19 @@ list_item := UIListView( \Header:="Selecteer de parameter die u wilt aanpassen",
            Spindeltool{toolnum}.Toerental := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.Toerental,1800,24000);
       CASE 2:
           SpeedDummy := Spindeltool{toolnum}.VoedingBoren;
-          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
+          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,40);
           Spindeltool{toolnum}.VoedingBoren := SpeedDummy;
       CASE 3:
           SpeedDummy := Spindeltool{toolnum}.VoedingFrezen;
-          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,25);
+          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,40);
           Spindeltool{toolnum}.VoedingFrezen := SpeedDummy;
       CASE 4:
           SpeedDummy := Spindeltool{toolnum}.VoedingAanzetBoren;
-          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,100);
+          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,250);
           Spindeltool{toolnum}.VoedingAanzetBoren := SpeedDummy;
       CASE 5:
           SpeedDummy := Spindeltool{toolnum}.VoedingAanzetFrezen;
-          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,100);
+          SpeedDummy.v_tcp := nGetSetting(ParmList{list_item}.text, SpeedDummy.v_tcp,0.1,250);
           Spindeltool{toolnum}.VoedingAanzetFrezen := SpeedDummy;
       CASE 6:
           Spindeltool{toolnum}.nFreesStap := nGetSetting(ParmList{list_item}.text,Spindeltool{toolnum}.nFreesStap,-5,0.1);
@@ -150,6 +150,7 @@ PROC rSpindelManUnlock(bool bEnable \switch init)
     ! Connected in rSpindelSprVsn
     !***************************************	    
         WaitTime 3;
+        TPWrite "test";
         IF TestDI(diSpindle_Button) THEN
             SetDO doSpindle_Air_On,0;
             SetDO doSpindle_Release,1;
@@ -158,8 +159,9 @@ PROC rSpindelManUnlock(bool bEnable \switch init)
             
             SetDO doSpindle_Air_On,1;
             SetDO doSpindle_Release,0;
-            IWatch Int3ManUnlock;
+
         ENDIF
+        IWatch Int3ManUnlock;   
   ENDTRAP
 
 

@@ -1,148 +1,62 @@
  
-2016-08-04, 19:44:12, Offset ,Code , 31 ,Info , off:3 x=1.36 n=1.18 p=1.54 P1=-770.49 P2=780.23 
-2016-08-04, 19:44:13, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:53.53 
-2016-08-04, 19:45:13, Offset ,Code , 31 ,Info , off:4 x=1.39 n=1.33 p=1.44 P1=-770.65 P2=780.33 
-2016-08-04, 19:45:13, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:59.99 
-2016-08-04, 19:49:23, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:249.72 
-2016-08-04, 19:52:29, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:4 |Time:186.01 
-2016-08-04, 19:55:35, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:4 |Time:186.09 
-2016-08-04, 19:58:41, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:4 |Time:186.10 
-2016-08-04, 20:02:17, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:216.01 
-2016-08-04, 20:05:18, Cycletime ,Code , 99 ,Info , Sation:2 Frezen Type:4 |Time:180.80 
-2016-08-04, 20:08:19, Cycletime ,Code , 99 ,Info , Sation:3 Frezen Type:4 |Time:180.66 
-2016-08-04, 20:11:20, Cycletime ,Code , 99 ,Info , Sation:4 Frezen Type:4 |Time:180.73 
-2016-08-04, 20:12:22, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:1 |Time:62.73 
-2016-08-04, 20:12:50, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:1 |Time:27.36 
-2016-08-04, 20:13:12, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:1 |Time:22.35 
-2016-08-04, 20:13:31, mBuffer ,Code , 9 ,Info , Buffer:1 vol (rIncr) 
-2016-08-04, 20:13:33, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:1 |Time:20.65 
-2016-08-04, 20:14:19, Offset ,Code , 31 ,Info , off:1 x=0.94 n=0.38 p=1.50 P1=-769.69 P2=780.27 
-2016-08-04, 20:14:19, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:46.23 
-2016-08-04, 20:15:10, Offset ,Code , 31 ,Info , off:2 x=1.38 n=1.42 p=1.34 P1=-770.73 P2=780.44 
-2016-08-04, 20:15:11, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:2 |Time:51.59 
-2016-08-04, 20:16:05, Offset ,Code , 31 ,Info , off:3 x=2.37 n=1.18 p=3.55 P1=-770.50 P2=778.22 
-2016-08-04, 20:16:06, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:54.88 
-2016-08-04, 20:17:06, Offset ,Code , 31 ,Info , off:4 x=1.50 n=1.39 p=1.60 P1=-770.71 P2=780.17 
-2016-08-04, 20:17:06, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:60.69 
-2016-08-04, 20:21:03, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:236.74 
-2016-08-04, 20:23:54, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:171.10 
-2016-08-04, 20:26:45, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:5 |Time:171.09 
-2016-08-04, 20:29:37, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:5 |Time:171.10 
-2016-08-04, 20:31:24, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:2 |Time:29.99 
-2016-08-04, 20:31:48, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:2 |Time:23.92 
-2016-08-04, 20:32:07, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:2 |Time:19.19 
-2016-08-04, 20:32:30, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:22.62 
-2016-08-04, 20:33:22, Offset ,Code , 31 ,Info , off:1 x=-1.65 n=-1.65 p=-1.65 P1=-767.67 P2=783.42 
-2016-08-04, 20:33:23, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:52.94 
-2016-08-04, 20:34:05, Offset ,Code , 31 ,Info , off:2 x=-0.16 n=0.14 p=-0.46 P1=-769.46 P2=782.23 
-2016-08-04, 20:34:05, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:2 |Time:42.26 
-2016-08-04, 20:34:50, Offset ,Code , 31 ,Info , off:3 x=0.75 n=0.17 p=1.32 P1=-769.49 P2=780.45 
-2016-08-04, 20:34:51, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:45.46 
-2016-08-04, 20:35:50, Offset ,Code , 31 ,Info , off:4 x=1.37 n=1.09 p=1.66 P1=-770.40 P2=780.12 
-2016-08-04, 20:35:51, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:60.23 
-2016-08-04, 20:39:26, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:215.26 
-2016-08-04, 20:42:17, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:171.11 
-2016-08-04, 20:45:09, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:5 |Time:171.13 
-2016-08-04, 20:48:00, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:5 |Time:171.10 
-2016-08-04, 20:48:57, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:2 |Time:57.30 
-2016-08-04, 20:49:21, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:2 |Time:23.69 
-2016-08-04, 20:49:40, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:2 |Time:19.05 
-2016-08-04, 20:50:03, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:22.84 
-2016-08-04, 20:50:47, Offset ,Code , 31 ,Info , off:1 x=0.97 n=0.34 p=1.59 P1=-769.66 P2=780.19 
-2016-08-04, 20:50:48, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:45.19 
-2016-08-04, 20:51:39, Offset ,Code , 31 ,Info , off:2 x=1.38 n=1.06 p=1.70 P1=-770.37 P2=780.07 
-2016-08-04, 20:51:40, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:2 |Time:51.70 
-2016-08-04, 20:52:34, Offset ,Code , 31 ,Info , off:3 x=2.33 n=1.21 p=3.46 P1=-770.52 P2=778.31 
-2016-08-04, 20:52:34, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:54.90 
-2016-08-04, 20:53:36, Offset ,Code , 31 ,Info , off:4 x=2.44 n=1.44 p=3.45 P1=-770.75 P2=778.33 
-2016-08-04, 20:53:36, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:61.79 
-2016-08-04, 20:57:11, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:214.24 
-2016-08-04, 21:00:02, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:171.10 
-2016-08-04, 21:02:53, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:5 |Time:171.11 
-2016-08-04, 21:05:44, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:5 |Time:171.08 
-2016-08-04, 21:06:42, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:2 |Time:57.60 
-2016-08-04, 21:07:06, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:2 |Time:23.89 
-2016-08-04, 21:07:25, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:2 |Time:19.11 
-2016-08-04, 21:07:47, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:22.54 
-2016-08-04, 21:08:32, Offset ,Code , 31 ,Info , off:1 x=-1.08 n=-1.65 p=-0.50 P1=-767.66 P2=782.28 
-2016-08-04, 21:08:32, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:45.19 
-2016-08-04, 21:09:15, Offset ,Code , 31 ,Info , off:2 x=-1.27 n=-2.04 p=-0.51 P1=-767.28 P2=782.29 
-2016-08-04, 21:09:16, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:2 |Time:43.52 
-2016-08-04, 21:10:08, Offset ,Code , 31 ,Info , off:3 x=1.06 n=1.21 p=0.90 P1=-770.53 P2=780.87 
-2016-08-04, 21:10:09, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:52.70 
-2016-08-04, 21:11:08, Offset ,Code , 31 ,Info , off:4 x=1.46 n=1.28 p=1.64 P1=-770.59 P2=780.13 
-2016-08-04, 21:11:09, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:60.42 
-2016-08-04, 21:14:45, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:216.25 
-2016-08-04, 21:17:37, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:171.12 
-2016-08-04, 21:20:28, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:5 |Time:171.10 
-2016-08-04, 21:23:19, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:5 |Time:171.11 
-2016-08-04, 21:24:16, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:2 |Time:57.18 
-2016-08-04, 21:24:40, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:2 |Time:23.51 
-2016-08-05, 09:29:32, Main ,Code , 18 ,Info , PP to main 
-2016-08-05, 09:42:38, Main ,Code , 18 ,Info , PP to main 
-2016-08-05, 09:50:02, Offset ,Code , 31 ,Info , off:3 x=2.36 n=1.18 p=3.55 P1=-770.49 P2=778.23 
-2016-08-05, 09:50:03, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:78.14 
-2016-08-05, 09:51:04, Offset ,Code , 31 ,Info , off:4 x=2.40 n=1.27 p=3.53 P1=-770.59 P2=778.24 
-2016-08-05, 09:51:04, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:61.65 
-2016-08-05, 09:51:53, mBuffer ,Code , 9 ,Info , Buffer:1 vol (rIncr) 
-2016-08-05, 09:56:29, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:4 |Time:261.26 
-2016-08-05, 10:30:40, Cycletime ,Code , 99 ,Info , Sation:3 Frezen Type:4 |Time:2051.73 
-2016-08-05, 10:33:38, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:4 |Time:50.98 
-2016-08-05, 10:34:37, Offset ,Code , 31 ,Info , off:3 x=2.49 n=1.28 p=3.70 P1=-770.60 P2=778.08 
-2016-08-05, 10:34:38, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:59.71 
-2016-08-05, 10:38:58, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:4 |Time:259.87 
-2016-08-05, 10:42:04, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:4 |Time:186.06 
-2016-08-05, 10:47:44, Cycletime ,Code , 99 ,Info , Sation:3 Frezen Type:4 |Time:339.52 
-2016-08-05, 10:50:31, Cycletime ,Code , 99 ,Info , Sation:4 Frezen Type:4 |Time:167.43 
-2016-08-05, 10:57:50, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:4 |Time:439.11 
-2016-08-05, 11:00:27, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:4 |Time:156.98 
-2016-08-05, 11:01:56, Offset ,Code , 31 ,Info , off:3 x=3.40 n=3.17 p=3.64 P1=-772.48 P2=778.13 
-2016-08-05, 11:01:57, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:88.71 
-2016-08-05, 11:04:18, Offset ,Code , 31 ,Info , off:4 x=-1.07 n=-1.69 p=-0.46 P1=-767.63 P2=782.24 
-2016-08-05, 11:04:19, Cycletime ,Code , 99 ,Info , Laad Station:4 van Buffer:2 |Time:142.32 
-2016-08-05, 11:09:47, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:4 |Time:327.78 
-2016-08-05, 11:19:15, Cycletime ,Code , 99 ,Info , Sation:3 Frezen Type:4 |Time:568.06 
-2016-08-05, 11:20:09, Main ,Code , 18 ,Info , PP to main 
-2016-08-05, 11:21:12, mBuffer ,Code , 5 ,Info , Buffer:4 Vol (target) 
-2016-08-05, 11:21:12, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:4 |Time:24.14 
-2016-08-05, 11:22:41, Offset ,Code , 31 ,Info , off:3 x=0.57 n=0.25 p=0.89 P1=-769.57 P2=780.88 
-2016-08-05, 11:22:42, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:2 |Time:90.20 
-2016-08-05, 11:23:21, mBuffer ,Code , 9 ,Info , Buffer:1 vol (rIncr) 
-2016-08-05, 11:25:36, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:2 |Time:19.70 
-2016-08-05, 11:25:59, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:23.35 
-2016-08-05, 11:26:45, Offset ,Code , 31 ,Info , off:1 x=-0.10 n=-1.70 p=1.50 P1=-767.61 P2=780.27 
-2016-08-05, 11:26:46, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:46.46 
-2016-08-05, 11:27:29, Offset ,Code , 31 ,Info , off:2 x=0.93 n=0.38 p=1.49 P1=-769.69 P2=780.28 
-2016-08-05, 11:27:30, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:2 |Time:43.88 
-2016-08-05, 11:31:32, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:242.13 
-2016-08-05, 11:34:23, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:171.11 
-2016-08-05, 11:37:14, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:5 |Time:171.11 
-2016-08-05, 11:40:05, Cycletime ,Code , 99 ,Info , Sation:4 Boren Type:5 |Time:171.10 
-2016-08-05, 11:42:00, Cycletime ,Code , 99 ,Info , Ontlaad Station:4 naar buffer:2 |Time:30.40 
-2016-08-05, 11:42:25, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:2 |Time:24.36 
-2016-08-05, 11:42:44, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:2 |Time:19.52 
-2016-08-05, 11:43:07, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:22.98 
-2016-08-05, 11:44:25, Offset ,Code , 31 ,Info , off:1 x=6.45 n=7.25 p=5.65 P1=-776.57 P2=776.13 
-2016-08-05, 11:44:26, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:77.23 
-2016-08-05, 11:44:36, mBuffer ,Code , 8 ,Info , Buffer:2 leeg (rDecr) 
-2016-08-05, 11:45:18, Offset ,Code , 31 ,Info , off:2 x=2.32 n=1.06 p=3.59 P1=-770.37 P2=778.18 
-2016-08-05, 11:45:19, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:2 |Time:53.28 
-2016-08-05, 11:46:43, Offset ,Code , 31 ,Info , off:3 x=0.46 n=-0.78 p=1.70 P1=-768.53 P2=780.08 
-2016-08-05, 11:46:44, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:0 |Time:84.98 
-2016-08-05, 11:50:28, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:5 |Time:215.60 
-2016-08-05, 11:53:19, Cycletime ,Code , 99 ,Info , Sation:2 Boren Type:5 |Time:171.09 
-2016-08-05, 11:56:10, Cycletime ,Code , 99 ,Info , Sation:3 Boren Type:5 |Time:171.10 
-2016-08-05, 12:00:51, mBuffer ,Code , 14 ,Info , buffer niet veilig 
-2016-08-05, 12:02:05, Cycletime ,Code , 99 ,Info , Ontlaad Station:3 naar buffer:4 |Time:268.91 
-2016-08-05, 12:03:54, Main ,Code , 18 ,Info , PP to main 
-2016-08-05, 12:05:14, Cycletime ,Code , 99 ,Info , Ontlaad Station:2 naar buffer:2 |Time:19.53 
-2016-08-05, 12:05:36, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:22.62 
-2016-08-05, 12:07:31, mBuffer ,Code , 30 ,Info , Actieve uitvoerbuffer:2 niet gevonden 
-2016-08-05, 12:08:34, mBuffer ,Code , 8 ,Info , Buffer:1 leeg (rDecr) 
-2016-08-05, 12:13:38, Offset ,Code , 31 ,Info , off:1 x=1.27 n=1.21 p=1.33 P1=-770.53 P2=780.45 
-2016-08-05, 12:13:38, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:0 |Time:344.02 
-2016-08-05, 12:14:38, Main ,Code , 18 ,Info , PP to main 
-2016-08-05, 12:16:49, Offset ,Code , 31 ,Info , off:2 x=-0.16 n=0.14 p=-0.46 P1=-769.46 P2=782.23 
-2016-08-05, 12:16:50, Cycletime ,Code , 99 ,Info , Laad Station:2 van Buffer:4 |Time:94.86 
-2016-08-05, 12:17:47, Offset ,Code , 31 ,Info , off:3 x=-1.55 n=-1.82 p=-1.28 P1=-767.49 P2=783.06 
-2016-08-05, 12:17:48, Cycletime ,Code , 99 ,Info , Laad Station:3 van Buffer:4 |Time:58.19
+2016-10-23, 12:53:18, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:151.38 
+2016-10-23, 12:54:27, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:69.89 
+2016-10-23, 12:55:13, Offset ,Code , 31 ,Info , off:1 x=-1.10 n=-1.68 p=-0.51 P1=-767.63 P2=782.29 
+2016-10-23, 12:55:13, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:45.86 
+2016-10-23, 12:59:21, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:248.09 
+2016-10-23, 13:01:52, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:150.39 
+2016-10-23, 13:03:03, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:70.65 
+2016-10-23, 13:03:56, Offset ,Code , 31 ,Info , off:1 x=-3.65 n=-3.66 p=-3.65 P1=-765.66 P2=785.43 
+2016-10-23, 13:03:56, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:53.55 
+2016-10-23, 13:08:03, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:247.10 
+2016-10-23, 13:10:35, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:151.34 
+2016-10-23, 13:11:44, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:69.74 
+2016-10-23, 13:12:37, Offset ,Code , 31 ,Info , off:1 x=-3.71 n=-4.04 p=-3.38 P1=-765.28 P2=785.15 
+2016-10-23, 13:12:38, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:53.59 
+2016-10-23, 13:16:43, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:245.10 
+2016-10-23, 13:19:13, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:149.35 
+2016-10-23, 13:20:23, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:70.61 
+2016-10-23, 13:21:16, Offset ,Code , 31 ,Info , off:1 x=-3.48 n=-3.66 p=-3.30 P1=-765.65 P2=785.07 
+2016-10-23, 13:21:17, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:53.61 
+2016-10-23, 13:25:29, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:252.12 
+2016-10-23, 13:28:00, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:151.40 
+2016-10-23, 13:29:11, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:70.48 
+2016-10-23, 13:30:04, Offset ,Code , 31 ,Info , off:1 x=-1.64 n=-1.72 p=-1.56 P1=-767.59 P2=783.33 
+2016-10-23, 13:30:04, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:53.64 
+2016-10-23, 13:34:09, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:244.11 
+2016-10-23, 13:36:40, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:151.31 
+2016-10-23, 13:37:50, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:70.33 
+2016-10-23, 13:38:44, Offset ,Code , 31 ,Info , off:1 x=-1.64 n=-1.68 p=-1.60 P1=-767.64 P2=783.37 
+2016-10-23, 13:38:44, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:53.74 
+2016-10-23, 13:42:53, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:249.10 
+2016-10-23, 13:45:24, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:150.36 
+2016-10-23, 13:46:34, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:70.18 
+2016-10-23, 13:47:19, Offset ,Code , 31 ,Info , off:1 x=-1.09 n=-1.62 p=-0.57 P1=-767.70 P2=782.34 
+2016-10-23, 13:47:20, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:45.85 
+2016-10-23, 13:51:29, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:249.11 
+2016-10-23, 13:53:59, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:150.40 
+2016-10-23, 13:55:09, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:69.96 
+2016-10-23, 13:55:55, Offset ,Code , 31 ,Info , off:1 x=-1.10 n=-1.68 p=-0.52 P1=-767.63 P2=782.30 
+2016-10-23, 13:55:55, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:45.88 
+2016-10-23, 14:00:06, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:251.10 
+2016-10-23, 14:02:38, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:151.37 
+2016-10-23, 14:03:47, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:69.76 
+2016-10-23, 14:03:57, mBuffer ,Code , 8 ,Info , Buffer:2 leeg (rDecr) 
+2016-10-23, 14:04:33, Offset ,Code , 31 ,Info , off:1 x=-1.08 n=-1.63 p=-0.52 P1=-767.68 P2=782.29 
+2016-10-23, 14:04:33, Cycletime ,Code , 99 ,Info , Laad Station:1 van Buffer:2 |Time:45.98 
+2016-10-23, 14:09:01, Cycletime ,Code , 99 ,Info , Sation:1 Boren Type:4 |Time:267.12 
+2016-10-23, 14:11:30, Cycletime ,Code , 99 ,Info , Sation:1 Frezen Type:4 |Time:149.36 
+2016-10-23, 14:12:39, mBuffer ,Code , 9 ,Info , Buffer:2 vol (rIncr) 
+2016-10-23, 14:12:41, mBuffer ,Code , 5 ,Info , Buffer:2 Vol (target) 
+2016-10-23, 14:12:41, Cycletime ,Code , 99 ,Info , Ontlaad Station:1 naar buffer:2 |Time:70.67 
+2016-10-23, 14:13:36, mBuffer ,Code , 30 ,Info , Actieve invoerbuffer:3 niet gevonden 
+2016-10-24, 13:45:13, mBuffer ,Code , 30 ,Info , Actieve invoerbuffer:3 niet gevonden 
+2016-10-24, 14:12:11, Cycletime ,Code , 99 ,Info , Sation:6 Boren Type:7 |Time:1460.04 
+2016-10-25, 11:07:46, Main ,Code , 18 ,Info , PP to main 
+2016-10-25, 11:32:58, Cycletime ,Code , 99 ,Info , Sation:6 Boren Type:7 |Time:1419.38 
+2016-10-25, 14:37:12, Main ,Code , 18 ,Info , PP to main 
+2016-10-25, 14:44:31, Cycletime ,Code , 99 ,Info , Sation:6 Boren Type:7 |Time:225.65 
+2016-10-25, 14:54:29, Main ,Code , 18 ,Info , PP to main 
+2016-10-25, 14:58:33, Cycletime ,Code , 99 ,Info , Sation:6 Boren Type:7 |Time:132.86 
+2016-10-25, 18:35:50, Main ,Code , 18 ,Info , PP to main 
+2016-10-25, 18:38:17, Cycletime ,Code , 99 ,Info , Sation:6 Boren Type:7 |Time:114.52
